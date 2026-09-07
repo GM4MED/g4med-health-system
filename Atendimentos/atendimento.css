@@ -3,13 +3,13 @@
 /* ========================================= */
 
 :root {
-    --primary-color: #0066cc;
-    --primary-dark: #0052a3;
-    --primary-light: #e6f0ff;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --info-color: #17a2b8;
+    --primary-color: #0D9488;
+    --primary-dark: #0F766E;
+    --primary-light: #CCFBF1;
+    --success-color: #16A34A;
+    --warning-color: #D97706;
+    --danger-color: #DC2626;
+    --info-color: #14B8A6;
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -357,7 +357,8 @@ button {
     background: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);
-    overflow: hidden;
+    overflow-x: auto;
+    width: 100%;
 }
 
 .table-atendimento {
@@ -486,10 +487,12 @@ button {
     background: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-xl);
-    max-width: 600px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-width: 650px;
+    width: 92%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     animation: slideUp 0.3s ease;
 }
 
@@ -506,10 +509,11 @@ button {
 }
 
 .modal-header {
+    flex: 0 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 16px 20px;
     border-bottom: 1px solid var(--gray-200);
 }
 
@@ -526,7 +530,12 @@ button {
 }
 
 .modal-content form {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-grid {

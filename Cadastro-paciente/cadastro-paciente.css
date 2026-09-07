@@ -55,7 +55,7 @@ body {
     margin: 0;
     color: var(--color-text);
     background: linear-gradient(135deg, #F8FFFE 0%, var(--color-background) 55%, #EEF8F7 100%);
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
     line-height: 1.5;
 }
 

@@ -145,11 +145,17 @@ button:disabled {
 
 .main-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(400px, 0.75fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
     gap: 1.25rem;
     min-height: 0;
     padding: 1.25rem;
     background: var(--background);
+}
+
+@media (max-width: 1024px) {
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 .form-area,
