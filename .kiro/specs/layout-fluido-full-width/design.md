@@ -9,7 +9,7 @@ p# Design Técnico — Layout Fluido / Full-Width
 
 ### Problema
 
-O G4Med é composto por mais de 20 módulos independentes. Vários desses módulos impõem restrições de largura máxima estáticas nos seus contêineres de estrutura de página — valores como `max-width: 1800px`, `max-width: 1640px`, `max-width: 1560px` etc. —, o que gera margens laterais brancas excessivas e desperdiça espaço útil em monitores Full HD (1920 px), 4K (3840 px) e ultrawide (2560 px+).
+O GM4med é composto por mais de 20 módulos independentes. Vários desses módulos impõem restrições de largura máxima estáticas nos seus contêineres de estrutura de página — valores como `max-width: 1800px`, `max-width: 1640px`, `max-width: 1560px` etc. —, o que gera margens laterais brancas excessivas e desperdiça espaço útil em monitores Full HD (1920 px), 4K (3840 px) e ultrawide (2560 px+).
 
 ### Solução
 

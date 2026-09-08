@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financeiro | G4med</title>
+    <title>Financeiro | GM4med</title>
 
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,144 +18,144 @@
 
 <body class="bg-slate-50 text-slate-800">
     <div class="w-full min-w-0 p-4 md:p-6">
-        <section class="g4med-financeiro" aria-labelledby="financeiro-title">
-            <header class="g4med-financeiro__header">
+        <section class="GM4med-financeiro" aria-labelledby="financeiro-title">
+            <header class="GM4med-financeiro__header">
                 <div>
-                    <h2 id="financeiro-title" class="g4med-financeiro__title">Financeiro</h2>
-                    <p class="g4med-financeiro__subtitle">
+                    <h2 id="financeiro-title" class="GM4med-financeiro__title">Financeiro</h2>
+                    <p class="GM4med-financeiro__subtitle">
                         Configure a forma de pagamento, dados do cartão e parcelamento da consulta/procedimento.
                     </p>
                 </div>
 
-                <div class="g4med-financeiro__total">
-                    <span class="g4med-financeiro__total-label">Valor total</span>
-                    <strong id="financeiroValorTotalDisplay" class="g4med-financeiro__total-value">R$ 0,00</strong>
+                <div class="GM4med-financeiro__total">
+                    <span class="GM4med-financeiro__total-label">Valor total</span>
+                    <strong id="financeiroValorTotalDisplay" class="GM4med-financeiro__total-value">R$ 0,00</strong>
                 </div>
             </header>
 
-            <form id="financeiroForm" class="g4med-financeiro__form" novalidate>
+            <form id="financeiroForm" class="GM4med-financeiro__form" novalidate>
                 <input type="hidden" id="financeiroValorTotal" name="financeiro[valor_total]" value="0" />
 
-                <section class="g4med-financeiro__card">
-                    <div class="g4med-financeiro__section-head">
-                        <h3 class="g4med-financeiro__section-title">Forma de pagamento</h3>
-                        <p class="g4med-financeiro__section-help">Selecione a forma de pagamento principal do
+                <section class="GM4med-financeiro__card">
+                    <div class="GM4med-financeiro__section-head">
+                        <h3 class="GM4med-financeiro__section-title">Forma de pagamento</h3>
+                        <p class="GM4med-financeiro__section-help">Selecione a forma de pagamento principal do
                             atendimento.</p>
                     </div>
 
-                    <div class="g4med-payment-methods" role="radiogroup" aria-label="Formas de pagamento">
-                        <label class="g4med-payment-method">
+                    <div class="GM4med-payment-methods" role="radiogroup" aria-label="Formas de pagamento">
+                        <label class="GM4med-payment-method">
                             <input type="radio" name="financeiro[metodo_pagamento]" value="dinheiro" checked />
                             <span>Dinheiro</span>
                         </label>
 
-                        <label class="g4med-payment-method">
+                        <label class="GM4med-payment-method">
                             <input type="radio" name="financeiro[metodo_pagamento]" value="pix" />
                             <span>Pix</span>
                         </label>
 
-                        <label class="g4med-payment-method">
+                        <label class="GM4med-payment-method">
                             <input type="radio" name="financeiro[metodo_pagamento]" value="boleto" />
                             <span>Boleto</span>
                         </label>
 
-                        <label class="g4med-payment-method">
+                        <label class="GM4med-payment-method">
                             <input type="radio" name="financeiro[metodo_pagamento]" value="debito" />
                             <span>Débito</span>
                         </label>
 
-                        <label class="g4med-payment-method">
+                        <label class="GM4med-payment-method">
                             <input type="radio" name="financeiro[metodo_pagamento]" value="credito" />
                             <span>Crédito</span>
                         </label>
                     </div>
                 </section>
 
-                <section id="creditoPanel" class="g4med-financeiro__card g4med-financeiro__panel is-collapsed"
+                <section id="creditoPanel" class="GM4med-financeiro__card GM4med-financeiro__panel is-collapsed"
                     aria-hidden="true">
-                    <div class="g4med-financeiro__section-head">
-                        <h3 class="g4med-financeiro__section-title">Dados do cartão</h3>
-                        <p class="g4med-financeiro__section-help">Preencha os dados com segurança. Os campos abaixo são
+                    <div class="GM4med-financeiro__section-head">
+                        <h3 class="GM4med-financeiro__section-title">Dados do cartão</h3>
+                        <p class="GM4med-financeiro__section-help">Preencha os dados com segurança. Os campos abaixo são
                             exibidos somente para crédito.</p>
                     </div>
 
-                    <div class="g4med-credit-grid">
-                        <div class="g4med-field g4med-field--full">
+                    <div class="GM4med-credit-grid">
+                        <div class="GM4med-field GM4med-field--full">
                             <label for="cartaoNumero">Número do cartão</label>
-                            <div class="g4med-input-wrapper">
+                            <div class="GM4med-input-wrapper">
                                 <input id="cartaoNumero" name="financeiro[cartao][numero]" type="text"
                                     inputmode="numeric" autocomplete="cc-number" maxlength="19"
                                     aria-label="Número do cartão de crédito" placeholder="0000 0000 0000 0000"
-                                    class="g4med-input" />
+                                    class="GM4med-input" />
 
                                 <!-- COMPONENTE DE BANDEIRAS -->
-                                <div class="g4med-card-brands" aria-label="Bandeiras de cartão detectadas">
-                                    <div class="g4med-brand-icon" data-brand="visa">
+                                <div class="GM4med-card-brands" aria-label="Bandeiras de cartão detectadas">
+                                    <div class="GM4med-brand-icon" data-brand="visa">
                                         <i class="fa-brands fa-cc-visa"></i>
                                     </div>
-                                    <div class="g4med-brand-icon" data-brand="mastercard">
+                                    <div class="GM4med-brand-icon" data-brand="mastercard">
                                         <i class="fa-brands fa-cc-mastercard"></i>
                                     </div>
-                                    <div class="g4med-brand-icon" data-brand="amex">
+                                    <div class="GM4med-brand-icon" data-brand="amex">
                                         <i class="fa-brands fa-cc-amex"></i>
                                     </div>
-                                    <div class="g4med-brand-icon" data-brand="elo">
+                                    <div class="GM4med-brand-icon" data-brand="elo">
                                         <i class="fa-brands fa-cc-elo"></i>
                                     </div>
-                                    <div class="g4med-brand-icon" data-brand="hipercard">
+                                    <div class="GM4med-brand-icon" data-brand="hipercard">
                                         <i class="fa-solid fa-credit-card"></i>
                                     </div>
-                                    <div class="g4med-brand-icon" data-brand="discover">
+                                    <div class="GM4med-brand-icon" data-brand="discover">
                                         <i class="fa-brands fa-cc-discover"></i>
                                     </div>
-                                    <div class="g4med-brand-icon" data-brand="diners">
+                                    <div class="GM4med-brand-icon" data-brand="diners">
                                         <i class="fa-brands fa-cc-diners-club"></i>
                                     </div>
-                                    <div class="g4med-brand-icon" data-brand="unknown">
+                                    <div class="GM4med-brand-icon" data-brand="unknown">
                                         <i class="fa-solid fa-credit-card"></i>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- STATUS DA BANDEIRA -->
-                            <div class="g4med-brand-status" id="brandStatus" aria-live="polite">
-                                <span class="g4med-brand-status__text">Aguardando digitação...</span>
+                            <div class="GM4med-brand-status" id="brandStatus" aria-live="polite">
+                                <span class="GM4med-brand-status__text">Aguardando digitação...</span>
                             </div>
 
-                            <small class="g4med-field__hint">A bandeira será detectada automaticamente pelo
+                            <small class="GM4med-field__hint">A bandeira será detectada automaticamente pelo
                                 BIN/IIN.</small>
-                            <p class="g4med-field__error" data-error-for="cartaoNumero" aria-live="polite"></p>
+                            <p class="GM4med-field__error" data-error-for="cartaoNumero" aria-live="polite"></p>
                         </div>
 
-                        <div class="g4med-field">
+                        <div class="GM4med-field">
                             <label for="cartaoTitular">Titular</label>
                             <input id="cartaoTitular" name="financeiro[cartao][titular]" type="text"
                                 autocomplete="cc-name" aria-label="Nome do titular do cartão"
-                                placeholder="Nome como está no cartão" class="g4med-input" />
-                            <p class="g4med-field__error" data-error-for="cartaoTitular" aria-live="polite"></p>
+                                placeholder="Nome como está no cartão" class="GM4med-input" />
+                            <p class="GM4med-field__error" data-error-for="cartaoTitular" aria-live="polite"></p>
                         </div>
 
-                        <div class="g4med-field">
+                        <div class="GM4med-field">
                             <label for="cartaoDocumento">CPF/CNPJ do titular</label>
                             <input id="cartaoDocumento" name="financeiro[cartao][documento]" type="text"
                                 inputmode="numeric" autocomplete="off" aria-label="CPF ou CNPJ do titular do cartão"
-                                placeholder="000.000.000-00" class="g4med-input" />
-                            <p class="g4med-field__error" data-error-for="cartaoDocumento" aria-live="polite"></p>
+                                placeholder="000.000.000-00" class="GM4med-input" />
+                            <p class="GM4med-field__error" data-error-for="cartaoDocumento" aria-live="polite"></p>
                         </div>
 
-                        <div class="g4med-field">
+                        <div class="GM4med-field">
                             <label for="cartaoValidade">Validade</label>
                             <input id="cartaoValidade" name="financeiro[cartao][validade]" type="text"
                                 inputmode="numeric" autocomplete="cc-exp" maxlength="5"
                                 aria-label="Validade do cartão no formato mês e ano" placeholder="MM/AA"
-                                class="g4med-input" />
-                            <p class="g4med-field__error" data-error-for="cartaoValidade" aria-live="polite"></p>
+                                class="GM4med-input" />
+                            <p class="GM4med-field__error" data-error-for="cartaoValidade" aria-live="polite"></p>
                         </div>
 
-                        <div class="g4med-field">
-                            <div class="g4med-field__label-row">
+                        <div class="GM4med-field">
+                            <div class="GM4med-field__label-row">
                                 <label for="cartaoCvv">CVV</label>
-                                <button type="button" class="g4med-tooltip-trigger"
+                                <button type="button" class="GM4med-tooltip-trigger"
                                     aria-label="Ajuda sobre o código de segurança CVV"
                                     data-tooltip="Código de 3 ou 4 dígitos geralmente no verso do cartão.">
                                     <i class="fa-regular fa-circle-question"></i>
@@ -163,32 +163,32 @@
                             </div>
                             <input id="cartaoCvv" name="financeiro[cartao][cvv]" type="text" inputmode="numeric"
                                 autocomplete="cc-csc" maxlength="4" aria-label="Código de segurança do cartão CVV"
-                                placeholder="123" class="g4med-input" />
-                            <p class="g4med-field__error" data-error-for="cartaoCvv" aria-live="polite"></p>
+                                placeholder="123" class="GM4med-input" />
+                            <p class="GM4med-field__error" data-error-for="cartaoCvv" aria-live="polite"></p>
                         </div>
                     </div>
                 </section>
 
-                <section class="g4med-financeiro__card">
-                    <div class="g4med-financeiro__section-head">
-                        <h3 class="g4med-financeiro__section-title">Parcelamento</h3>
-                        <p class="g4med-financeiro__section-help">Recalcula automaticamente conforme o valor total ou
+                <section class="GM4med-financeiro__card">
+                    <div class="GM4med-financeiro__section-head">
+                        <h3 class="GM4med-financeiro__section-title">Parcelamento</h3>
+                        <p class="GM4med-financeiro__section-help">Recalcula automaticamente conforme o valor total ou
                             número de parcelas.</p>
                     </div>
 
-                    <div class="g4med-installments">
-                        <div class="g4med-field">
+                    <div class="GM4med-installments">
+                        <div class="GM4med-field">
                             <label for="valorConsulta">Valor da consulta/procedimento</label>
                             <input id="valorConsulta" name="financeiro[valor_base]" type="text" inputmode="decimal"
                                 aria-label="Valor total da consulta ou procedimento" placeholder="R$ 0,00"
-                                class="g4med-input" />
-                            <p class="g4med-field__error" data-error-for="valorConsulta" aria-live="polite"></p>
+                                class="GM4med-input" />
+                            <p class="GM4med-field__error" data-error-for="valorConsulta" aria-live="polite"></p>
                         </div>
 
-                        <div class="g4med-field">
+                        <div class="GM4med-field">
                             <label for="parcelas">Parcelas</label>
                             <select id="parcelas" name="financeiro[parcelas]" aria-label="Número de parcelas"
-                                class="g4med-input">
+                                class="GM4med-input">
                                 <option value="1">1x</option>
                                 <option value="2">2x</option>
                                 <option value="3">3x</option>
@@ -202,28 +202,28 @@
                                 <option value="11">11x</option>
                                 <option value="12">12x</option>
                             </select>
-                            <p class="g4med-field__error" data-error-for="parcelas" aria-live="polite"></p>
+                            <p class="GM4med-field__error" data-error-for="parcelas" aria-live="polite"></p>
                         </div>
                     </div>
 
-                    <div class="g4med-installment-summary" aria-live="polite">
-                        <div class="g4med-installment-summary__item">
+                    <div class="GM4med-installment-summary" aria-live="polite">
+                        <div class="GM4med-installment-summary__item">
                             <span>Valor por parcela</span>
                             <strong id="valorParcelaDisplay">R$ 0,00</strong>
                         </div>
-                        <div class="g4med-installment-summary__item">
+                        <div class="GM4med-installment-summary__item">
                             <span>Total informado</span>
                             <strong id="valorTotalResumo">R$ 0,00</strong>
                         </div>
                     </div>
                 </section>
 
-                <section class="g4med-financeiro__actions">
-                    <a href="cadastro-paciente.html" class="g4med-btn g4med-btn--secondary">
+                <section class="GM4med-financeiro__actions">
+                    <a href="cadastro-paciente.html" class="GM4med-btn GM4med-btn--secondary">
                         <i class="fa-solid fa-arrow-left mr-1"></i> Voltar
                     </a>
-                    <button type="button" class="g4med-btn g4med-btn--secondary" id="limparFinanceiro">Limpar</button>
-                    <button type="submit" class="g4med-btn g4med-btn--primary">Salvar financeiro</button>
+                    <button type="button" class="GM4med-btn GM4med-btn--secondary" id="limparFinanceiro">Limpar</button>
+                    <button type="submit" class="GM4med-btn GM4med-btn--primary">Salvar financeiro</button>
                 </section>
             </form>
         </section>

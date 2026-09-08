@@ -2129,7 +2129,7 @@
 
     initialize();
 
-    window.G4MedTiposAtendimento = {
+    window.GM4medTiposAtendimento = {
         loadAttendanceTypes: async () => clone(state.types),
         loadGroups: async () => clone(state.groups),
         loadSpecialties: async () => clone(state.specialties),

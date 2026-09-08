@@ -2,9 +2,9 @@
 
 ## Introduction
 
-O **Painel Available** (Painel de Disponibilidade Operacional) é uma funcionalidade do sistema G4Med destinada a oferecer, em uma única tela, visibilidade em tempo real das três dimensões críticas do fluxo clínico diário: o **status dos agendamentos do dia**, a **fila de espera ativa** e a **disponibilidade dos médicos**. O painel serve como central de controle operacional para recepcionistas, gestores clínicos e, em modo somente leitura, para os próprios médicos.
+O **Painel Available** (Painel de Disponibilidade Operacional) é uma funcionalidade do sistema GM4med destinada a oferecer, em uma única tela, visibilidade em tempo real das três dimensões críticas do fluxo clínico diário: o **status dos agendamentos do dia**, a **fila de espera ativa** e a **disponibilidade dos médicos**. O painel serve como central de controle operacional para recepcionistas, gestores clínicos e, em modo somente leitura, para os próprios médicos.
 
-O módulo é implementado como página independente (`Painel-available/painel-available.html`) acessível a partir do Menu Principal (`Menu-Principal.html`), seguindo os padrões arquiteturais e de design já estabelecidos no G4Med: HTML semântico, CSS customizado com variáveis teal-600 do sistema de design e JavaScript vanilla com persistência em `localStorage`.
+O módulo é implementado como página independente (`Painel-available/painel-available.html`) acessível a partir do Menu Principal (`Menu-Principal.html`), seguindo os padrões arquiteturais e de design já estabelecidos no GM4med: HTML semântico, CSS customizado com variáveis teal-600 do sistema de design e JavaScript vanilla com persistência em `localStorage`.
 
 ---
 
@@ -23,7 +23,7 @@ O módulo é implementado como página independente (`Painel-available/painel-av
 - **Cartao_Paciente_Fila**: Componente visual que representa um paciente na fila de espera com hora de chegada, tempo estimado de espera e médico vinculado.
 - **Tempo_Espera_Estimado**: Valor calculado em minutos a partir da hora de chegada do paciente até o momento presente.
 - **Slot_Horario**: Intervalo de tempo da grade da agenda (padrão: 30 minutos) associado a um agendamento.
-- **localStorage**: Mecanismo de persistência do navegador utilizado pelo G4Med na ausência de backend.
+- **localStorage**: Mecanismo de persistência do navegador utilizado pelo GM4med na ausência de backend.
 - **Toast**: Notificação temporária, não bloqueante, exibida ao usuário após ações ou eventos do sistema.
 - **Estado_Vazio**: Estado visual exibido quando uma seção não possui dados a apresentar.
 - **Estado_Carregando**: Estado visual exibido enquanto dados estão sendo lidos do `localStorage` ou calculados.
@@ -46,7 +46,7 @@ O módulo é implementado como página independente (`Painel-available/painel-av
 3. THE Painel_Available SHALL exibir, na barra superior (topbar), o título "Painel Available — Controle Operacional", a data atual formatada em `dd/mm/aaaa` e o relógio em tempo real atualizado a cada 1 segundo.
 4. WHEN o usuário pressiona a tecla `Escape` ou aciona o botão "Voltar", THE Painel_Available SHALL redirecionar o usuário para `Menu-Principal.html`, preservando quaisquer dados já persistidos no `localStorage` durante a sessão do painel.
 5. IF ocorrer um erro de navegação ao tentar redirecionar para `Menu-Principal.html`, THEN THE Painel_Available SHALL exibir mensagem de erro indicando a falha e oferecer ao usuário a opção de tentar novamente.
-6. THE Painel_Available SHALL seguir o design system do G4Med: variáveis CSS `--primary` teal-600, fonte Plus Jakarta Sans, bordas arredondadas `--radius`, sombras `--shadow-sm` e `--shadow`, e esquema de cores consistente com os demais módulos.
+6. THE Painel_Available SHALL seguir o design system do GM4med: variáveis CSS `--primary` teal-600, fonte Plus Jakarta Sans, bordas arredondadas `--radius`, sombras `--shadow-sm` e `--shadow`, e esquema de cores consistente com os demais módulos.
 7. THE Painel_Available SHALL garantir que todos os elementos interativos sejam acessíveis por Tab com indicador `focus-visible` visível em todos os componentes interativos, com tooltips de atalhos ativados por foco ou hover.
 8. WHERE o dispositivo tiver largura de tela inferior a 768 px, THE Painel_Available SHALL reorganizar os painéis em layout de coluna única, mantendo todos os controles acessíveis e operáveis.
 
@@ -74,15 +74,15 @@ O módulo é implementado como página independente (`Painel-available/painel-av
 
 #### Critérios de Aceitação
 
-1. THE Painel_Available SHALL exibir uma seção "Agendamentos do Dia" listando todos os agendamentos com `data` igual à data atual, lidos da chave `g4med.agenda.agendamentos.v2` do `localStorage`.
+1. THE Painel_Available SHALL exibir uma seção "Agendamentos do Dia" listando todos os agendamentos com `data` igual à data atual, lidos da chave `GM4med.agenda.agendamentos.v2` do `localStorage`.
 2. THE Painel_Available SHALL exibir para cada agendamento: o horário do agendamento, o nome do paciente, o nome do médico, a especialidade, o tipo de atendimento e o status atual com badge colorido conforme a convenção do módulo Agenda-medica.
 3. THE Painel_Available SHALL ordenar os agendamentos por horário crescente como ordem padrão.
 4. WHEN o usuário aciona o seletor de status de um agendamento, THE Painel_Available SHALL exibir as opções: `Agendado`, `Confirmado`, `Em Atendimento`, `Concluído`, `Faltou`, `Cancelado`.
-5. WHEN o usuário seleciona um novo status para um agendamento, THE Painel_Available SHALL persistir a alteração na chave `g4med.agenda.agendamentos.v2` do `localStorage`, atualizar o Resumo_Operacional e exibir Toast de sucesso "Status atualizado com sucesso." em no máximo 300 ms após a confirmação da persistência.
+5. WHEN o usuário seleciona um novo status para um agendamento, THE Painel_Available SHALL persistir a alteração na chave `GM4med.agenda.agendamentos.v2` do `localStorage`, atualizar o Resumo_Operacional e exibir Toast de sucesso "Status atualizado com sucesso." em no máximo 300 ms após a confirmação da persistência.
 6. IF a persistência no `localStorage` falhar, THEN THE Painel_Available SHALL reverter o status exibido para o valor anterior, exibir Toast de erro "Não foi possível salvar a alteração." e manter o estado anterior do Resumo_Operacional.
-7. IF a chave `g4med.agenda.agendamentos.v2` não existir no `localStorage` ou não contiver registros com `data` igual à data atual, THEN THE Painel_Available SHALL exibir Estado_Vazio "Nenhum agendamento para hoje." dentro da seção.
+7. IF a chave `GM4med.agenda.agendamentos.v2` não existir no `localStorage` ou não contiver registros com `data` igual à data atual, THEN THE Painel_Available SHALL exibir Estado_Vazio "Nenhum agendamento para hoje." dentro da seção.
 8. WHEN a leitura dos dados da seção de Agendamentos se inicia, THE Painel_Available SHALL exibir Estado_Carregando com spinner acessível (`aria-busy="true"`) até que a leitura seja concluída ou resulte em falha.
-9. IF a leitura da chave `g4med.agenda.agendamentos.v2` do `localStorage` lançar uma exceção, THEN THE Painel_Available SHALL exibir Estado_Erro "Não foi possível carregar os agendamentos." com botão "Tentar novamente" que reexecuta a leitura.
+9. IF a leitura da chave `GM4med.agenda.agendamentos.v2` do `localStorage` lançar uma exceção, THEN THE Painel_Available SHALL exibir Estado_Erro "Não foi possível carregar os agendamentos." com botão "Tentar novamente" que reexecuta a leitura.
 10. WHERE o usuário for do perfil Medico, THE Painel_Available SHALL exibir a lista de agendamentos em modo somente leitura, sem o seletor de status ativo.
 11. THE Painel_Available SHALL fornecer um campo de busca textual com limite de 100 caracteres que filtra os agendamentos em tempo real pelo nome do paciente ou nome do médico, sem recarregar a seção.
 12. WHEN o campo de busca recebe entrada e o resultado do filtro retornar zero registros, THE Painel_Available SHALL exibir Estado_Vazio "Nenhum agendamento encontrado para o termo pesquisado." dentro da seção.
@@ -119,20 +119,20 @@ O módulo é implementado como página independente (`Painel-available/painel-av
 
 #### Critérios de Aceitação
 
-1. THE Painel_Available SHALL exibir uma seção "Status dos Médicos" contendo um Cartao_Medico para cada médico cadastrado na chave `g4med.medicos` do `localStorage` com status ativo.
+1. THE Painel_Available SHALL exibir uma seção "Status dos Médicos" contendo um Cartao_Medico para cada médico cadastrado na chave `GM4med.medicos` do `localStorage` com status ativo.
 2. THE Painel_Available SHALL exibir em cada Cartao_Medico: o nome completo do médico, a especialidade principal, o Status_Medico atual com badge colorido, e o nome e horário do próximo paciente agendado.
 3. THE Painel_Available SHALL adotar o seguinte esquema de cores para o badge de Status_Medico: `Disponível` (variável `--success`), `Em Consulta` (variável `--primary`), `Em Pausa` (variável `--warning`), `Ausente` (variável `--danger`).
 4. WHEN a recepcionista ou o gestor aciona o seletor de status em um Cartao_Medico, THE Painel_Available SHALL exibir as opções `Disponível`, `Em Consulta`, `Em Pausa` e `Ausente`.
-5. WHEN um novo Status_Medico é selecionado, THE Painel_Available SHALL persistir a alteração na chave `g4med.status.medicos` do `localStorage` e atualizar o badge e o Cartao_Medico em no máximo 300 ms após a seleção.
-6. IF a escrita na chave `g4med.status.medicos` do `localStorage` falhar ao persistir a alteração de Status_Medico, THEN THE Painel_Available SHALL manter o status anterior no Cartao_Medico e exibir mensagem de erro indicando falha ao salvar o status.
+5. WHEN um novo Status_Medico é selecionado, THE Painel_Available SHALL persistir a alteração na chave `GM4med.status.medicos` do `localStorage` e atualizar o badge e o Cartao_Medico em no máximo 300 ms após a seleção.
+6. IF a escrita na chave `GM4med.status.medicos` do `localStorage` falhar ao persistir a alteração de Status_Medico, THEN THE Painel_Available SHALL manter o status anterior no Cartao_Medico e exibir mensagem de erro indicando falha ao salvar o status.
 7. WHEN o status de um agendamento é alterado para `Em Atendimento`, THE Painel_Available SHALL atualizar automaticamente o Status_Medico do médico vinculado para `Em Consulta` caso o médico esteja com status `Disponível`, em no máximo 300 ms após a alteração do agendamento.
 8. WHEN o status de um agendamento é alterado para `Concluído`, THE Painel_Available SHALL atualizar automaticamente o Status_Medico do médico vinculado para `Disponível` caso não haja outro agendamento `Em Atendimento` vinculado ao mesmo médico, em no máximo 300 ms após a alteração do agendamento.
 9. THE Painel_Available SHALL calcular e exibir no Cartao_Medico o "próximo paciente" como o agendamento de menor horário com status `Agendado` ou `Confirmado` para o dia atual vinculado àquele médico, considerando apenas agendamentos com horário posterior ao momento atual.
 10. IF não houver próximo paciente para um médico, THE Painel_Available SHALL exibir no campo correspondente do Cartao_Medico o texto "Sem próximos agendamentos hoje.".
 11. WHERE o usuário for do perfil Medico, THE Painel_Available SHALL exibir apenas o Cartao_Medico correspondente ao médico logado, sem o seletor de status, em modo somente leitura.
-12. IF os dados de médicos não puderem ser lidos do `localStorage`, THEN THE Painel_Available SHALL exibir Estado_Erro com mensagem indicando falha ao carregar os dados dos médicos e botão "Tentar novamente" que reexecuta a leitura da chave `g4med.medicos`.
+12. IF os dados de médicos não puderem ser lidos do `localStorage`, THEN THE Painel_Available SHALL exibir Estado_Erro com mensagem indicando falha ao carregar os dados dos médicos e botão "Tentar novamente" que reexecuta a leitura da chave `GM4med.medicos`.
 13. THE Painel_Available SHALL exibir Estado_Vazio "Nenhum médico ativo cadastrado." caso não existam registros médicos ativos.
-14. WHEN a recepcionista aciona o botão "Tentar novamente" no Estado_Erro, THE Painel_Available SHALL reexecutar a leitura da chave `g4med.medicos` do `localStorage` e, se bem-sucedida, substituir o Estado_Erro pela seção "Status dos Médicos" em no máximo 300 ms.
+14. WHEN a recepcionista aciona o botão "Tentar novamente" no Estado_Erro, THE Painel_Available SHALL reexecutar a leitura da chave `GM4med.medicos` do `localStorage` e, se bem-sucedida, substituir o Estado_Erro pela seção "Status dos Médicos" em no máximo 300 ms.
 
 ---
 
@@ -142,13 +142,13 @@ O módulo é implementado como página independente (`Painel-available/painel-av
 
 #### Critérios de Aceitação
 
-1. THE Painel_Available SHALL ler os agendamentos do dia exclusivamente da chave `g4med.agenda.agendamentos.v2` do `localStorage`, que é a mesma chave utilizada pelo módulo `Agenda-medica/agenda-geral.js`, garantindo consistência de dados.
+1. THE Painel_Available SHALL ler os agendamentos do dia exclusivamente da chave `GM4med.agenda.agendamentos.v2` do `localStorage`, que é a mesma chave utilizada pelo módulo `Agenda-medica/agenda-geral.js`, garantindo consistência de dados.
 2. WHEN o usuário aciona "Ver na Agenda" em um agendamento do Painel_Available, THE Painel_Available SHALL redirecionar para `Agenda-medica/agenda-geral.html?data=YYYY-MM-DD` com a data do agendamento no parâmetro `data`.
 3. WHEN o usuário aciona "Ver ficha" em um Cartao_Paciente_Fila, THE Painel_Available SHALL redirecionar para `Atendimento-do-paciente-na-recepcao/atendimento-recepcao.html?pacienteId={id}` com o identificador do paciente.
 4. WHEN o usuário aciona "Ver cadastro" em um Cartao_Paciente_Fila, THE Painel_Available SHALL redirecionar para `Cadastro-paciente/cadastro-paciente.html?pacienteId={id}` com o identificador do paciente.
-5. THE Painel_Available SHALL ler os dados de médicos ativos da chave `g4med.cadastros.medicos.v1` do `localStorage`, que é a mesma chave utilizada pelo módulo `Cadastros-medicos`.
+5. THE Painel_Available SHALL ler os dados de médicos ativos da chave `GM4med.cadastros.medicos.v1` do `localStorage`, que é a mesma chave utilizada pelo módulo `Cadastros-medicos`.
 6. WHEN o evento `visibilitychange` é disparado e `document.visibilityState` é `"visible"`, THE Painel_Available SHALL recarregar os dados de todas as seções do `localStorage` para refletir alterações feitas em outros módulos durante a ausência.
-7. WHEN um Status_Agendamento ou Status_Medico é alterado, THE Painel_Available SHALL emitir o evento customizado `g4med:painel-status-changed` no `window` com payload contendo: `entityType` (valor: `"agendamento"` ou `"medico"`), `entityId` (identificador do registro alterado) e `newStatus` (novo valor de status).
+7. WHEN um Status_Agendamento ou Status_Medico é alterado, THE Painel_Available SHALL emitir o evento customizado `GM4med:painel-status-changed` no `window` com payload contendo: `entityType` (valor: `"agendamento"` ou `"medico"`), `entityId` (identificador do registro alterado) e `newStatus` (novo valor de status).
 
 ---
 
@@ -165,7 +165,7 @@ O módulo é implementado como página independente (`Painel-available/painel-av
 5. THE Painel_Available SHALL implementar o padrão de trap de foco em qualquer modal ou painel de ação que se abra sobre o conteúdo principal, de modo que a tecla Tab cicle apenas entre os elementos focáveis do modal e a tecla Escape feche o modal e retorne o foco ao elemento que o abriu.
 6. THE Painel_Available SHALL manter razão de contraste mínima de 4,5:1 entre texto e fundo em todos os estados visuais (normal, hover, focus, disabled), em conformidade com WCAG 2.1 AA, exceto para texto com tamanho igual ou superior a 18 pt (ou 14 pt negrito), para o qual a razão mínima aceitável é 3:1.
 7. THE Painel_Available SHALL suportar o atalho de teclado `Alt + R` para mover o foco ao campo de busca de agendamentos a partir de qualquer posição de foco no painel, sem recarregar a página ou redefinir filtros ativos.
-8. THE Painel_Available SHALL incluir a classe `.sr-only` para rótulos e instruções visíveis apenas a tecnologias assistivas, seguindo o padrão já adotado nos módulos existentes do G4Med.
+8. THE Painel_Available SHALL incluir a classe `.sr-only` para rótulos e instruções visíveis apenas a tecnologias assistivas, seguindo o padrão já adotado nos módulos existentes do GM4med.
 9. WHEN uma ação de atualização de status é concluída com sucesso, THE Painel_Available SHALL mover o foco de volta ao controle que desencadeou a ação, mantendo o controle visível na área de rolagem e preservando o estado de navegação da lista ou grade em que o controle se encontra.
 10. IF uma ação de atualização de status falhar, THEN THE Painel_Available SHALL mover o foco ao controle que desencadeou a ação e expor uma mensagem de erro acessível via `aria-describedby` ou `role="alert"` associada àquele controle, sem alterar a posição de rolagem da página.
 

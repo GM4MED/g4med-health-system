@@ -1,6 +1,6 @@
 /**
  * ===========================================================================
- * MÓDULO FINANCEIRO - G4med
+ * MÓDULO FINANCEIRO - GM4med
  * Autor: Front-End Sênior Specialist
  * Versão: 2.0
  * Descrição: Gestão completa da aba Financeiro com detecção de bandeiras,
@@ -9,7 +9,7 @@
  */
 
 (() => {
-    const G4medFinanceiro = {
+    const GM4medFinanceiro = {
         els: {},
         state: {
             valorBase: 0,
@@ -27,7 +27,7 @@
             this.toggleCreditoPanel(this.getPaymentMethod() === 'credito');
             this.applyInitialValues();
             this.resetBrands();
-            console.log('[G4med] Módulo Financeiro inicializado com sucesso.');
+            console.log('[GM4med] Módulo Financeiro inicializado com sucesso.');
         },
 
         // ==================== CACHE DE ELEMENTOS ====================
@@ -45,12 +45,12 @@
             this.els.cartaoDocumento = document.getElementById('cartaoDocumento');
             this.els.cartaoValidade = document.getElementById('cartaoValidade');
             this.els.cartaoCvv = document.getElementById('cartaoCvv');
-            this.els.cardBrandsContainer = document.querySelector('.g4med-card-brands');
-            this.els.brandIcons = document.querySelectorAll('.g4med-brand-icon');
+            this.els.cardBrandsContainer = document.querySelector('.GM4med-card-brands');
+            this.els.brandIcons = document.querySelectorAll('.GM4med-brand-icon');
             this.els.brandStatus = document.getElementById('brandStatus');
             this.els.limpar = document.getElementById('limparFinanceiro');
             this.els.paymentMethods = [...document.querySelectorAll('input[name="financeiro[metodo_pagamento]"]')];
-            this.els.errors = [...document.querySelectorAll('.g4med-field__error')];
+            this.els.errors = [...document.querySelectorAll('.GM4med-field__error')];
         },
 
         // ==================== BIND DE EVENTOS ====================
@@ -110,7 +110,7 @@
                 }
 
                 this.clearPanelErrors();
-                console.log('✅ Payload Financeiro G4med:', JSON.stringify(payload, null, 2));
+                console.log('✅ Payload Financeiro GM4med:', JSON.stringify(payload, null, 2));
                 alert('Dados financeiros salvos com sucesso!');
             });
 
@@ -243,10 +243,10 @@
                 type === 'error' ? 'fa-solid fa-circle-exclamation' :
                     'fa-solid fa-circle-info';
 
-            statusEl.className = `g4med-brand-status is-${type}`;
+            statusEl.className = `GM4med-brand-status is-${type}`;
             statusEl.innerHTML = `
         <i class="${iconClass}"></i>
-        <span class="g4med-brand-status__text">${message}</span>
+        <span class="GM4med-brand-status__text">${message}</span>
       `;
         },
 
@@ -388,13 +388,13 @@
             this.updateBrandDetection('');
             this.updateInstallments();
             this.clearPanelErrors();
-            console.log('[G4med] Formulário financeiro resetado.');
+            console.log('[GM4med] Formulário financeiro resetado.');
         }
     };
 
     // Inicialização automática
-    document.addEventListener('DOMContentLoaded', () => G4medFinanceiro.init());
+    document.addEventListener('DOMContentLoaded', () => GM4medFinanceiro.init());
 
     // Exporta para uso global
-    window.G4medFinanceiro = G4medFinanceiro;
+    window.GM4medFinanceiro = GM4medFinanceiro;
 })();

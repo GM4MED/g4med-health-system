@@ -5,7 +5,7 @@
 (() => {
     'use strict';
 
-    const STORAGE_KEY = 'g4med.siglas.v1';
+    const STORAGE_KEY = 'GM4med.siglas.v1';
 
     const state = {
         data: [],

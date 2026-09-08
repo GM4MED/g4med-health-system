@@ -2,7 +2,7 @@
 
 ## Introduction
 
-O G4Med é um sistema de gestão médica composto por mais de 20 módulos independentes, cada um com seus próprios arquivos HTML, CSS e JavaScript. Atualmente, vários módulos impõem restrições de largura máxima nos seus contêineres principais (por exemplo, `max-width: 1800px`, `max-width: 1560px`, `max-width: 1640px`, etc.), o que gera margens laterais excessivas e desperdiça espaço útil em monitores de alta resolução (Full HD, 4K, ultrawide).
+O GM4med é um sistema de gestão médica composto por mais de 20 módulos independentes, cada um com seus próprios arquivos HTML, CSS e JavaScript. Atualmente, vários módulos impõem restrições de largura máxima nos seus contêineres principais (por exemplo, `max-width: 1800px`, `max-width: 1560px`, `max-width: 1640px`, etc.), o que gera margens laterais excessivas e desperdiça espaço útil em monitores de alta resolução (Full HD, 4K, ultrawide).
 
 Esta feature transforma o layout do sistema para **fluido e full-width (100%)**: eliminando as restrições de largura estática em todos os contêineres de estrutura de página, preservando o deslocamento da sidebar de 290px, mantendo espaçamento lateral responsivo para garantir usabilidade, e assegurando que nenhuma funcionalidade existente (JavaScript, IDs, eventos, modais, formulários, tabelas) seja quebrada.
 
@@ -12,7 +12,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ## Glossary
 
-- **Sistema**: O sistema G4Med como um todo, incluindo todos os módulos.
+- **Sistema**: O sistema GM4med como um todo, incluindo todos os módulos.
 - **Sidebar**: Barra de navegação lateral fixa de 290px de largura (`--sidebar-width: 290px`), definida em `Menu-Principal.html` e `Menu-Principal.css`.
 - **Conteúdo_Principal**: Elemento `<main class="main-content">` ou `#mainContent` que ocupa o restante da largura da viewport após o deslocamento da sidebar.
 - **Contêiner_Estrutural**: Elemento HTML de nível de página (`.app-container`, `.app`, `.page`, `.container`, `.container-full`, `.page-full`, `.content`, `#mainContent`) responsável pelo layout geral de um módulo.
@@ -37,7 +37,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 1: Remoção de Restrições de Largura Máxima nos CSS Globais e de Módulos
 
-**User Story:** Como desenvolvedor do G4Med, quero remover todas as restrições de `max-width` estático dos contêineres estruturais de cada módulo, para que o layout ocupe 100% da largura disponível da viewport em qualquer resolução.
+**User Story:** Como desenvolvedor do GM4med, quero remover todas as restrições de `max-width` estático dos contêineres estruturais de cada módulo, para que o layout ocupe 100% da largura disponível da viewport em qualquer resolução.
 
 #### Critérios de Aceitação
 
@@ -65,7 +65,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 2: Preservação do Deslocamento da Sidebar no Conteúdo Principal
 
-**User Story:** Como usuário do G4Med, quero que a sidebar de navegação continue ocupando exatamente 290px à esquerda em todos os módulos, sem sobreposição sobre o conteúdo principal.
+**User Story:** Como usuário do GM4med, quero que a sidebar de navegação continue ocupando exatamente 290px à esquerda em todos os módulos, sem sobreposição sobre o conteúdo principal.
 
 #### Critérios de Aceitação
 
@@ -85,7 +85,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 3: Aplicação de Espaçamento Lateral Responsivo
 
-**User Story:** Como usuário do G4Med, quero que o conteúdo não cole nas bordas da tela, mesmo em layouts full-width, para que a leitura e interação permaneçam confortáveis em qualquer resolução.
+**User Story:** Como usuário do GM4med, quero que o conteúdo não cole nas bordas da tela, mesmo em layouts full-width, para que a leitura e interação permaneçam confortáveis em qualquer resolução.
 
 #### Critérios de Aceitação
 
@@ -105,7 +105,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 4: Atualização do Menu-Principal (Raiz)
 
-**User Story:** Como usuário do G4Med, quero que a página inicial (home) do sistema use a largura total da tela, eliminando as margens laterais brancas que aparecem em monitores ultrawide.
+**User Story:** Como usuário do GM4med, quero que a página inicial (home) do sistema use a largura total da tela, eliminando as margens laterais brancas que aparecem em monitores ultrawide.
 
 #### Critérios de Aceitação
 
@@ -123,7 +123,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 5: Atualização dos Módulos com Restrições de Largura Identificadas
 
-**User Story:** Como desenvolvedor do G4Med, quero que cada módulo com Restrição_de_Largura estática seja individualmente atualizado para remover essa restrição, garantindo consistência visual em todo o sistema.
+**User Story:** Como desenvolvedor do GM4med, quero que cada módulo com Restrição_de_Largura estática seja individualmente atualizado para remover essa restrição, garantindo consistência visual em todo o sistema.
 
 #### Critérios de Aceitação
 
@@ -147,7 +147,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 6: Preservação da Integridade do JavaScript e do DOM
 
-**User Story:** Como desenvolvedor do G4Med, quero garantir que nenhuma alteração de CSS ou HTML quebre o JavaScript existente, incluindo seletores de ID, event listeners e manipulação do DOM.
+**User Story:** Como desenvolvedor do GM4med, quero garantir que nenhuma alteração de CSS ou HTML quebre o JavaScript existente, incluindo seletores de ID, event listeners e manipulação do DOM.
 
 #### Critérios de Aceitação
 
@@ -169,7 +169,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 7: Comportamento Responsivo em Múltiplas Resoluções
 
-**User Story:** Como usuário do G4Med, quero que o layout full-width seja usável em qualquer dispositivo ou monitor, desde smartphones (320px) até monitores ultrawide (2560px+), sem quebras visuais ou funcionais.
+**User Story:** Como usuário do GM4med, quero que o layout full-width seja usável em qualquer dispositivo ou monitor, desde smartphones (320px) até monitores ultrawide (2560px+), sem quebras visuais ou funcionais.
 
 #### Critérios de Aceitação
 
@@ -191,7 +191,7 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 ### Requisito 8: Integridade Visual de Componentes Internos
 
-**User Story:** Como usuário do G4Med, quero que tabelas, formulários, cartões, modais, toasts, estados vazios e rodapés continuem funcionando visualmente após a expansão para full-width, sem distorções ou quebras de layout.
+**User Story:** Como usuário do GM4med, quero que tabelas, formulários, cartões, modais, toasts, estados vazios e rodapés continuem funcionando visualmente após a expansão para full-width, sem distorções ou quebras de layout.
 
 #### Critérios de Aceitação
 
@@ -211,13 +211,13 @@ O escopo abrange: `Menu-Principal` (raiz), e todos os módulos ativos — `Agend
 
 8. WHILE a Viewport tiver largura igual ou inferior a 1024px, THE rodapé com `position: fixed` SHALL ter `left` computado igual a 0px e `width` computado igual a 100% da largura da Viewport.
 
-9. THE Sistema SHALL garantir que o módulo `financeiro`, que possui layout próprio com grid interno controlado por variável CSS própria, não seja afetado pelas alterações de full-width aplicadas à sidebar global do G4Med.
+9. THE Sistema SHALL garantir que o módulo `financeiro`, que possui layout próprio com grid interno controlado por variável CSS própria, não seja afetado pelas alterações de full-width aplicadas à sidebar global do GM4med.
 
 ---
 
 ### Requisito 9: Verificação e Critérios de Conclusão por Módulo
 
-**User Story:** Como desenvolvedor do G4Med, quero critérios objetivos de verificação para cada módulo afetado, para que eu possa confirmar que o layout full-width foi aplicado corretamente sem regressões.
+**User Story:** Como desenvolvedor do GM4med, quero critérios objetivos de verificação para cada módulo afetado, para que eu possa confirmar que o layout full-width foi aplicado corretamente sem regressões.
 
 #### Critérios de Aceitação
 

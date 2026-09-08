@@ -1,21 +1,21 @@
 /* ==================== VARIÁVEIS GLOBAIS ==================== */
 :root {
-    --g4med-bg: #f6f8fb;
-    --g4med-surface: #ffffff;
-    --g4med-border: #dce4ee;
-    --g4med-text: #17324d;
-    --g4med-muted: #6f849c;
-    --g4med-primary: #2563eb;
-    --g4med-primary-700: #1d4ed8;
-    --g4med-success: #0f9d58;
-    --g4med-danger: #dc2626;
-    --g4med-warning: #f59e0b;
-    --g4med-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-    --g4med-radius: 16px;
-    --g4med-radius-sm: 12px;
-    --g4med-radius-xs: 8px;
-    --g4med-transition: 180ms ease;
-    --g4med-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --GM4med-bg: #f6f8fb;
+    --GM4med-surface: #ffffff;
+    --GM4med-border: #dce4ee;
+    --GM4med-text: #17324d;
+    --GM4med-muted: #6f849c;
+    --GM4med-primary: #2563eb;
+    --GM4med-primary-700: #1d4ed8;
+    --GM4med-success: #0f9d58;
+    --GM4med-danger: #dc2626;
+    --GM4med-warning: #f59e0b;
+    --GM4med-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    --GM4med-radius: 16px;
+    --GM4med-radius-sm: 12px;
+    --GM4med-radius-xs: 8px;
+    --GM4med-transition: 180ms ease;
+    --GM4med-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==================== RESET COMPLETO ==================== */
@@ -40,8 +40,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--g4med-bg);
-    color: var(--g4med-text);
+    background: var(--GM4med-bg);
+    color: var(--GM4med-text);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -55,7 +55,7 @@ body {
     padding: 0;
 }
 
-.g4med-financeiro {
+.GM4med-financeiro {
     width: 100%;
     min-height: 100vh;
     padding: 40px 20px;
@@ -65,7 +65,7 @@ body {
 }
 
 /* ==================== HEADER ==================== */
-.g4med-financeiro__header {
+.GM4med-financeiro__header {
     display: flex;
     justify-content: space-between;
     gap: 16px;
@@ -78,48 +78,48 @@ body {
     margin-right: 0;
 }
 
-.g4med-financeiro__title {
+.GM4med-financeiro__title {
     margin: 0 0 6px;
     font-size: 1.35rem;
     line-height: 1.2;
     font-weight: 700;
-    color: var(--g4med-text);
+    color: var(--GM4med-text);
 }
 
-.g4med-financeiro__subtitle {
+.GM4med-financeiro__subtitle {
     margin: 0;
-    color: var(--g4med-muted);
+    color: var(--GM4med-muted);
     max-width: 64ch;
     font-size: 0.92rem;
     line-height: 1.5;
 }
 
-.g4med-financeiro__total {
+.GM4med-financeiro__total {
     min-width: 180px;
     padding: 14px 16px;
-    background: var(--g4med-surface);
-    border: 1px solid var(--g4med-border);
-    border-radius: var(--g4med-radius-sm);
-    box-shadow: var(--g4med-shadow);
+    background: var(--GM4med-surface);
+    border: 1px solid var(--GM4med-border);
+    border-radius: var(--GM4med-radius-sm);
+    box-shadow: var(--GM4med-shadow);
     text-align: right;
 }
 
-.g4med-financeiro__total-label {
+.GM4med-financeiro__total-label {
     display: block;
     font-size: 0.85rem;
-    color: var(--g4med-muted);
+    color: var(--GM4med-muted);
     margin-bottom: 4px;
     font-weight: 500;
 }
 
-.g4med-financeiro__total-value {
+.GM4med-financeiro__total-value {
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--g4med-primary);
+    color: var(--GM4med-primary);
 }
 
 /* ==================== FORMULÁRIO ==================== */
-.g4med-financeiro__form {
+.GM4med-financeiro__form {
     display: grid;
     gap: 24px;
     flex: 1;
@@ -129,86 +129,86 @@ body {
 }
 
 /* ==================== CARDS ==================== */
-.g4med-financeiro__card {
-    background: var(--g4med-surface);
-    border: 1px solid var(--g4med-border);
-    border-radius: var(--g4med-radius);
-    box-shadow: var(--g4med-shadow);
+.GM4med-financeiro__card {
+    background: var(--GM4med-surface);
+    border: 1px solid var(--GM4med-border);
+    border-radius: var(--GM4med-radius);
+    box-shadow: var(--GM4med-shadow);
     padding: 20px;
     width: 100%;
 }
 
-.g4med-financeiro__section-head {
+.GM4med-financeiro__section-head {
     margin-bottom: 16px;
 }
 
-.g4med-financeiro__section-title {
+.GM4med-financeiro__section-title {
     margin: 0 0 4px;
     font-size: 1rem;
     font-weight: 700;
-    color: var(--g4med-text);
+    color: var(--GM4med-text);
 }
 
-.g4med-financeiro__section-help {
+.GM4med-financeiro__section-help {
     margin: 0;
-    color: var(--g4med-muted);
+    color: var(--GM4med-muted);
     font-size: 0.92rem;
     line-height: 1.5;
 }
 
 /* ==================== MÉTODOS DE PAGAMENTO ==================== */
-.g4med-payment-methods {
+.GM4med-payment-methods {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
     width: 100%;
 }
 
-.g4med-payment-method {
+.GM4med-payment-method {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 48px;
-    border: 1px solid var(--g4med-border);
+    border: 1px solid var(--GM4med-border);
     border-radius: 14px;
     background: #fbfcfe;
     cursor: pointer;
-    transition: transform var(--g4med-transition), border-color var(--g4med-transition), box-shadow var(--g4med-transition), background var(--g4med-transition);
+    transition: transform var(--GM4med-transition), border-color var(--GM4med-transition), box-shadow var(--GM4med-transition), background var(--GM4med-transition);
     user-select: none;
     padding: 0 14px;
     text-align: center;
 }
 
-.g4med-payment-method input {
+.GM4med-payment-method input {
     position: absolute;
     opacity: 0;
     pointer-events: none;
 }
 
-.g4med-payment-method span {
+.GM4med-payment-method span {
     font-weight: 600;
-    color: var(--g4med-text);
+    color: var(--GM4med-text);
     font-size: 0.95rem;
 }
 
-.g4med-payment-method:hover {
+.GM4med-payment-method:hover {
     transform: translateY(-1px);
     box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
 }
 
-.g4med-payment-method:has(input:checked) {
+.GM4med-payment-method:has(input:checked) {
     border-color: rgba(37, 99, 235, 0.5);
     background: rgba(37, 99, 235, 0.06);
 }
 
-.g4med-payment-method:focus-within {
+.GM4med-payment-method:focus-within {
     outline: 2px solid rgba(37, 99, 235, 0.18);
     outline-offset: 2px;
 }
 
 /* ==================== PANEL COLLAPSIBLE ==================== */
-.g4med-financeiro__panel {
+.GM4med-financeiro__panel {
     overflow: hidden;
     transition: max-height 260ms ease, opacity 220ms ease, transform 220ms ease, margin 220ms ease, padding 220ms ease;
     max-height: 900px;
@@ -216,7 +216,7 @@ body {
     transform: translateY(0);
 }
 
-.g4med-financeiro__panel.is-collapsed {
+.GM4med-financeiro__panel.is-collapsed {
     max-height: 0;
     opacity: 0;
     transform: translateY(-6px);
@@ -227,37 +227,37 @@ body {
 }
 
 /* ==================== GRID DE CAMPOS ==================== */
-.g4med-credit-grid {
+.GM4med-credit-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
     width: 100%;
 }
 
-.g4med-installments {
+.GM4med-installments {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
     width: 100%;
 }
 
-.g4med-field {
+.GM4med-field {
     display: grid;
     gap: 8px;
 }
 
-.g4med-field--full {
+.GM4med-field--full {
     grid-column: 1 / -1;
 }
 
-.g4med-field label,
-.g4med-field__label-row {
+.GM4med-field label,
+.GM4med-field__label-row {
     font-weight: 600;
     font-size: 0.92rem;
-    color: var(--g4med-text);
+    color: var(--GM4med-text);
 }
 
-.g4med-field__label-row {
+.GM4med-field__label-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -265,70 +265,70 @@ body {
 }
 
 /* ==================== INPUTS ==================== */
-.g4med-input {
+.GM4med-input {
     width: 100%;
     min-height: 46px;
-    border: 1px solid var(--g4med-border);
+    border: 1px solid var(--GM4med-border);
     border-radius: 12px;
     background: #fff;
-    color: var(--g4med-text);
+    color: var(--GM4med-text);
     padding: 0 14px;
     font: inherit;
     font-size: 0.95rem;
-    transition: border-color var(--g4med-transition), box-shadow var(--g4med-transition), background var(--g4med-transition);
+    transition: border-color var(--GM4med-transition), box-shadow var(--GM4med-transition), background var(--GM4med-transition);
 }
 
-.g4med-input::placeholder {
+.GM4med-input::placeholder {
     color: #9aa9b8;
 }
 
-.g4med-input:focus {
+.GM4med-input:focus {
     outline: none;
     border-color: rgba(37, 99, 235, 0.55);
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
-.g4med-input:disabled {
+.GM4med-input:disabled {
     background: #f8fafc;
     color: #94a3b8;
     cursor: not-allowed;
 }
 
-.g4med-field__hint {
-    color: var(--g4med-muted);
+.GM4med-field__hint {
+    color: var(--GM4med-muted);
     font-size: 0.82rem;
     line-height: 1.4;
 }
 
-.g4med-field__error {
+.GM4med-field__error {
     min-height: 18px;
-    color: var(--g4med-danger);
+    color: var(--GM4med-danger);
     font-size: 0.82rem;
     margin: 0;
     font-weight: 500;
 }
 
 /* ==================== COMPONENTE DE BANDEIRAS ==================== */
-.g4med-input-wrapper {
+.GM4med-input-wrapper {
     position: relative;
     display: grid;
     gap: 10px;
 }
 
-.g4med-card-brands {
+.GM4med-card-brands {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
     padding: 10px 14px;
     background: #f8fafc;
-    border: 1px solid var(--g4med-border);
+    border: 1px solid var(--GM4med-border);
     border-radius: 12px;
     min-height: 56px;
-    transition: border-color var(--g4med-transition), box-shadow var(--g4med-transition), background var(--g4med-transition);
+    transition: border-color var(--GM4med-transition), box-shadow var(--GM4med-transition), background var(--GM4med-transition);
 }
 
-.g4med-brand-icon {
+.GM4med-brand-icon {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -339,52 +339,52 @@ body {
     background: #fff;
     border: 2px solid #e2e8f0;
     cursor: default;
-    transition: all var(--g4med-transition-slow);
+    transition: all var(--GM4med-transition-slow);
     opacity: 0.35;
     transform: scale(0.92);
     box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
 }
 
-.g4med-brand-icon i {
+.GM4med-brand-icon i {
     font-size: 1.45rem;
-    transition: transform var(--g4med-transition), color var(--g4med-transition);
+    transition: transform var(--GM4med-transition), color var(--GM4med-transition);
 }
 
 /* Cores oficiais das bandeiras */
-.g4med-brand-icon[data-brand="visa"] i {
+.GM4med-brand-icon[data-brand="visa"] i {
     color: #1a1f71;
 }
 
-.g4med-brand-icon[data-brand="mastercard"] i {
+.GM4med-brand-icon[data-brand="mastercard"] i {
     color: #eb001b;
 }
 
-.g4med-brand-icon[data-brand="amex"] i {
+.GM4med-brand-icon[data-brand="amex"] i {
     color: #006fcf;
 }
 
-.g4med-brand-icon[data-brand="elo"] i {
+.GM4med-brand-icon[data-brand="elo"] i {
     color: #000;
 }
 
-.g4med-brand-icon[data-brand="hipercard"] i {
+.GM4med-brand-icon[data-brand="hipercard"] i {
     color: #000;
 }
 
-.g4med-brand-icon[data-brand="discover"] i {
+.GM4med-brand-icon[data-brand="discover"] i {
     color: #ff6000;
 }
 
-.g4med-brand-icon[data-brand="diners"] i {
+.GM4med-brand-icon[data-brand="diners"] i {
     color: #004c91;
 }
 
-.g4med-brand-icon[data-brand="unknown"] i {
+.GM4med-brand-icon[data-brand="unknown"] i {
     color: #94a3b8;
 }
 
 /* Estado ATIVO (bandeira detectada) */
-.g4med-brand-icon.is-active {
+.GM4med-brand-icon.is-active {
     opacity: 1;
     transform: scale(1.12);
     border-color: rgba(37, 99, 235, 0.5);
@@ -392,17 +392,17 @@ body {
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18), 0 2px 8px rgba(37, 99, 235, 0.12);
 }
 
-.g4med-brand-icon.is-active i {
+.GM4med-brand-icon.is-active i {
     transform: scale(1.08);
 }
 
 /* Estado de ERRO (bandeira não reconhecida ou inválida) */
-.g4med-card-brands.is-error {
+.GM4med-card-brands.is-error {
     border-color: rgba(220, 38, 38, 0.5);
     background: linear-gradient(135deg, rgba(220, 38, 38, 0.06), rgba(220, 38, 38, 0.02));
 }
 
-.g4med-brand-icon.is-error {
+.GM4med-brand-icon.is-error {
     opacity: 0.5;
     border-color: rgba(220, 38, 38, 0.35);
     animation: shake 0.4s ease-in-out;
@@ -425,7 +425,7 @@ body {
 }
 
 /* Status text abaixo do input */
-.g4med-brand-status {
+.GM4med-brand-status {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -433,63 +433,63 @@ body {
     border-radius: 10px;
     background: #f1f5f9;
     font-size: 0.85rem;
-    color: var(--g4med-muted);
-    transition: all var(--g4med-transition);
+    color: var(--GM4med-muted);
+    transition: all var(--GM4med-transition);
     border: 1px solid transparent;
 }
 
-.g4med-brand-status.is-detected {
+.GM4med-brand-status.is-detected {
     background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.04));
-    color: var(--g4med-primary);
+    color: var(--GM4med-primary);
     border: 1px solid rgba(37, 99, 235, 0.15);
 }
 
-.g4med-brand-status.is-error {
+.GM4med-brand-status.is-error {
     background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(220, 38, 38, 0.04));
-    color: var(--g4med-danger);
+    color: var(--GM4med-danger);
     border: 1px solid rgba(220, 38, 38, 0.15);
 }
 
-.g4med-brand-status.is-neutral {
+.GM4med-brand-status.is-neutral {
     background: #f1f5f9;
-    color: var(--g4med-muted);
-    border: 1px solid var(--g4med-border);
+    color: var(--GM4med-muted);
+    border: 1px solid var(--GM4med-border);
 }
 
-.g4med-brand-status__text {
+.GM4med-brand-status__text {
     font-weight: 600;
     line-height: 1.4;
 }
 
-.g4med-brand-status i {
+.GM4med-brand-status i {
     font-size: 1rem;
     flex-shrink: 0;
 }
 
 /* ==================== TOOLTIP ==================== */
-.g4med-tooltip-trigger {
+.GM4med-tooltip-trigger {
     border: 0;
     background: transparent;
-    color: var(--g4med-muted);
+    color: var(--GM4med-muted);
     cursor: pointer;
     padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: color var(--g4med-transition);
+    transition: color var(--GM4med-transition);
 }
 
-.g4med-tooltip-trigger:hover {
-    color: var(--g4med-primary);
+.GM4med-tooltip-trigger:hover {
+    color: var(--GM4med-primary);
 }
 
-.g4med-tooltip-trigger[data-tooltip]:hover::after {
+.GM4med-tooltip-trigger[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--g4med-text);
+    background: var(--GM4med-text);
     color: #fff;
     padding: 6px 10px;
     border-radius: 8px;
@@ -501,7 +501,7 @@ body {
 }
 
 /* ==================== RESUMO DE PARCELAS ==================== */
-.g4med-installment-summary {
+.GM4med-installment-summary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 12px;
@@ -509,37 +509,37 @@ body {
     width: 100%;
 }
 
-.g4med-installment-summary__item {
+.GM4med-installment-summary__item {
     padding: 14px 16px;
     border-radius: 14px;
     background: #f8fbff;
-    border: 1px solid var(--g4med-border);
+    border: 1px solid var(--GM4med-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    transition: background var(--g4med-transition), border-color var(--g4med-transition);
+    transition: background var(--GM4med-transition), border-color var(--GM4med-transition);
 }
 
-.g4med-installment-summary__item:hover {
+.GM4med-installment-summary__item:hover {
     background: #f0f7ff;
     border-color: rgba(37, 99, 235, 0.2);
 }
 
-.g4med-installment-summary__item span {
-    color: var(--g4med-muted);
+.GM4med-installment-summary__item span {
+    color: var(--GM4med-muted);
     font-size: 0.9rem;
     font-weight: 500;
 }
 
-.g4med-installment-summary__item strong {
+.GM4med-installment-summary__item strong {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--g4med-text);
+    color: var(--GM4med-text);
 }
 
 /* ==================== BOTÕES ==================== */
-.g4med-financeiro__actions {
+.GM4med-financeiro__actions {
     display: flex;
     justify-content: center;
     gap: 12px;
@@ -548,7 +548,7 @@ body {
     width: 100%;
 }
 
-.g4med-btn {
+.GM4med-btn {
     min-height: 46px;
     border-radius: 12px;
     padding: 0 20px;
@@ -556,44 +556,44 @@ body {
     font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: transform var(--g4med-transition), box-shadow var(--g4med-transition), background var(--g4med-transition), border-color var(--g4med-transition);
+    transition: transform var(--GM4med-transition), box-shadow var(--GM4med-transition), background var(--GM4med-transition), border-color var(--GM4med-transition);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
 }
 
-.g4med-btn:hover {
+.GM4med-btn:hover {
     transform: translateY(-1px);
 }
 
-.g4med-btn:active {
+.GM4med-btn:active {
     transform: translateY(0);
 }
 
-.g4med-btn--secondary {
+.GM4med-btn--secondary {
     background: #fff;
-    border-color: var(--g4med-border);
-    color: var(--g4med-text);
+    border-color: var(--GM4med-border);
+    color: var(--GM4med-text);
 }
 
-.g4med-btn--secondary:hover {
+.GM4med-btn--secondary:hover {
     border-color: rgba(37, 99, 235, 0.3);
     background: #f8fafc;
 }
 
-.g4med-btn--primary {
-    background: var(--g4med-primary);
+.GM4med-btn--primary {
+    background: var(--GM4med-primary);
     color: #fff;
     box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
 }
 
-.g4med-btn--primary:hover {
-    background: var(--g4med-primary-700);
+.GM4med-btn--primary:hover {
+    background: var(--GM4med-primary-700);
     box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
 }
 
-.g4med-btn:disabled {
+.GM4med-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
@@ -601,75 +601,75 @@ body {
 
 /* ==================== RESPONSIVIDADE ==================== */
 @media (max-width: 1024px) {
-    .g4med-financeiro {
+    .GM4med-financeiro {
         padding: 32px 16px;
     }
 
-    .g4med-payment-methods {
+    .GM4med-payment-methods {
         grid-template-columns: repeat(3, 1fr);
     }
 
-    .g4med-credit-grid,
-    .g4med-installments {
+    .GM4med-credit-grid,
+    .GM4med-installments {
         grid-template-columns: 1fr;
     }
 
-    .g4med-financeiro__header {
+    .GM4med-financeiro__header {
         flex-direction: column;
         gap: 12px;
     }
 
-    .g4med-financeiro__total {
+    .GM4med-financeiro__total {
         width: 100%;
         text-align: left;
     }
 }
 
 @media (max-width: 768px) {
-    .g4med-financeiro {
+    .GM4med-financeiro {
         padding: 24px 12px;
     }
 
-    .g4med-payment-methods {
+    .GM4med-payment-methods {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .g4med-financeiro__actions {
+    .GM4med-financeiro__actions {
         flex-direction: column-reverse;
     }
 
-    .g4med-btn {
+    .GM4med-btn {
         width: 100%;
     }
 
-    .g4med-card-brands {
+    .GM4med-card-brands {
         justify-content: center;
     }
 
-    .g4med-brand-icon {
+    .GM4med-brand-icon {
         width: 38px;
         height: 38px;
     }
 
-    .g4med-brand-icon i {
+    .GM4med-brand-icon i {
         font-size: 1.25rem;
     }
 }
 
 @media (max-width: 480px) {
-    .g4med-financeiro {
+    .GM4med-financeiro {
         padding: 16px 8px;
     }
 
-    .g4med-payment-methods {
+    .GM4med-payment-methods {
         grid-template-columns: 1fr;
     }
 
-    .g4med-financeiro__title {
+    .GM4med-financeiro__title {
         font-size: 1.25rem;
     }
 
-    .g4med-financeiro__subtitle {
+    .GM4med-financeiro__subtitle {
         font-size: 0.88rem;
     }
 }
@@ -687,20 +687,20 @@ body {
     }
 }
 
-.g4med-btn:focus-visible,
-.g4med-input:focus-visible,
-.g4med-payment-method:focus-visible {
-    outline: 2px solid var(--g4med-primary);
+.GM4med-btn:focus-visible,
+.GM4med-input:focus-visible,
+.GM4med-payment-method:focus-visible {
+    outline: 2px solid var(--GM4med-primary);
     outline-offset: 2px;
 }
 
 @media (prefers-contrast: high) {
-    .g4med-brand-icon {
+    .GM4med-brand-icon {
         border-width: 3px;
     }
 
-    .g4med-brand-icon.is-active {
-        border-color: var(--g4med-primary);
+    .GM4med-brand-icon.is-active {
+        border-color: var(--GM4med-primary);
     }
 }
 

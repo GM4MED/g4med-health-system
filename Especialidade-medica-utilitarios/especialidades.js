@@ -1,5 +1,5 @@
 /* =============================================
-   ESPECIALIDADES MÉDICAS - G4MED
+   ESPECIALIDADES MÉDICAS - GM4med
    JavaScript Funcional Completo
    Design System: Medical Enterprise + Clean UI
    Primary Color: teal-600 (#0D9488)

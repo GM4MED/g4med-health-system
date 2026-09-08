@@ -1,5 +1,5 @@
 /* =============================================
-   GERENCIAMENTO DE USUÁRIOS - G4MED
+   GERENCIAMENTO DE USUÁRIOS - GM4med
    JavaScript Funcional
    Design System: Shadcn/UI + teal-600
    ============================================= */
@@ -16,12 +16,12 @@ let currentTheme = 'light';
 
 // Dados simulados (em produção, viriam do backend)
 const mockUsuarios = [
-    { id: 'U-001', nome: 'Dr. Rodrigo Silva', login: 'dr.rodrigo', email: 'rodrigo@g4med.com', perfil: 'Administrador', status: 'Ativo', ultimoAcesso: '2026-08-18T10:30:00' },
-    { id: 'U-002', nome: 'Dra. Ana Costa', login: 'dra.ana', email: 'ana@g4med.com', perfil: 'Médico', status: 'Ativo', ultimoAcesso: '2026-08-18T09:15:00' },
-    { id: 'U-003', nome: 'Carlos Oliveira', login: 'carlos.recepcao', email: 'carlos@g4med.com', perfil: 'Recepção', status: 'Ativo', ultimoAcesso: '2026-08-18T08:45:00' },
-    { id: 'U-004', nome: 'Mariana Santos', login: 'mariana.financeiro', email: 'mariana@g4med.com', perfil: 'Financeiro', status: 'Ativo', ultimoAcesso: '2026-08-17T16:20:00' },
-    { id: 'U-005', nome: 'Dr. Pedro Almeida', login: 'dr.pedro', email: 'pedro@g4med.com', perfil: 'Médico', status: 'Bloqueado', ultimoAcesso: '2026-08-15T14:00:00' },
-    { id: 'U-006', nome: 'Juliana Ferreira', login: 'juliana.adm', email: 'juliana@g4med.com', perfil: 'Administrador', status: 'Ativo', ultimoAcesso: '2026-08-18T07:30:00' },
+    { id: 'U-001', nome: 'Dr. Rodrigo Silva', login: 'dr.rodrigo', email: 'rodrigo@GM4med.com', perfil: 'Administrador', status: 'Ativo', ultimoAcesso: '2026-08-18T10:30:00' },
+    { id: 'U-002', nome: 'Dra. Ana Costa', login: 'dra.ana', email: 'ana@GM4med.com', perfil: 'Médico', status: 'Ativo', ultimoAcesso: '2026-08-18T09:15:00' },
+    { id: 'U-003', nome: 'Carlos Oliveira', login: 'carlos.recepcao', email: 'carlos@GM4med.com', perfil: 'Recepção', status: 'Ativo', ultimoAcesso: '2026-08-18T08:45:00' },
+    { id: 'U-004', nome: 'Mariana Santos', login: 'mariana.financeiro', email: 'mariana@GM4med.com', perfil: 'Financeiro', status: 'Ativo', ultimoAcesso: '2026-08-17T16:20:00' },
+    { id: 'U-005', nome: 'Dr. Pedro Almeida', login: 'dr.pedro', email: 'pedro@GM4med.com', perfil: 'Médico', status: 'Bloqueado', ultimoAcesso: '2026-08-15T14:00:00' },
+    { id: 'U-006', nome: 'Juliana Ferreira', login: 'juliana.adm', email: 'juliana@GM4med.com', perfil: 'Administrador', status: 'Ativo', ultimoAcesso: '2026-08-18T07:30:00' },
 ];
 
 // =============================================

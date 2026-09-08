@@ -44,7 +44,7 @@
 
   const theme = $('html'),
     themeButton = $('#themeToggle');
-  const saved = localStorage.getItem('g4med-theme');
+  const saved = localStorage.getItem('GM4med-theme');
 
   if (saved) theme.dataset.theme = saved;
 
@@ -58,7 +58,7 @@
 
   themeButton?.addEventListener('click', () => {
     theme.dataset.theme = theme.dataset.theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('g4med-theme', theme.dataset.theme);
+    localStorage.setItem('GM4med-theme', theme.dataset.theme);
     syncTheme();
   });
 

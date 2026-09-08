@@ -2287,7 +2287,7 @@
 
   initialize();
 
-  window.G4MedGrupoAtendimento = {
+  window.GM4medGrupoAtendimento = {
     loadGroups,
     loadAttendanceTypes,
     loadProcedures,

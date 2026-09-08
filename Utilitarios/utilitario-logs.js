@@ -1,5 +1,5 @@
 /* =============================================
-   LOGS DE AUDITORIA - G4MED
+   LOGS DE AUDITORIA - GM4med
    JavaScript Funcional
    Design System: Shadcn/UI + teal-600
    ============================================= */

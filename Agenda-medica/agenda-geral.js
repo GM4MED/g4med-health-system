@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
      */
 
     const CONFIG = {
-        storageKey: 'g4med.agenda.agendamentos.v2',
-        chatStorageKey: 'g4med.chat.mensagens',
-        lembretesStorageKey: 'g4med.lembretes',
+        storageKey: 'GM4med.agenda.agendamentos.v2',
+        chatStorageKey: 'GM4med.chat.mensagens',
+        lembretesStorageKey: 'GM4med.lembretes',
 
         horarioInicial: 8 * 60,
         horarioFinal: 18 * 60,
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         whatsappBaseUrl: 'https://wa.me/',
         telefoneClinica: '(62) 99999-9999',
-        nomeClinica: 'G4Med - Clínica Médica'
+        nomeClinica: 'GM4med - Clínica Médica'
     };
 
     const STATUS_LABELS = {
@@ -966,7 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        window.dispatchEvent(new CustomEvent('g4med:teleconsulta', {
+        window.dispatchEvent(new CustomEvent('GM4med:teleconsulta', {
             detail: agendamento
         }));
 
@@ -974,7 +974,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function acessarProntuario(agendamento) {
-        window.dispatchEvent(new CustomEvent('g4med:prontuario', {
+        window.dispatchEvent(new CustomEvent('GM4med:prontuario', {
             detail: agendamento
         }));
 
@@ -982,7 +982,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function acessarFinanceiro(agendamento) {
-        window.dispatchEvent(new CustomEvent('g4med:financeiro', {
+        window.dispatchEvent(new CustomEvent('GM4med:financeiro', {
             detail: agendamento
         }));
 

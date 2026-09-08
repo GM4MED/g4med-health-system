@@ -1,8 +1,8 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const STORAGE_KEY = 'G4Med_atendimentos_recepcao';
-    const CLINIC_KEYS = ['G4Med_clinica', 'G4med_clinica', 'G4Med_dados_clinica', 'dados_clinica', 'clinica'];
+    const STORAGE_KEY = 'GM4med_atendimentos_recepcao';
+    const CLINIC_KEYS = ['GM4med_clinica', 'GM4med_clinica', 'GM4med_dados_clinica', 'dados_clinica', 'clinica'];
     const DEFAULT_LOGO = 'logo.png11.png';
 
     const $ = id => document.getElementById(id);
@@ -329,9 +329,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         printDoc.innerHTML = `
             <header class="p-header">
-                <img class="p-logo" src="${esc(logo)}" alt="Logo oficial G4Med">
+                <img class="p-logo" src="${esc(logo)}" alt="Logo oficial GM4med">
                 <div class="p-clinic">
-                    <div class="p-brand">G4Med</div>
+                    <div class="p-brand">GM4med</div>
                     <div class="p-system">Intelligent Health System</div>
                     ${name ? `<div class="p-name">${esc(name)}</div>` : ''}
                     ${fullAddress ? `<div class="p-line">${esc(fullAddress)}</div>` : ''}
@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </header>
             <footer class="p-footer">
-                <span>G4Med &middot; Intelligent Health System</span>
+                <span>GM4med &middot; Intelligent Health System</span>
                 <span>${esc(footerInfo)}</span>
                 <span class="p-page"></span>
             </footer>

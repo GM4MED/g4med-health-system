@@ -1,5 +1,5 @@
 /* =========================================================
-   G4MED · Relatório de Atendimentos · BI · JS
+   GM4med · Relatório de Atendimentos · BI · JS
    ========================================================= */
 (() => {
     'use strict';
@@ -403,7 +403,7 @@
         });
         $('#btnPrint').addEventListener('click', () => window.print());
         $('#btnShare').addEventListener('click', () => {
-            if (navigator.share) navigator.share({ title: 'Relatório G4Med', text: 'Veja o relatório', url: location.href }).catch(() => { });
+            if (navigator.share) navigator.share({ title: 'Relatório GM4med', text: 'Veja o relatório', url: location.href }).catch(() => { });
             else { navigator.clipboard?.writeText(location.href); toast('Link copiado', 'Compartilhe com sua equipe', 'ok') }
         });
 

@@ -1,5 +1,5 @@
 /* =====================================================
-   G4MED ULTRA — DASHBOARD FINANCEIRO
+   GM4med ULTRA — DASHBOARD FINANCEIRO
    Arquivo: financeiro.js
    Padrão: IIFE + módulos (Config / State / Utils / ...)
    ===================================================== */
@@ -10,7 +10,7 @@
     const Config = {
         locale: 'pt-BR',
         currency: 'BRL',
-        storageKey: 'g4med-financeiro',
+        storageKey: 'GM4med-financeiro',
         counterDuration: 1100,
     };
 
@@ -628,7 +628,7 @@
                 window.addEventListener('load', () => Charts.initAll());
             }
 
-            console.info('%cG4Med Financeiro %cv1.0', 'color:#6366f1;font-weight:700', 'color:#94a3b8');
+            console.info('%cGM4med Financeiro %cv1.0', 'color:#6366f1;font-weight:700', 'color:#94a3b8');
         }
     };
 

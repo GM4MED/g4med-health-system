@@ -8,7 +8,7 @@
         [...root.querySelectorAll(selector)];
 
     const CONFIG = {
-        storageKey: "g4med-procedure",
+        storageKey: "GM4med-procedure",
         maxFileSize: 10 * 1024 * 1024,
 
         allowedFileTypes: new Set([
@@ -666,7 +666,7 @@
         );
 
         console.log(
-            "G4Med procedimento:",
+            "GM4med procedimento:",
             JSON.stringify(data, null, 2)
         );
     }

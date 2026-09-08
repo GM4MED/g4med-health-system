@@ -960,7 +960,7 @@ function updateLastUpdate() {
 }
 
 function applyTheme() {
-    const saved = localStorage.getItem('g4med-theme');
+    const saved = localStorage.getItem('GM4med-theme');
     const systemDark = window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -1049,7 +1049,7 @@ function bindEvents() {
 
         document.documentElement.classList.toggle('dark', dark);
         localStorage.setItem(
-            'g4med-theme',
+            'GM4med-theme',
             dark ? 'dark' : 'light'
         );
 
@@ -1152,7 +1152,7 @@ function bindEvents() {
         try {
             if (navigator.share) {
                 await navigator.share({
-                    title: 'G4Med BI — Relatório de Pacientes',
+                    title: 'GM4med BI — Relatório de Pacientes',
                     text: 'Relatório gerencial de pacientes.',
                     url: window.location.href
                 });
@@ -1242,7 +1242,7 @@ function exportCSV() {
             .slice(0, 10);
 
         link.href = url;
-        link.download = `g4med-pacientes-convenios-${stamp}.csv`;
+        link.download = `GM4med-pacientes-convenios-${stamp}.csv`;
         link.rel = 'noopener';
 
         document.body.appendChild(link);

@@ -16,9 +16,9 @@
 
 ### Resumo da Arquitetura
 
-O **Painel Available** é um módulo frontend-only do sistema G4Med que consolida em uma única tela as três dimensões críticas do fluxo clínico diário: status dos agendamentos, fila de espera ativa e disponibilidade dos médicos.
+O **Painel Available** é um módulo frontend-only do sistema GM4med que consolida em uma única tela as três dimensões críticas do fluxo clínico diário: status dos agendamentos, fila de espera ativa e disponibilidade dos médicos.
 
-A implementação segue os mesmos padrões arquiteturais dos demais módulos do G4Med:
+A implementação segue os mesmos padrões arquiteturais dos demais módulos do GM4med:
 
 - **HTML5 semântico** com ARIA landmarks e regiões live
 - **CSS customizado** com variáveis do design system (prefixo `.painel__*` para BEM local)
@@ -29,7 +29,7 @@ A implementação segue os mesmos padrões arquiteturais dos demais módulos do 
 ### Estrutura de Arquivos
 
 ```
-g4med-health-system/
+GM4med-health-system/
 ├── Painel-available/
 │   ├── painel-available.html      ← página principal
 │   ├── painel-available.css       ← estilos do módulo
@@ -41,21 +41,21 @@ g4med-health-system/
 
 | Módulo                    | Tipo           | Chave localStorage                | Operação          |
 |--------------------------|----------------|-----------------------------------|-------------------|
-| `Agenda-medica`          | Agendamentos   | `g4med.agenda.agendamentos.v2`    | Leitura + Escrita |
-| `Cadastros-medicos`      | Médicos ativos | `g4med.cadastros.medicos.v1`      | Somente leitura   |
-| `Painel-available` (novo)| Status médicos | `g4med.status.medicos`            | Leitura + Escrita |
-| `Painel-available` (novo)| Fila de espera | `g4med.painel.chegadas`           | Leitura + Escrita |
+| `Agenda-medica`          | Agendamentos   | `GM4med.agenda.agendamentos.v2`    | Leitura + Escrita |
+| `Cadastros-medicos`      | Médicos ativos | `GM4med.cadastros.medicos.v1`      | Somente leitura   |
+| `Painel-available` (novo)| Status médicos | `GM4med.status.medicos`            | Leitura + Escrita |
+| `Painel-available` (novo)| Fila de espera | `GM4med.painel.chegadas`           | Leitura + Escrita |
 | `Agenda-medica`          | Navegação      | URL param `?data=YYYY-MM-DD`      | Link de saída     |
 | `Atendimento-recepcao`   | Navegação      | URL param `?pacienteId={id}`      | Link de saída     |
 | `Cadastro-paciente`      | Navegação      | URL param `?pacienteId={id}`      | Link de saída     |
 
-O painel emite o evento customizado `g4med:painel-status-changed` no objeto `window` sempre que um status de agendamento ou médico é alterado, permitindo que outros módulos reajam às mudanças.
+O painel emite o evento customizado `GM4med:painel-status-changed` no objeto `window` sempre que um status de agendamento ou médico é alterado, permitindo que outros módulos reajam às mudanças.
 
 ---
 
 ## Data Models
 
-### 2.1 Registro de Agendamento (`g4med.agenda.agendamentos.v2`)
+### 2.1 Registro de Agendamento (`GM4med.agenda.agendamentos.v2`)
 
 Formato idêntico ao utilizado por `agenda-geral.js`. O Painel Available lê e escreve nesta mesma chave.
 
@@ -91,7 +91,7 @@ Formato idêntico ao utilizado por `agenda-geral.js`. O Painel Available lê e e
 
 > Os valores persistidos em localStorage são sempre os valores internos para garantir compatibilidade entre módulos.
 
-### 2.2 Registro de Médico (`g4med.cadastros.medicos.v1`)
+### 2.2 Registro de Médico (`GM4med.cadastros.medicos.v1`)
 
 Somente leitura. O painel não escreve nesta chave.
 
@@ -108,7 +108,7 @@ Somente leitura. O painel não escreve nesta chave.
 
 > **Fallback:** O módulo `Cadastros-medicos` atual armazena médicos em memória sem persisti-los. O painel inclui `MEDICOS_FALLBACK` (lista estática compatível com `agenda-geral.js`) para ser usado quando a chave não existir.
 
-### 2.3 Status dos Médicos (`g4med.status.medicos`)
+### 2.3 Status dos Médicos (`GM4med.status.medicos`)
 
 Chave própria do Painel Available. Objeto indexado por `medicoId`.
 
@@ -137,7 +137,7 @@ Chave própria do Painel Available. Objeto indexado por `medicoId`.
 | `em-pausa`    | Em Pausa       | `--painel-warning`    |
 | `ausente`     | Ausente        | `--painel-danger`     |
 
-### 2.4 Registros de Chegada (`g4med.painel.chegadas`)
+### 2.4 Registros de Chegada (`GM4med.painel.chegadas`)
 
 Chave própria do Painel Available. Objeto indexado por `agendamentoId`.
 
@@ -242,7 +242,7 @@ const state = {
       <span>Voltar</span>
     </a>
     <div class="painel__marca">
-      <p class="painel__eyebrow">G4Med</p>
+      <p class="painel__eyebrow">GM4med</p>
       <h1 class="painel__titulo-header">
         Painel Available — Controle Operacional
       </h1>
@@ -680,10 +680,10 @@ Cada seção possui três estados adicionais gerenciados pelo atributo `hidden`:
 const CONFIG = {
     // Chaves do localStorage
     storageKeys: {
-        agendamentos:  'g4med.agenda.agendamentos.v2',
-        medicos:       'g4med.cadastros.medicos.v1',
-        statusMedicos: 'g4med.status.medicos',
-        chegadas:      'g4med.painel.chegadas'
+        agendamentos:  'GM4med.agenda.agendamentos.v2',
+        medicos:       'GM4med.cadastros.medicos.v1',
+        statusMedicos: 'GM4med.status.medicos',
+        chegadas:      'GM4med.painel.chegadas'
     },
 
     // Intervalos de timer (em milissegundos)
@@ -739,7 +739,7 @@ const ROTULOS_TIPO = {
     procedimento: 'Procedimento'
 };
 
-// Médicos fallback — usados quando g4med.cadastros.medicos.v1 não existe
+// Médicos fallback — usados quando GM4med.cadastros.medicos.v1 não existe
 const MEDICOS_FALLBACK = [
     { id: '1', nome: 'Dr. Carlos Silva',    especialidade: 'Cardiologia',              status: 'Ativo' },
     { id: '2', nome: 'Dra. Ana Paula',      especialidade: 'Dermatologia',             status: 'Ativo' },
@@ -814,7 +814,7 @@ function registrarChegada(agendamentoId) {}
 /**
  * Persiste alteração de status de agendamento.
  * Efeitos em cascata (ver seção 5).
- * Emite g4med:painel-status-changed.
+ * Emite GM4med:painel-status-changed.
  * Atualiza snapshot antes de escrever (para rollback).
  * @param {string} agendamentoId
  * @param {string} novoStatus - Valor interno (ex: 'espera', 'atendido')
@@ -824,7 +824,7 @@ function atualizarStatusAgendamento(agendamentoId, novoStatus) {}
 /**
  * Persiste alteração de status de médico.
  * Atualiza state.statusMedicos[medicoId].
- * Emite g4med:painel-status-changed.
+ * Emite GM4med:painel-status-changed.
  * @param {string} medicoId
  * @param {string} novoStatus - "disponivel"|"em-consulta"|"em-pausa"|"ausente"
  */
@@ -893,7 +893,7 @@ function salvarNoStorage(chave, valor) {}
 function exibirToast(mensagem, tipo, duracao) {}
 
 /**
- * Emite evento customizado g4med:painel-status-changed no window.
+ * Emite evento customizado GM4med:painel-status-changed no window.
  * @param {"agendamento"|"medico"} entityType
  * @param {string} entityId
  * @param {string} newStatus
@@ -1527,7 +1527,7 @@ document.addEventListener('keydown', event => {
 
 ### 7.6 Classe `.sr-only`
 
-Rótulos e instruções visíveis apenas para tecnologias assistivas, seguindo o padrão do G4Med:
+Rótulos e instruções visíveis apenas para tecnologias assistivas, seguindo o padrão do GM4med:
 
 ```css
 .sr-only {
@@ -1646,7 +1646,7 @@ Da mesma forma, *para qualquer* médico e status válido `s`, após `atualizarSt
 
 ### Property 10: Emissão de Evento em Toda Mudança de Status
 
-*Para qualquer* alteração de status (de agendamento ou de médico), o evento `g4med:painel-status-changed` deve ser emitido no `window` com payload contendo exatamente os campos `entityType`, `entityId` e `newStatus` com os valores correspondentes à operação realizada.
+*Para qualquer* alteração de status (de agendamento ou de médico), o evento `GM4med:painel-status-changed` deve ser emitido no `window` com payload contendo exatamente os campos `entityType`, `entityId` e `newStatus` com os valores correspondentes à operação realizada.
 
 ```
 PARA TODA alteração: atualizarStatusAgendamento(id, s) OU atualizarStatusMedico(id, s)
