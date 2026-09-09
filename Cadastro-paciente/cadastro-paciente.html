@@ -16,19 +16,6 @@
 <body>
     <div class="app">
         <main class="main">
-            <header class="topbar">
-                <div class="topbar-title">GM4med — Cadastro de Paciente</div>
-                <div class="topbar-actions">
-                    <time class="clock" id="clock" aria-label="Data e hora atual">--/--/---- --:--:--</time>
-                    <div class="user-pill" aria-label="Sessão do usuário">
-                        <div class="user-avatar" aria-hidden="true">A</div>
-                        <div class="user-info">
-                            <strong class="user-name">admin</strong>
-                            <span class="user-status"><span class="status-dot" aria-hidden="true"></span>Online</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
 
             <div class="content">
                 <section class="page-header" aria-labelledby="page-title">
@@ -157,19 +144,6 @@
                                             type="text" class="input campo-edita" id="pacProfissao" name="profissao"
                                             placeholder="DIGITE A PROFISSÃO" disabled></div>
                                 </div>
-                                <!-- <div class="paciente-foto-area">
-                                    <div class="foto-area-label"><strong class="foto-titulo">Foto do
-                                            paciente</strong><span class="foto-instrucao">Clique no círculo para
-                                            capturar</span></div>
-                                    <button type="button" class="foto-capture-panel campo-edita" id="btnAbrirWebcam"
-                                        onclick="abrirWebcam()" aria-label="Capturar foto do paciente" disabled>
-                                        <img id="fotoPreview"
-                                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                            alt="Pré-visualização da foto do paciente">
-                                        <span class="btn-foto" aria-hidden="true"><i
-                                                class="fa-solid fa-camera"></i></span>
-                                    </button>
-                                </div> -->
                                 <div class="paciente-foto-area">
                                     <div class="foto-area-label">
                                         <strong class="foto-titulo">Foto do paciente</strong>
@@ -471,22 +445,6 @@
             </div>
         </div>
     </div>
-
-    <!-- <div class="modal" id="modalWebcam" role="dialog" aria-modal="true" aria-labelledby="modalWebcamTitle" hidden>
-        <div class="modal-content modal-content--wide">
-            <header class="modal-header">
-                <h2 id="modalWebcamTitle"><i class="fa-solid fa-camera" aria-hidden="true"></i> Capturar foto</h2>
-                <button type="button" class="modal-close" onclick="fecharWebcam()" aria-label="Fechar câmera"><i
-                        class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-            </header>
-            <div class="modal-body"><video id="webcamVideo" autoplay playsinline
-                    aria-label="Visualização da câmera"></video><canvas id="webcamCanvas" hidden></canvas>
-                <div class="modal-actions"><button type="button" class="btn btn-gravar" onclick="capturarFoto()"><i
-                            class="fa-solid fa-camera" aria-hidden="true"></i> Capturar</button><button type="button"
-                        class="btn btn-cancelar" onclick="fecharWebcam()">Cancelar</button></div>
-            </div>
-        </div>
-    </div> -->
     <div class="modal" id="modalWebcam" role="dialog" aria-modal="true" aria-labelledby="modalWebcamTitle">
         <div class="modal-content modal-content--wide">
             <header class="modal-header">
