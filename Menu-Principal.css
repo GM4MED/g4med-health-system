@@ -57,7 +57,7 @@
    Reset
    ========================================================== */
 
-*,
+/* *,
 *::before,
 *::after {
     box-sizing: border-box;
@@ -124,8 +124,36 @@ button:disabled {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+} */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    background: #edf1f5;
+    overflow-x: hidden;
+}
+
+.main-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.background-glow {
+    position: fixed;
+    top: -300px;
+    right: -300px;
+    z-index: -1;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(92, 70, 142, 0.15), transparent 70%);
+}
 
 /* ==========================================================
    Estrutura principal
