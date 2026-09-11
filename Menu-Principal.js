@@ -496,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const chaveSessao =
-            'g4med.session.inicio';
+            'gm4med.session.inicio';
 
         let inicioSessao =
             obterInicioDaSessao(chaveSessao);
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function verificarStorage(storage) {
         try {
             const chaveTeste =
-                '__g4med_storage_test__';
+                '__gm4med_storage_test__';
 
             storage.setItem(chaveTeste, 'ok');
             storage.removeItem(chaveTeste);
