@@ -223,24 +223,6 @@ function renderTable() {
                 </div>
             </td>
         `;
-
-        // Evento de clique seguro na linha (ignora se clicar em botões)
-        // tr.addEventListener('click', function (e) {
-        //     if (!e.target.closest('button') && !e.target.closest('.action-btn')) {
-        //         visualizarEspecialidade(esp.id);
-        //     }
-        // });
-        // Evento de clique seguro na linha (ignora qualquer elemento do grupo de ações ou botões)
-        // Exemplo de como configurar a linha e os botões corretamente na sua função de renderização ou carregamento da tabela:
-
-        // tr.addEventListener('click', function (e) {
-        //     // Garante que o clique não veio do grupo de ações ou de botões/ícones internos
-        //     if (!e.target.closest('.actions-group') && !e.target.closest('button')) {
-        //         visualizarEspecialidade(esp.id);
-        //     }
-        // });
-        // Exemplo para cada botão dentro da sua função que monta as ações da tabela:
-
         // Exemplo aplicado na criação da linha (tr) e dos seus elementos:
 
         // 1. Ao criar o grupo de ações ou os botões, impeça que o clique neles suba para a linha (tr)
