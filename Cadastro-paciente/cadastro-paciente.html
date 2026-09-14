@@ -1,302 +1,396 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cadastro de pacientes do sistema GM4med.">
+    <meta name="description" content="Janela de Cadastro de Paciente do sistema GM4med — Gestão completa em saúde com LGPD, PEP e acessibilidade.">
     <title>Cadastro de Paciente | GM4med</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+    
+    <!-- Font Awesome 6.5.2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    
+    <!-- CSS da Janela -->
     <link rel="stylesheet" href="cadastro-paciente.css">
 </head>
 
 <body>
     <div class="app">
-        <main class="main">
+        <!-- TOPBAR DE HEADER DO SISTEMA -->
+        <header class="topbar" role="banner">
+            <div class="topbar-title">
+                <i class="fa-solid fa-hospital-user" aria-hidden="true"></i> GM4med — Sistema de Gestão em Saúde
+            </div>
+            <div class="topbar-actions">
+                <time class="clock" id="clock" datetime=""></time>
+                <div class="user-pill" aria-label="Usuário atual">
+                    <span class="user-avatar" aria-hidden="true">AD</span>
+                    <div class="user-info">
+                        <span class="user-name">Dr. Admin (Recepção)</span>
+                        <span class="user-status"><span class="status-dot"></span> Operacional</span>
+                    </div>
+                </div>
+            </div>
+        </header>
 
+        <main class="main" id="mainContent">
             <div class="content">
+                <!-- CABEÇALHO DA PÁGINA -->
                 <section class="page-header" aria-labelledby="page-title">
-                    <h1 id="page-title"><i class="fa-solid fa-user-injured" aria-hidden="true"></i> Cadastro de Paciente
-                    </h1>
-                    <p>Cadastro completo com dados pessoais, médicos, financeiros e documentos.</p>
+                    <div class="page-title-group">
+                        <h1 id="page-title">
+                            <i class="fa-solid fa-user-injured" aria-hidden="true"></i> Cadastro de Paciente
+                        </h1>
+                        <p>Gestão unificada de dados pessoais, contatos, saúde, convênio, financeiro e termos LGPD.</p>
+                    </div>
+
+                    <!-- BARRA DE ALERTAS CLÍNICOS E OPERACIONAIS -->
+                    <div class="clinical-alerts-bar" id="clinicalAlertsBar" aria-live="polite" aria-label="Alertas médicos do paciente">
+                        <span class="alert-empty-msg" id="alertEmptyMsg"><i class="fa-solid fa-shield-heart"></i> Nenhum alerta crítico registrado para este paciente.</span>
+                    </div>
                 </section>
 
-                <div class="toolbar" id="toolbar" role="toolbar" aria-label="Ações do cadastro">
-                    <button type="button" class="btn btn-novo" id="btnNovo" onclick="acaoNovo()"><i
-                            class="fa-solid fa-plus" aria-hidden="true"></i><span>Novo</span></button>
-                    <button type="button" class="btn btn-gravar" id="btnGravar" onclick="acaoGravar()" disabled><i
-                            class="fa-solid fa-floppy-disk" aria-hidden="true"></i><span>Gravar</span></button>
-                    <button type="button" class="btn btn-editar" id="btnEditar" onclick="acaoEditar()" disabled><i
-                            class="fa-solid fa-pen" aria-hidden="true"></i><span>Editar</span></button>
-                    <button type="button" class="btn btn-nav" id="btnAnterior" onclick="acaoAnterior()" disabled
-                        title="Paciente anterior" aria-label="Paciente anterior"><i class="fa-solid fa-chevron-left"
-                            aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-nav" id="btnProximo" onclick="acaoProximo()" disabled
-                        title="Próximo paciente" aria-label="Próximo paciente"><i class="fa-solid fa-chevron-right"
-                            aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-buscar" id="btnBuscar" onclick="acaoBuscar()"><i
-                            class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span>Buscar</span></button>
-                    <button type="button" class="btn btn-excluir" id="btnExcluir" onclick="acaoExcluir()" disabled><i
-                            class="fa-solid fa-trash" aria-hidden="true"></i><span>Excluir</span></button>
-                    <button type="button" class="btn btn-cancelar" id="btnCancelar" onclick="acaoCancelar()" disabled><i
-                            class="fa-solid fa-xmark" aria-hidden="true"></i><span>Cancelar</span></button>
-                    <button type="button" class="btn btn-anexo" id="btnAnexo" onclick="acaoAnexo()" disabled><i
-                            class="fa-solid fa-paperclip" aria-hidden="true"></i><span>Anexo</span></button>
-                    <button type="button" class="btn btn-imprimir" id="btnImprimir" onclick="acaoImprimir()" disabled><i
-                            class="fa-solid fa-print" aria-hidden="true"></i><span>Imprimir</span></button>
-                    <button type="button" class="btn btn-historico" id="btnHistorico" onclick="acaoHistorico()"
-                        disabled><i class="fa-solid fa-clock-rotate-left"
-                            aria-hidden="true"></i><span>Histórico</span></button>
-                    <a class="btn btn-sair" href="../Menu-Principal.html"><i class="fa-solid fa-arrow-left"
-                            aria-hidden="true"></i><span>Voltar</span></a>
+                <!-- TOOLBAR PRINCIPAL DE COMANDOS -->
+                <div class="toolbar" id="toolbar" role="toolbar" aria-label="Ações principais do cadastro">
+                    <button type="button" class="btn btn-novo" id="btnNovo" onclick="acaoNovo()">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i><span>Novo</span>
+                    </button>
+                    <button type="button" class="btn btn-gravar" id="btnGravar" onclick="acaoGravar()" disabled>
+                        <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i><span>Salvar</span>
+                    </button>
+                    <button type="button" class="btn btn-editar" id="btnEditar" onclick="acaoEditar()" disabled>
+                        <i class="fa-solid fa-pen" aria-hidden="true"></i><span>Editar</span>
+                    </button>
+                    <button type="button" class="btn btn-nav" id="btnAnterior" onclick="acaoAnterior()" disabled title="Paciente anterior" aria-label="Paciente anterior">
+                        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-nav" id="btnProximo" onclick="acaoProximo()" disabled title="Próximo paciente" aria-label="Próximo paciente">
+                        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-buscar" id="btnBuscar" onclick="acaoBuscar()">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span>Buscar</span>
+                    </button>
+                    <button type="button" class="btn btn-excluir" id="btnExcluir" onclick="acaoExcluir()" disabled>
+                        <i class="fa-solid fa-trash" aria-hidden="true"></i><span>Excluir</span>
+                    </button>
+                    <button type="button" class="btn btn-cancelar" id="btnCancelar" onclick="acaoCancelar()" disabled>
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i><span>Cancelar</span>
+                    </button>
+                    <button type="button" class="btn btn-anexo" id="btnAnexo" onclick="acaoAnexo()" disabled>
+                        <i class="fa-solid fa-paperclip" aria-hidden="true"></i><span>Anexo</span>
+                    </button>
+                    <button type="button" class="btn btn-imprimir" id="btnImprimir" onclick="acaoImprimir()" disabled>
+                        <i class="fa-solid fa-print" aria-hidden="true"></i><span>Imprimir Ficha</span>
+                    </button>
+                    <button type="button" class="btn btn-historico" id="btnHistorico" onclick="acaoHistorico()" disabled>
+                        <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i><span>Histórico</span>
+                    </button>
+                    <a class="btn btn-sair" href="../Menu-Principal.html">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i><span>Sair / Voltar</span>
+                    </a>
                 </div>
 
                 <p id="formStatus" class="sr-only" role="status" aria-live="polite"></p>
 
-                <section class="card" aria-label="Dados do paciente">
+                <!-- CARD PRINCIPAL COM AS 11 ABAS NUMERADAS -->
+                <section class="card" aria-label="Ficha de Cadastro de Paciente">
                     <div class="tabs-header" id="tabsHeader" role="tablist" aria-label="Seções do cadastro de paciente">
-                        <button type="button" class="tab-btn active" id="tab1-button" role="tab" aria-selected="true"
-                            aria-controls="tab1" data-tab="tab1" onclick="switchTab('tab1')"><i
-                                class="fa-solid fa-id-card" aria-hidden="true"></i><span>Pessoais</span></button>
-                        <button type="button" class="tab-btn" id="tab2-button" role="tab" aria-selected="false"
-                            aria-controls="tab2" data-tab="tab2" onclick="switchTab('tab2')"><i
-                                class="fa-solid fa-address-book" aria-hidden="true"></i><span>Contato</span></button>
-                        <button type="button" class="tab-btn" id="tab3-button" role="tab" aria-selected="false"
-                            aria-controls="tab3" data-tab="tab3" onclick="switchTab('tab3')"><i
-                                class="fa-solid fa-map-location-dot"
-                                aria-hidden="true"></i><span>Endereço</span></button>
-                        <button type="button" class="tab-btn" id="tab4-button" role="tab" aria-selected="false"
-                            aria-controls="tab4" data-tab="tab4" onclick="switchTab('tab4')"><i
-                                class="fa-solid fa-heart-pulse" aria-hidden="true"></i><span>Médicas</span></button>
-                        <button type="button" class="tab-btn" id="tab5-button" role="tab" aria-selected="false"
-                            aria-controls="tab5" data-tab="tab5" onclick="switchTab('tab5')"><i
-                                class="fa-solid fa-hand-holding-medical"
-                                aria-hidden="true"></i><span>Convênio</span></button>
-                        <a class="tab-btn" href="financeiro-cadastro-paciente.html"><i
-                                class="fa-solid fa-money-bill-wave" aria-hidden="true"></i><span>Financeiro</span></a>
-                        <button type="button" class="tab-btn" id="tab7-button" role="tab" aria-selected="false"
-                            aria-controls="tab7" data-tab="tab7" onclick="switchTab('tab7')"><i
-                                class="fa-solid fa-clipboard-check"
-                                aria-hidden="true"></i><span>Controle</span></button>
-                        <button type="button" class="tab-btn" id="tab8-button" role="tab" aria-selected="false"
-                            aria-controls="tab8" data-tab="tab8" onclick="switchTab('tab8')"><i
-                                class="fa-solid fa-paperclip" aria-hidden="true"></i><span>Anexos</span></button>
-                        <button type="button" class="tab-btn" id="tab9-button" role="tab" aria-selected="false"
-                            aria-controls="tab9" data-tab="tab9" onclick="switchTab('tab9')"><i
-                                class="fa-solid fa-shield-halved" aria-hidden="true"></i><span>LGPD</span></button>
-                        <button type="button" class="tab-btn" id="tab10-button" role="tab" aria-selected="false"
-                            aria-controls="tab10" data-tab="tab10" onclick="switchTab('tab10')"><i
-                                class="fa-solid fa-file-medical" aria-hidden="true"></i><span>Outros</span></button>
+                        <button type="button" class="tab-btn active" id="tab1-button" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1" onclick="switchTab('tab1')">
+                            <span class="tab-num">01</span><i class="fa-solid fa-id-card" aria-hidden="true"></i><span>Dados Pessoais</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab2-button" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2" onclick="switchTab('tab2')">
+                            <span class="tab-num">02</span><i class="fa-solid fa-phone" aria-hidden="true"></i><span>Contato</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab3-button" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3" onclick="switchTab('tab3')">
+                            <span class="tab-num">03</span><i class="fa-solid fa-people-group" aria-hidden="true"></i><span>Emergência</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab4-button" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4" onclick="switchTab('tab4')">
+                            <span class="tab-num">04</span><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>Endereço</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab5-button" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5" onclick="switchTab('tab5')">
+                            <span class="tab-num">05</span><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i><span>Informações Médicas</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab6-button" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6" onclick="switchTab('tab6')">
+                            <span class="tab-num">06</span><i class="fa-solid fa-hospital" aria-hidden="true"></i><span>Convênio</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab7-button" role="tab" aria-selected="false" aria-controls="tab7" data-tab="tab7" onclick="switchTab('tab7')">
+                            <span class="tab-num">07</span><i class="fa-solid fa-wallet" aria-hidden="true"></i><span>Dados Financeiros</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab8-button" role="tab" aria-selected="false" aria-controls="tab8" data-tab="tab8" onclick="switchTab('tab8')">
+                            <span class="tab-num">08</span><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i><span>Controle Interno</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab9-button" role="tab" aria-selected="false" aria-controls="tab9" data-tab="tab9" onclick="switchTab('tab9')">
+                            <span class="tab-num">09</span><i class="fa-solid fa-paperclip" aria-hidden="true"></i><span>Anexos</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab10-button" role="tab" aria-selected="false" aria-controls="tab10" data-tab="tab10" onclick="switchTab('tab10')">
+                            <span class="tab-num">10</span><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span>LGPD / Autorizações</span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tab11-button" role="tab" aria-selected="false" aria-controls="tab11" data-tab="tab11" onclick="switchTab('tab11')">
+                            <span class="tab-num">11</span><i class="fa-solid fa-stethoscope" aria-hidden="true"></i><span>Ações Clínicas</span>
+                        </button>
                     </div>
 
                     <form id="pacienteForm" novalidate>
+                        <!-- ABA 01 — DADOS PESSOAIS -->
                         <section class="tab-content active" id="tab1" role="tabpanel" aria-labelledby="tab1-button">
+                            <h2 class="section-title"><i class="fa-solid fa-id-card" aria-hidden="true"></i> Aba 01 — Dados Pessoais do Paciente</h2>
                             <div class="paciente-layout">
                                 <div class="paciente-form-grid">
-                                    <div class="form-group"><label for="pacId">Código/ID</label><input type="text"
-                                            class="input" id="pacId" name="id" readonly></div>
-                                    <div class="form-group"><label for="pacNome">Nome completo <span
-                                                aria-hidden="true">*</span></label><input type="text"
-                                            class="input campo-edita" id="pacNome" name="nome" autocomplete="name"
-                                            placeholder="DIGITE O NOME COMPLETO" required disabled></div>
-                                    <div class="form-group"><label for="pacNascimento">Data de nascimento <span
-                                                aria-hidden="true">*</span></label><input type="date"
-                                            class="input campo-edita" id="pacNascimento" name="data_nascimento" required
-                                            disabled></div>
-                                    <div class="form-group"><label for="pacIdade">Idade</label><input type="text"
-                                            class="input" id="pacIdade" name="idade"
-                                            placeholder="-- Anos -- Meses -- Dias" readonly></div>
-                                    <div class="form-group"><label for="pacCpf">CPF <span
-                                                aria-hidden="true">*</span></label><input type="text"
-                                            class="input campo-edita" id="pacCpf" name="cpf" inputmode="numeric"
-                                            autocomplete="off" placeholder="000.000.000-00" maxlength="14" required
-                                            disabled></div>
-                                    <div class="form-group"><label for="pacRg">RG</label><input type="text"
-                                            class="input campo-edita" id="pacRg" name="rg" placeholder="00.000.000-0"
-                                            disabled></div>
-                                    <div class="form-group"><label for="pacOrgao">Órgão emissor</label><input
-                                            type="text" class="input campo-edita" id="pacOrgao" name="orgao_emissor"
-                                            placeholder="SSP/UF" disabled></div>
-                                    <div class="form-group"><label for="pacGenero">Gênero</label><select
-                                            class="input campo-edita" id="pacGenero" name="genero" disabled>
+                                    <div class="form-group">
+                                        <label for="pacId">Código/ID (Automático)</label>
+                                        <input type="text" class="input" id="pacId" name="id" readonly placeholder="PAC-00000">
+                                    </div>
+                                    <div class="form-group form-group--span-2">
+                                        <label for="pacNome">Nome Completo <span class="required-asterisk" aria-hidden="true">*</span></label>
+                                        <input type="text" class="input campo-edita" id="pacNome" name="nome" autocomplete="name" placeholder="DIGITE O NOME COMPLETO" required disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacNascimento">Data de Nascimento <span class="required-asterisk" aria-hidden="true">*</span></label>
+                                        <input type="date" class="input campo-edita" id="pacNascimento" name="data_nascimento" required disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacIdade">Idade (Calculada)</label>
+                                        <input type="text" class="input" id="pacIdade" name="idade" placeholder="0 Anos 0 Meses 0 Dias" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacCpf">CPF <span class="required-asterisk" aria-hidden="true">*</span></label>
+                                        <input type="text" class="input campo-edita" id="pacCpf" name="cpf" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" maxlength="14" required disabled>
+                                        <small class="field-feedback" id="cpfFeedback" aria-live="polite"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacRg">RG</label>
+                                        <input type="text" class="input campo-edita" id="pacRg" name="rg" placeholder="00.000.000-0" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacOrgao">Órgão Emissor</label>
+                                        <input type="text" class="input campo-edita" id="pacOrgao" name="orgao_emissor" placeholder="SSP/SP" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacGenero">Gênero</label>
+                                        <select class="input campo-edita" id="pacGenero" name="genero" disabled>
                                             <option value="">Selecione</option>
-                                            <option value="F">Feminino</option>
                                             <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
                                             <option value="O">Outro</option>
-                                        </select></div>
-                                    <div class="form-group"><label for="pacEstCivil">Estado civil</label><select
-                                            class="input campo-edita" id="pacEstCivil" name="estado_civil" disabled>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacEstCivil">Estado Civil</label>
+                                        <select class="input campo-edita" id="pacEstCivil" name="estado_civil" disabled>
                                             <option value="">Selecione</option>
-                                            <option>Solteiro(a)</option>
-                                            <option>Casado(a)</option>
-                                            <option>União Estável</option>
-                                            <option>Divorciado(a)</option>
-                                            <option>Viúvo(a)</option>
-                                        </select></div>
-                                    <div class="form-group"><label for="pacNacionalidade">Nacionalidade</label><input
-                                            type="text" class="input campo-edita" id="pacNacionalidade"
-                                            name="nacionalidade" value="BRASILEIRO" placeholder="DIGITE A NACIONALIDADE"
-                                            disabled></div>
-                                    <div class="form-group"><label for="pacProfissao">Profissão</label><input
-                                            type="text" class="input campo-edita" id="pacProfissao" name="profissao"
-                                            placeholder="DIGITE A PROFISSÃO" disabled></div>
+                                            <option value="Solteiro(a)">Solteiro(a)</option>
+                                            <option value="Casado(a)">Casado(a)</option>
+                                            <option value="União Estável">União Estável</option>
+                                            <option value="Namorado(a)">Namorado(a)</option>
+                                            <option value="Divorciado(a)">Divorciado(a)</option>
+                                            <option value="Viúvo(a)">Viúvo(a)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacNacionalidade">Nacionalidade</label>
+                                        <input type="text" class="input campo-edita" id="pacNacionalidade" name="nacionalidade" value="BRASILEIRO" placeholder="DIGITE A NACIONALIDADE" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pacProfissao">Profissão</label>
+                                        <input type="text" class="input campo-edita" id="pacProfissao" name="profissao" placeholder="DIGITE A PROFISSÃO" disabled>
+                                    </div>
                                 </div>
+
+                                <!-- ÁREA DA FOTO DO PACIENTE -->
                                 <div class="paciente-foto-area">
                                     <div class="foto-area-label">
-                                        <strong class="foto-titulo">Foto do paciente</strong>
-                                        <span class="foto-instrucao">Clique no círculo para capturar</span>
+                                        <strong class="foto-titulo">Foto do Paciente</strong>
+                                        <span class="foto-instrucao">Captura via webcam ou upload seguro</span>
                                     </div>
 
-                                    <button type="button" class="foto-capture-panel campo-edita" id="btnAbrirWebcam"
-                                        onclick="abrirWebcam()" aria-label="Capturar foto do paciente" disabled>
-                                        <img id="fotoPreview"
-                                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                            alt="Pré-visualização da foto do paciente">
+                                    <div class="foto-box">
+                                        <img id="fotoPreview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 24 24' fill='%2398A2B3'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" alt="Pré-visualização da foto do paciente">
+                                    </div>
 
-                                        <span class="btn-foto" aria-hidden="true">
-                                            <i class="fa-solid fa-camera"></i>
-                                        </span>
-                                    </button>
+                                    <div class="foto-actions-btns">
+                                        <button type="button" class="btn btn-foto-act campo-edita" id="btnAbrirWebcam" onclick="abrirWebcam()" disabled title="Tirar foto via Webcam">
+                                            <i class="fa-solid fa-camera" aria-hidden="true"></i> <span>Webcam</span>
+                                        </button>
+                                        <button type="button" class="btn btn-foto-act btn-foto-subst campo-edita" id="btnSubstituirFoto" onclick="abrirWebcam()" disabled title="Substituir foto atual">
+                                            <i class="fa-solid fa-rotate" aria-hidden="true"></i> <span>Trocar</span>
+                                        </button>
+                                        <button type="button" class="btn btn-foto-act btn-foto-del campo-edita" id="btnRemoverFoto" onclick="removerFoto()" disabled title="Remover foto">
+                                            <i class="fa-solid fa-trash" aria-hidden="true"></i> <span>Remover</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </section>
 
+                        <!-- ABA 02 — CONTATO -->
                         <section class="tab-content" id="tab2" role="tabpanel" aria-labelledby="tab2-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-address-book" aria-hidden="true"></i>
-                                Contato pessoal</h2>
+                            <h2 class="section-title"><i class="fa-solid fa-address-book" aria-hidden="true"></i> Aba 02 — Contatos Diretos do Paciente</h2>
                             <div class="form-grid">
-                                <div class="form-group"><label for="pacTel1">Telefone principal</label><input type="tel"
-                                        class="input campo-edita" id="pacTel1" name="telefone_principal"
-                                        autocomplete="tel" placeholder="(00) 00000-0000" disabled></div>
-                                <div class="form-group"><label for="pacTel2">Telefone secundário</label><input
-                                        type="tel" class="input campo-edita" id="pacTel2" name="telefone_secundario"
-                                        placeholder="(00) 00000-0000" disabled></div>
-                                <div class="form-group"><label for="pacWhats">WhatsApp</label><input type="tel"
-                                        class="input campo-edita" id="pacWhats" name="whatsapp"
-                                        placeholder="(00) 00000-0000" disabled></div>
-                                <div class="form-group form-group--span-2"><label for="pacEmail">E-mail</label><input
-                                        type="email" class="input campo-edita" id="pacEmail" name="email"
-                                        autocomplete="email" placeholder="email@exemplo.com" disabled></div>
-                            </div>
-                            <h2 class="section-title"><i class="fa-solid fa-triangle-exclamation"
-                                    aria-hidden="true"></i> Contato de emergência</h2>
-                            <div class="form-grid">
-                                <div class="form-group form-group--span-2"><label for="pacRespNome">Nome do
-                                        responsável</label><input type="text" class="input campo-edita" id="pacRespNome"
-                                        name="responsavel_nome" placeholder="NOME DO RESPONSÁVEL" disabled></div>
-                                <div class="form-group"><label for="pacRespParentesco">Grau de parentesco</label><input
-                                        type="text" class="input campo-edita" id="pacRespParentesco"
-                                        name="responsavel_parentesco" placeholder="PAI, MÃE, CÔNJUGE..." disabled></div>
-                                <div class="form-group"><label for="pacRespTel">Telefone do responsável</label><input
-                                        type="tel" class="input campo-edita" id="pacRespTel" name="responsavel_telefone"
-                                        placeholder="(00) 00000-0000" disabled></div>
-                                <div class="form-group"><label for="pacRespWhats">WhatsApp do responsável</label><input
-                                        type="tel" class="input campo-edita" id="pacRespWhats"
-                                        name="responsavel_whatsapp" placeholder="(00) 00000-0000" disabled></div>
+                                <div class="form-group">
+                                    <label for="pacTel1">Telefone Principal <span class="required-asterisk" aria-hidden="true">*</span></label>
+                                    <input type="tel" class="input campo-edita" id="pacTel1" name="telefone_principal" autocomplete="tel" placeholder="(00) 00000-0000" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacTel2">Telefone Secundário</label>
+                                    <input type="tel" class="input campo-edita" id="pacTel2" name="telefone_secundario" placeholder="(00) 00000-0000" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacWhats">WhatsApp (Comunicação)</label>
+                                    <input type="tel" class="input campo-edita" id="pacWhats" name="whatsapp" placeholder="(00) 00000-0000" disabled>
+                                </div>
+                                <div class="form-group form-group--span-2">
+                                    <label for="pacEmail">E-mail Principal</label>
+                                    <input type="email" class="input campo-edita" id="pacEmail" name="email" autocomplete="email" placeholder="paciente@exemplo.com.br" disabled>
+                                    <small class="field-feedback" id="emailFeedback" aria-live="polite"></small>
+                                </div>
                             </div>
                         </section>
 
+                        <!-- ABA 03 — CONTATO DE EMERGÊNCIA -->
                         <section class="tab-content" id="tab3" role="tabpanel" aria-labelledby="tab3-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
-                                Endereço</h2>
+                            <h2 class="section-title"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Aba 03 — Contato de Emergência / Responsável Legal</h2>
                             <div class="form-grid">
-                                <div class="form-group"><label for="pacCep">CEP</label>
-                                    <div class="input-group-btn"><input type="text" class="input campo-edita"
-                                            id="pacCep" name="cep" inputmode="numeric" autocomplete="postal-code"
-                                            placeholder="00000-000" maxlength="9" disabled><button type="button"
-                                            class="btn btn-buscar campo-edita" id="btnBuscarCep" onclick="buscarCep()"
-                                            aria-label="Buscar endereço pelo CEP" disabled><i
-                                                class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
-                                    </div>
+                                <div class="form-group form-group--span-2">
+                                    <label for="pacRespNome">Nome do Responsável / Contato de Emergência</label>
+                                    <input type="text" class="input campo-edita" id="pacRespNome" name="responsavel_nome" placeholder="NOME DO RESPONSÁVEL" disabled>
                                 </div>
-                                <div class="form-group form-group--span-2"><label
-                                        for="pacEndereco">Endereço</label><input type="text" class="input campo-edita"
-                                        id="pacEndereco" name="endereco" autocomplete="street-address"
-                                        placeholder="RUA, AVENIDA..." disabled></div>
-                                <div class="form-group"><label for="pacNumero">Número</label><input type="text"
-                                        class="input campo-edita" id="pacNumero" name="numero" placeholder="Nº"
-                                        disabled></div>
-                                <div class="form-group"><label for="pacComplemento">Complemento</label><input
-                                        type="text" class="input campo-edita" id="pacComplemento" name="complemento"
-                                        placeholder="APTO, BLOCO, SALA..." disabled></div>
-                                <div class="form-group"><label for="pacBairro">Bairro</label><input type="text"
-                                        class="input campo-edita" id="pacBairro" name="bairro" placeholder="BAIRRO"
-                                        disabled></div>
-                                <div class="form-group"><label for="pacCidade">Cidade</label><input type="text"
-                                        class="input campo-edita" id="pacCidade" name="cidade"
-                                        autocomplete="address-level2" placeholder="CIDADE" disabled></div>
-                                <div class="form-group"><label for="pacEstado">Estado</label><input type="text"
-                                        class="input campo-edita" id="pacEstado" name="estado"
-                                        autocomplete="address-level1" placeholder="UF" maxlength="2" disabled></div>
-                                <div class="form-group"><label for="pacPais">País</label><input type="text"
-                                        class="input campo-edita" id="pacPais" name="pais" value="BRASIL"
-                                        autocomplete="country-name" disabled></div>
+                                <div class="form-group">
+                                    <label for="pacRespParentesco">Grau de Parentesco</label>
+                                    <input type="text" class="input campo-edita" id="pacRespParentesco" name="responsavel_parentesco" placeholder="PAI, MÃE, CÔNJUGE, FILHO(A)..." disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacRespTel">Telefone do Responsável</label>
+                                    <input type="tel" class="input campo-edita" id="pacRespTel" name="responsavel_telefone" placeholder="(00) 00000-0000" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacRespWhats">WhatsApp do Responsável</label>
+                                    <input type="tel" class="input campo-edita" id="pacRespWhats" name="responsavel_whatsapp" placeholder="(00) 00000-0000" disabled>
+                                </div>
                             </div>
                         </section>
 
+                        <!-- ABA 04 — ENDEREÇO -->
                         <section class="tab-content" id="tab4" role="tabpanel" aria-labelledby="tab4-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i>
-                                Informações médicas</h2>
+                            <h2 class="section-title"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Aba 04 — Endereço Residencial</h2>
                             <div class="form-grid">
-                                <div class="form-group"><label for="pacSangue">Tipo sanguíneo</label><select
-                                        class="input campo-edita" id="pacSangue" name="tipo_sanguineo" disabled>
-                                        <option value="">Selecione</option>
-                                        <option>A+</option>
-                                        <option>A-</option>
-                                        <option>B+</option>
-                                        <option>B-</option>
-                                        <option>AB+</option>
-                                        <option>AB-</option>
-                                        <option>O+</option>
-                                        <option>O-</option>
-                                    </select></div>
-                                <div class="form-group"><label for="pacGestante">Gestante</label><select
-                                        class="input campo-edita" id="pacGestante" name="gestante" disabled>
-                                        <option value="N">Não</option>
-                                        <option value="S">Sim</option>
-                                    </select></div>
-                                <div class="form-group"><label for="pacDeficiencia">Deficiência física</label><input
-                                        type="text" class="input campo-edita" id="pacDeficiencia" name="deficiencia"
-                                        placeholder="DESCREVA SE HOUVER" disabled></div>
-                                <div class="form-group form-group--span-3"><label
-                                        for="pacAlergias">Alergias</label><textarea class="input textarea campo-edita"
-                                        id="pacAlergias" name="alergias" placeholder="DESCREVA AS ALERGIAS CONHECIDAS"
-                                        disabled></textarea></div>
-                                <div class="form-group form-group--span-3"><label for="pacMedicamentos">Medicamentos em
-                                        uso</label><textarea class="input textarea campo-edita" id="pacMedicamentos"
-                                        name="medicamentos" placeholder="LISTE OS MEDICAMENTOS" disabled></textarea>
+                                <div class="form-group">
+                                    <label for="pacCep">CEP (Busca Automática)</label>
+                                    <div class="input-group-btn">
+                                        <input type="text" class="input campo-edita" id="pacCep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9" disabled>
+                                        <button type="button" class="btn btn-buscar campo-edita" id="btnBuscarCep" onclick="buscarCep()" aria-label="Buscar endereço pelo CEP" disabled>
+                                            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <small class="field-feedback" id="cepFeedback" aria-live="polite"></small>
                                 </div>
-                                <div class="form-group form-group--span-3"><label for="pacDoencas">Doenças
-                                        crônicas</label><textarea class="input textarea campo-edita" id="pacDoencas"
-                                        name="doencas_cronicas" placeholder="DESCREVA AS DOENÇAS CRÔNICAS"
-                                        disabled></textarea></div>
-                                <div class="form-group form-group--span-3"><label for="pacCirurgico">Histórico
-                                        cirúrgico</label><textarea class="input textarea campo-edita" id="pacCirurgico"
-                                        name="historico_cirurgico" placeholder="DESCREVA O HISTÓRICO CIRÚRGICO"
-                                        disabled></textarea></div>
-                                <div class="form-group form-group--span-3"><label for="pacObsMed">Observações
-                                        médicas</label><textarea class="input textarea campo-edita" id="pacObsMed"
-                                        name="observacoes_medicas" placeholder="OBSERVAÇÕES GERAIS" disabled></textarea>
+                                <div class="form-group form-group--span-2">
+                                    <label for="pacEndereco">Endereço (Logradouro)</label>
+                                    <input type="text" class="input campo-edita" id="pacEndereco" name="endereco" autocomplete="street-address" placeholder="RUA, AVENIDA, ALAMEDA..." disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacNumero">Número</label>
+                                    <input type="text" class="input campo-edita" id="pacNumero" name="numero" placeholder="Nº" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacComplemento">Complemento</label>
+                                    <input type="text" class="input campo-edita" id="pacComplemento" name="complemento" placeholder="APTO, BLOCO, SALA..." disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacBairro">Bairro</label>
+                                    <input type="text" class="input campo-edita" id="pacBairro" name="bairro" placeholder="BAIRRO" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacCidade">Cidade</label>
+                                    <input type="text" class="input campo-edita" id="pacCidade" name="cidade" autocomplete="address-level2" placeholder="CIDADE" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacEstado">UF (Estado)</label>
+                                    <input type="text" class="input campo-edita" id="pacEstado" name="estado" autocomplete="address-level1" placeholder="UF" maxlength="2" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacPais">País</label>
+                                    <input type="text" class="input campo-edita" id="pacPais" name="pais" value="BRASIL" autocomplete="country-name" disabled>
                                 </div>
                             </div>
                         </section>
 
+                        <!-- ABA 05 — INFORMAÇÕES MÉDICAS (DADOS SENSÍVEIS LGPD) -->
                         <section class="tab-content" id="tab5" role="tabpanel" aria-labelledby="tab5-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-hand-holding-medical"
-                                    aria-hidden="true"></i> Convênio</h2>
+                            <h2 class="section-title"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i> Aba 05 — Informações Médicas e Condições de Saúde (Dados Sensíveis)</h2>
+                            
+                            <div class="medical-notice-banner" role="region" aria-label="Aviso de Privacidade para Dados de Saúde">
+                                <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                                <span><strong>Dados Médicos Sensíveis (LGPD Art. 5º, II):</strong> As informações abaixo são restritas à equipe clínica autorizada e possuem auditoria contínua de acessos.</span>
+                            </div>
+
                             <div class="form-grid">
-                                <div class="form-group"><label for="pacTemConvenio">Possui convênio?</label><select
-                                        class="input campo-edita" id="pacTemConvenio" name="possui_convenio" disabled>
+                                <div class="form-group">
+                                    <label for="pacSangue">Tipo Sanguíneo / Fator Rh</label>
+                                    <select class="input campo-edita" id="pacSangue" name="tipo_sanguineo" disabled>
                                         <option value="">Selecione</option>
-                                        <option value="S">Sim</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacGestante">Gestante?</label>
+                                    <select class="input campo-edita" id="pacGestante" name="gestante" disabled>
                                         <option value="N">Não</option>
-                                    </select></div>
-                                <div class="form-group form-group--span-2"><label for="pacConvenioNome">Nome do
-                                        convênio</label><select class="input campo-edita" id="pacConvenioNome"
-                                        name="convenio" disabled>
+                                        <option value="S">Sim</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group--span-2">
+                                    <label for="pacDeficiencia">Deficiência Física / Mobilidade Reduzida</label>
+                                    <input type="text" class="input campo-edita" id="pacDeficiencia" name="deficiencia" placeholder="EX: CADEIRANTE, DEFICIÊNCIA AUDITIVA..." disabled>
+                                </div>
+                                <div class="form-group form-group--span-4">
+                                    <label for="pacAlergias" class="label-alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Alergias Conhecidas (Medicamentos, Alimentos, Látex)</label>
+                                    <textarea class="input textarea campo-edita" id="pacAlergias" name="alergias" placeholder="DESCREVA AS ALERGIAS COM CLAREZA. EX: PENICILINA, DIPIRONA, FRUTOS DO MAR..." disabled></textarea>
+                                </div>
+                                <div class="form-group form-group--span-4">
+                                    <label for="pacMedicamentos">Medicamentos em Uso Contínuo</label>
+                                    <textarea class="input textarea campo-edita" id="pacMedicamentos" name="medicamentos" placeholder="LISTE OS MEDICAMENTOS E DOSAGENS EM USO..." disabled></textarea>
+                                </div>
+                                <div class="form-group form-group--span-4">
+                                    <label for="pacDoencas">Doenças Crônicas / Comorbidades</label>
+                                    <textarea class="input textarea campo-edita" id="pacDoencas" name="doencas_cronicas" placeholder="EX: DIABETES TIPO 2, HIPERTENSÃO ARTERIAL, ASMA..." disabled></textarea>
+                                </div>
+                                <div class="form-group form-group--span-4">
+                                    <label for="pacCirurgico">Histórico Cirúrgico e Internações</label>
+                                    <textarea class="input textarea campo-edita" id="pacCirurgico" name="historico_cirurgico" placeholder="CIRURGIAS ANTERIORES E DATAS APROXIMADAS..." disabled></textarea>
+                                </div>
+                                <div class="form-group form-group--span-4">
+                                    <label for="pacObsMed">Observações Médicas Relevantes</label>
+                                    <textarea class="input textarea campo-edita" id="pacObsMed" name="observacoes_medicas" placeholder="OBSERVAÇÕES CLÍNICAS GERAIS..." disabled></textarea>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ABA 06 — CONVÊNIO / PLANO DE SAÚDE -->
+                        <section class="tab-content" id="tab6" role="tabpanel" aria-labelledby="tab6-button" hidden>
+                            <h2 class="section-title"><i class="fa-solid fa-hospital" aria-hidden="true"></i> Aba 06 — Convênio e Plano de Saúde</h2>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="pacTemConvenio">Possui Convênio de Saúde?</label>
+                                    <select class="input campo-edita" id="pacTemConvenio" name="possui_convenio" onchange="toggleConvenioFields()" disabled>
+                                        <option value="N">Não (Particular)</option>
+                                        <option value="S">Sim (Conveniado)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group--span-2">
+                                    <label for="pacConvenioNome">Nome do Convênio</label>
+                                    <select class="input campo-edita convenio-subfield" id="pacConvenioNome" name="convenio" disabled>
                                         <option value="" selected disabled>SELECIONE O CONVÊNIO</option>
                                         <option value="particular">PARTICULAR</option>
                                         <option value="amil">AMIL</option>
@@ -308,167 +402,298 @@
                                         <option value="notredame">INTERMÉDICA NOTREDAME</option>
                                         <option value="sulamerica">SULAMÉRICA</option>
                                         <option value="unimed">UNIMED</option>
-                                    </select></div>
-                                <div class="form-group"><label for="pacCarteirinha">Número da carteirinha</label><input
-                                        type="text" class="input campo-edita" id="pacCarteirinha"
-                                        name="numero_carteirinha" placeholder="NÚMERO" disabled></div>
-                                <div class="form-group"><label for="pacValidade">Validade</label><input type="date"
-                                        class="input campo-edita" id="pacValidade" name="validade_convenio" disabled>
+                                    </select>
                                 </div>
-                                <div class="form-group"><label for="pacPlano">Plano</label><input type="text"
-                                        class="input campo-edita" id="pacPlano" name="plano"
-                                        placeholder="EX: OURO, PRATA..." disabled></div>
-                                <div class="form-group form-group--span-2"><label for="pacTitular">Titular</label><input
-                                        type="text" class="input campo-edita" id="pacTitular" name="titular_convenio"
-                                        placeholder="NOME DO TITULAR" disabled></div>
-                                <div class="form-group"><label for="pacTitularCpf">CPF do titular</label><input
-                                        type="text" class="input campo-edita" id="pacTitularCpf" name="cpf_titular"
-                                        inputmode="numeric" placeholder="000.000.000-00" maxlength="14" disabled></div>
+                                <div class="form-group">
+                                    <label for="pacCarteirinha">Número da Carteirinha</label>
+                                    <input type="text" class="input campo-edita convenio-subfield" id="pacCarteirinha" name="numero_carteirinha" placeholder="NÚMERO DA CARTEIRINHA" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacValidade">Validade da Carteirinha</label>
+                                    <input type="date" class="input campo-edita convenio-subfield" id="pacValidade" name="validade_convenio" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacPlano">Plano / Categoria</label>
+                                    <input type="text" class="input campo-edita convenio-subfield" id="pacPlano" name="plano" placeholder="EX: EXECUTIVE, OURO, BÁSICO..." disabled>
+                                </div>
+                                <div class="form-group form-group--span-2">
+                                    <label for="pacTitular">Nome do Titular do Plano</label>
+                                    <input type="text" class="input campo-edita convenio-subfield" id="pacTitular" name="titular_convenio" placeholder="NOME DO TITULAR" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacTitularCpf">CPF do Titular</label>
+                                    <input type="text" class="input campo-edita convenio-subfield" id="pacTitularCpf" name="cpf_titular" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" disabled>
+                                </div>
                             </div>
                         </section>
 
+                        <!-- ABA 07 — DADOS FINANCEIROS -->
                         <section class="tab-content" id="tab7" role="tabpanel" aria-labelledby="tab7-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i>
-                                Controle interno</h2>
+                            <h2 class="section-title"><i class="fa-solid fa-wallet" aria-hidden="true"></i> Aba 07 — Dados Financeiros e Forma de Pagamento Padrão</h2>
+                            
                             <div class="form-grid">
-                                <div class="form-group"><label for="pacDataCad">Data do cadastro</label><input
-                                        type="datetime-local" class="input" id="pacDataCad" name="data_cadastro"
-                                        readonly></div>
-                                <div class="form-group"><label for="pacUserCad">Usuário que cadastrou</label><input
-                                        type="text" class="input" id="pacUserCad" name="usuario_cadastro" value="ADMIN"
-                                        readonly></div>
-                                <div class="form-group"><label for="pacUltAtu">Última atualização</label><input
-                                        type="datetime-local" class="input" id="pacUltAtu" name="ultima_atualizacao"
-                                        readonly></div>
-                                <div class="form-group"><label for="pacStatus">Status do cadastro</label><select
-                                        class="input campo-edita" id="pacStatus" name="status" disabled>
+                                <div class="form-group">
+                                    <label for="pacFormaPagamento">Forma de Pagamento Padrão</label>
+                                    <select class="input campo-edita" id="pacFormaPagamento" name="forma_pagamento" onchange="toggleCreditoPanel()" disabled>
+                                        <option value="dinheiro">Dinheiro</option>
+                                        <option value="pix">Pix</option>
+                                        <option value="boleto">Boleto</option>
+                                        <option value="debito">Cartão de Débito</option>
+                                        <option value="credito">Cartão de Crédito</option>
+                                        <option value="conveniado">Faturamento Conveniado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacLimiteCredito">Limite de Crédito Interno</label>
+                                    <input type="text" class="input campo-edita" id="pacLimiteCredito" name="limite_credito" inputmode="numeric" placeholder="R$ 0,00" value="R$ 0,00" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacInadimplente">Status de Inadimplência</label>
+                                    <select class="input campo-edita" id="pacInadimplente" name="inadimplente" onchange="updateClinicalAlerts()" disabled>
+                                        <option value="N">Adimplente (Regular)</option>
+                                        <option value="S">Inadimplente (Restrição)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group--span-4">
+                                    <label for="pacObsFinanceiras">Observações Financeiras</label>
+                                    <textarea class="input textarea campo-edita" id="pacObsFinanceiras" name="observacoes_financeiras" placeholder="OBSERVAÇÕES SOBRE CONDIÇÕES DE PAGAMENTO, ACORDOS OU NOTAS FINANCEIRAS..." disabled></textarea>
+                                </div>
+                            </div>
+
+                            <!-- PAINEL COMPLEMENTAR DE CARTÃO DE CRÉDITO E PARCELAMENTO -->
+                            <div class="credito-panel-box is-collapsed" id="creditoPanelBox">
+                                <h3 class="subsection-title"><i class="fa-solid fa-credit-card"></i> Dados para Pagamento em Crédito e Parcelamento</h3>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group form-group--span-2">
+                                        <label for="cartaoNumero">Número do Cartão de Crédito</label>
+                                        <div class="input-card-wrapper">
+                                            <input type="text" class="input campo-edita" id="cartaoNumero" name="cartao_numero" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" oninput="detectCardBrand(this.value)" disabled>
+                                            <div class="card-brands-display" id="cardBrandsDisplay">
+                                                <i class="fa-solid fa-credit-card brand-icon" data-brand="default"></i>
+                                            </div>
+                                        </div>
+                                        <small class="field-hint" id="cardBrandName">Bandeira detectada automaticamente</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cartaoTitular">Titular do Cartão</label>
+                                        <input type="text" class="input campo-edita" id="cartaoTitular" name="cartao_titular" placeholder="NOME COMO NO CARTÃO" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cartaoDocumento">CPF/CNPJ do Titular</label>
+                                        <input type="text" class="input campo-edita" id="cartaoDocumento" name="cartao_documento" placeholder="000.000.000-00" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cartaoValidade">Validade (MM/AA)</label>
+                                        <input type="text" class="input campo-edita" id="cartaoValidade" name="cartao_validade" placeholder="MM/AA" maxlength="5" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cartaoCvv">CVV (Código de Segurança)</label>
+                                        <input type="text" class="input campo-edita" id="cartaoCvv" name="cartao_cvv" placeholder="123" maxlength="4" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="valorConsulta">Valor da Consulta / Procedimento</label>
+                                        <input type="text" class="input campo-edita" id="valorConsulta" name="valor_base" inputmode="numeric" placeholder="R$ 0,00" value="R$ 0,00" oninput="calculateInstallments()" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="parcelas">Número de Parcelas</label>
+                                        <select class="input campo-edita" id="parcelas" name="parcelas" onchange="calculateInstallments()" disabled>
+                                            <option value="1">1x (À vista)</option>
+                                            <option value="2">2x</option>
+                                            <option value="3">3x</option>
+                                            <option value="4">4x</option>
+                                            <option value="5">5x</option>
+                                            <option value="6">6x</option>
+                                            <option value="12">12x</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="installment-summary" id="installmentSummary">
+                                    <div class="summary-item">
+                                        <span>Valor por Parcela:</span>
+                                        <strong id="valorParcelaDisplay">R$ 0,00</strong>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Total Calculado:</span>
+                                        <strong id="valorTotalResumo">R$ 0,00</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ABA 08 — CONTROLE INTERNO -->
+                        <section class="tab-content" id="tab8" role="tabpanel" aria-labelledby="tab8-button" hidden>
+                            <h2 class="section-title"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Aba 08 — Controle Interno e Auditoria do Cadastro</h2>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="pacDataCad">Data do Cadastro</label>
+                                    <input type="datetime-local" class="input" id="pacDataCad" name="data_cadastro" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacUserCad">Usuário Cadastrador</label>
+                                    <input type="text" class="input" id="pacUserCad" name="usuario_cadastro" value="ADMIN (Dra. Ana)" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacUltAtu">Última Atualização</label>
+                                    <input type="datetime-local" class="input" id="pacUltAtu" name="ultima_atualizacao" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pacStatus">Status do Cadastro</label>
+                                    <select class="input campo-edita" id="pacStatus" name="status" disabled>
                                         <option value="A">Ativo</option>
                                         <option value="I">Inativo</option>
-                                    </select></div>
-                                <div class="form-group form-group--span-2"><label for="pacObsGeral">Observações
-                                        gerais</label><textarea class="input textarea campo-edita" id="pacObsGeral"
-                                        name="observacoes_gerais" placeholder="OBSERVAÇÕES INTERNAS"
-                                        disabled></textarea></div>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group--span-4">
+                                    <label for="pacObsGeral">Observações Gerais e Notas de Controle Interno</label>
+                                    <textarea class="input textarea campo-edita" id="pacObsGeral" name="observacoes_gerais" placeholder="OBSERVAÇÕES INTERNAS DE USO EXCLUSIVO DA EQUIPE..." disabled></textarea>
+                                </div>
                             </div>
                         </section>
 
-                        <section class="tab-content" id="tab8" role="tabpanel" aria-labelledby="tab8-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-paperclip" aria-hidden="true"></i> Anexos
-                            </h2>
+                        <!-- ABA 09 — DOCUMENTOS E ANEXOS -->
+                        <section class="tab-content" id="tab9" role="tabpanel" aria-labelledby="tab9-button" hidden>
+                            <h2 class="section-title"><i class="fa-solid fa-paperclip" aria-hidden="true"></i> Aba 09 — Documentos e Anexos Digitais</h2>
+                            
                             <label class="anexo-drop" id="dropZone" for="anexoInput">
                                 <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
                                 <span>Arraste arquivos aqui ou clique para selecionar</span>
-                                <small>PDF, JPG, PNG, DOC e DOCX — máximo de 10 MB por arquivo.</small>
-                                <input type="file" id="anexoInput" name="anexos" multiple
-                                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" hidden>
+                                <small>Formatos permitidos: PDF, JPG, PNG, DOC e DOCX — Máximo 10 MB por arquivo.</small>
+                                <input type="file" id="anexoInput" name="anexos" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" hidden>
                             </label>
+                            
                             <div class="anexo-lista" id="anexoLista" aria-live="polite">
-                                <p class="anexo-vazio">Nenhum documento anexado.</p>
+                                <p class="anexo-vazio">Nenhum documento anexado a este cadastro.</p>
                             </div>
                         </section>
 
-                        <section class="tab-content" id="tab9" role="tabpanel" aria-labelledby="tab9-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-                                Privacidade e LGPD</h2>
+                        <!-- ABA 10 — LGPD / AUTORIZAÇÕES -->
+                        <section class="tab-content" id="tab10" role="tabpanel" aria-labelledby="tab10-button" hidden>
+                            <h2 class="section-title"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Aba 10 — Termos de Consentimento LGPD (Lei 13.709/2018) e Assinatura Digital</h2>
+                            
                             <div class="lgpd-list">
-                                <label class="check-row" for="lgpdAceite"><input type="checkbox" class="campo-edita"
-                                        id="lgpdAceite" name="lgpd_aceite" disabled><span><strong>Aceite LGPD</strong> —
-                                        Concordo com o tratamento dos meus dados pessoais conforme a Lei
-                                        13.709/2018.</span></label>
-                                <label class="check-row" for="lgpdWhats"><input type="checkbox" class="campo-edita"
-                                        id="lgpdWhats" name="autoriza_whatsapp" disabled><span><strong>Autoriza
-                                            WhatsApp</strong> — Permito mensagens de lembretes e
-                                        comunicados.</span></label>
-                                <label class="check-row" for="lgpdEmail"><input type="checkbox" class="campo-edita"
-                                        id="lgpdEmail" name="autoriza_email" disabled><span><strong>Autoriza
-                                            e-mail</strong> — Permito e-mails informativos e resultados de
-                                        exames.</span></label>
-                                <label class="check-row" for="lgpdMarketing"><input type="checkbox" class="campo-edita"
-                                        id="lgpdMarketing" name="autoriza_marketing" disabled><span><strong>Autoriza
-                                            marketing</strong> — Permito comunicações promocionais e
-                                        novidades.</span></label>
-                                <div class="lgpd-item"><label for="assinaturaCanvas">Assinatura digital</label><canvas
-                                        id="assinaturaCanvas" width="600" height="150"
-                                        aria-label="Área para assinatura digital"></canvas>
-                                    <div class="assinatura-btns"><button type="button"
-                                            class="btn btn-cancelar campo-edita" onclick="limparAssinatura()"
-                                            disabled>Limpar</button><button type="button"
-                                            class="btn btn-gravar campo-edita" onclick="salvarAssinatura()"
-                                            disabled>Salvar assinatura</button></div>
+                                <label class="check-row" for="lgpdAceite">
+                                    <input type="checkbox" class="campo-edita" id="lgpdAceite" name="lgpd_aceite" disabled>
+                                    <span><strong>Termo de Aceite LGPD *</strong> — Declaro que concordo com a coleta e o tratamento dos meus dados pessoais e dados sensíveis de saúde para fins exclusivamente assistenciais e regulatórios, nos termos da Lei nº 13.709/2018.</span>
+                                </label>
+
+                                <label class="check-row" for="lgpdWhats">
+                                    <input type="checkbox" class="campo-edita" id="lgpdWhats" name="autoriza_whatsapp" disabled>
+                                    <span><strong>Comunicação via WhatsApp</strong> — Autorizo o envio de lembretes de consultas, orientações de exames e avisos da clínica pelo WhatsApp.</span>
+                                </label>
+
+                                <label class="check-row" for="lgpdEmail">
+                                    <input type="checkbox" class="campo-edita" id="lgpdEmail" name="autoriza_email" disabled>
+                                    <span><strong>Comunicação via E-mail</strong> — Autorizo o recebimento de resultados de exames, laudos e receitas em meu e-mail.</span>
+                                </label>
+
+                                <label class="check-row" for="lgpdMarketing">
+                                    <input type="checkbox" class="campo-edita" id="lgpdMarketing" name="autoriza_marketing" disabled>
+                                    <span><strong>Comunicação Institucional / Campanhas de Saúde</strong> — Autorizo mensagens sobre campanhas de prevenção e novidades da clínica.</span>
+                                </label>
+
+                                <div class="lgpd-item">
+                                    <label for="assinaturaCanvas">Assinatura Digital do Paciente / Responsável Legal</label>
+                                    <p class="field-hint">Utilize o mouse ou a tela sensível ao toque para coletar a assinatura manuscrita digitalizada.</p>
+                                    <canvas id="assinaturaCanvas" width="600" height="150" aria-label="Área para coleta de assinatura digital manuscrita"></canvas>
+                                    
+                                    <div class="assinatura-btns">
+                                        <button type="button" class="btn btn-cancelar campo-edita" onclick="limparAssinatura()" disabled>
+                                            <i class="fa-solid fa-eraser"></i> Limpar Assinatura
+                                        </button>
+                                        <button type="button" class="btn btn-gravar campo-edita" onclick="salvarAssinatura()" disabled>
+                                            <i class="fa-solid fa-signature"></i> Confirmar Assinatura
+                                        </button>
+                                    </div>
+                                    <small class="field-hint" id="signatureMetadataHint">Evidência de consentimento gravada com timestamp e algoritmo de integridade HASH SHA-256 no backend.</small>
                                 </div>
                             </div>
                         </section>
 
-                        <section class="tab-content" id="tab10" role="tabpanel" aria-labelledby="tab10-button" hidden>
-                            <h2 class="section-title"><i class="fa-solid fa-file-medical" aria-hidden="true"></i> Outros
-                                documentos</h2>
+                        <!-- ABA 11 — OUTROS DADOS / AÇÕES CLÍNICAS -->
+                        <section class="tab-content" id="tab11" role="tabpanel" aria-labelledby="tab11-button" hidden>
+                            <h2 class="section-title"><i class="fa-solid fa-stethoscope" aria-hidden="true"></i> Aba 11 — Documentos Rápidos e Integração com Prontuário (PEP)</h2>
+                            
                             <div class="outros-grid">
-                                <button type="button" class="outro-card campo-edita" onclick="emitirAtestado()"
-                                    disabled><span class="outro-icon"><i class="fa-solid fa-file-medical"
-                                            aria-hidden="true"></i></span><span class="outro-text"><strong>Atestado
-                                            médico</strong><span>Emitir atestado com CID para paciente e
-                                            acompanhante.</span></span></button>
-                                <button type="button" class="outro-card campo-edita" onclick="emitirPedidoExames()"
-                                    disabled><span class="outro-icon"><i class="fa-solid fa-flask"
-                                            aria-hidden="true"></i></span><span class="outro-text"><strong>Pedido de
-                                            exames</strong><span>Emitir pedido com assinatura digital
-                                            integrada.</span></span></button>
-                                <button type="button" class="outro-card campo-edita" onclick="emitirReceita()"
-                                    disabled><span class="outro-icon"><i class="fa-solid fa-prescription-bottle-medical"
-                                            aria-hidden="true"></i></span><span class="outro-text"><strong>Receita
-                                            médica</strong><span>Emitir receituário com CRM, especialidade e assinatura
-                                            digital.</span></span></button>
-                                <button type="button" class="outro-card campo-edita" onclick="verHistorico()"
-                                    disabled><span class="outro-icon"><i class="fa-solid fa-clock-rotate-left"
-                                            aria-hidden="true"></i></span><span class="outro-text"><strong>Histórico do
-                                            paciente</strong><span>Visualizar alterações com data, hora e
-                                            usuário.</span></span></button>
+                                <button type="button" class="outro-card campo-edita" onclick="emitirAtestado()" disabled>
+                                    <span class="outro-icon"><i class="fa-solid fa-file-medical" aria-hidden="true"></i></span>
+                                    <span class="outro-text">
+                                        <strong>Atestado Médico</strong>
+                                        <span>Emissão de atestados com código CID-10, período de afastamento e assinatura digital.</span>
+                                    </span>
+                                </button>
+
+                                <button type="button" class="outro-card campo-edita" onclick="emitirPedidoExames()" disabled>
+                                    <span class="outro-icon"><i class="fa-solid fa-vial" aria-hidden="true"></i></span>
+                                    <span class="outro-text">
+                                        <strong>Pedido de Exames</strong>
+                                        <span>Solicitação de exames laboratoriais e de imagem com integração para guias TUSS.</span>
+                                    </span>
+                                </button>
+
+                                <button type="button" class="outro-card campo-edita" onclick="emitirReceita()" disabled>
+                                    <span class="outro-icon"><i class="fa-solid fa-prescription-bottle-medical" aria-hidden="true"></i></span>
+                                    <span class="outro-text">
+                                        <strong>Receita Médica (Receituário)</strong>
+                                        <span>Prescrição de medicamentos simples, controlados e de uso contínuo com CRM/UF.</span>
+                                    </span>
+                                </button>
+
+                                <button type="button" class="outro-card campo-edita" onclick="verHistorico()" disabled>
+                                    <span class="outro-icon"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i></span>
+                                    <span class="outro-text">
+                                        <strong>Histórico de Auditoria do Paciente</strong>
+                                        <span>Rastreabilidade completa de todas as alterações feitas no cadastro com data, hora e usuário.</span>
+                                    </span>
+                                </button>
                             </div>
                         </section>
                     </form>
                 </section>
             </div>
 
-            <footer class="footer">© 2026 GM4med — Intelligent Health System. Todos os direitos reservados.</footer>
+            <footer class="footer">© 2026 GM4med — Intelligent Health System. Todos os direitos reservados. Conformidade com LGPD & CFM.</footer>
         </main>
     </div>
 
+    <!-- MODAIS DO SISTEMA -->
+
+    <!-- MODAL DE HISTÓRICO / AUDITORIA -->
     <div class="modal" id="modalHistorico" role="dialog" aria-modal="true" aria-labelledby="modalHistoricoTitle" hidden>
-        <div class="modal-content">
+        <div class="modal-content modal-content--wide">
             <header class="modal-header">
-                <h2 id="modalHistoricoTitle"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Histórico
-                    de alterações</h2><button type="button" class="modal-close" onclick="fecharModal('modalHistorico')"
-                    aria-label="Fechar histórico"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                <h2 id="modalHistoricoTitle"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Log de Auditoria do Registro</h2>
+                <button type="button" class="modal-close" onclick="fecharModal('modalHistorico')" aria-label="Fechar histórico">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
             </header>
             <div class="modal-body" id="historicoConteudo">
-                <p class="historico-vazio">Nenhuma alteração registrada.</p>
+                <p class="historico-vazio">Nenhuma alteração registrada até o momento.</p>
             </div>
         </div>
     </div>
-    <div class="modal" id="modalWebcam" role="dialog" aria-modal="true" aria-labelledby="modalWebcamTitle">
+
+    <!-- MODAL DA WEBCAM -->
+    <div class="modal" id="modalWebcam" role="dialog" aria-modal="true" aria-labelledby="modalWebcamTitle" hidden>
         <div class="modal-content modal-content--wide">
             <header class="modal-header">
                 <h2 id="modalWebcamTitle">
-                    <i class="fa-solid fa-camera" aria-hidden="true"></i>
-                    Capturar foto
+                    <i class="fa-solid fa-camera" aria-hidden="true"></i> Capturar Foto do Paciente
                 </h2>
-
                 <button type="button" class="modal-close" onclick="fecharWebcam()" aria-label="Fechar câmera">
                     <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                 </button>
             </header>
 
             <div class="modal-body">
-                <video id="webcamVideo" autoplay muted playsinline aria-label="Visualização da câmera"></video>
-
+                <video id="webcamVideo" autoplay muted playsinline aria-label="Visualização em tempo real da câmera"></video>
                 <canvas id="webcamCanvas" hidden></canvas>
 
                 <div class="modal-actions">
                     <button type="button" class="btn btn-gravar" onclick="capturarFoto()">
-                        <i class="fa-solid fa-camera" aria-hidden="true"></i>
-                        Capturar
+                        <i class="fa-solid fa-camera" aria-hidden="true"></i> Capturar Foto
                     </button>
-
                     <button type="button" class="btn btn-cancelar" onclick="fecharWebcam()">
                         Cancelar
                     </button>
@@ -477,25 +702,69 @@
         </div>
     </div>
 
+    <!-- MODAL DE BUSCA DE PACIENTE -->
     <div class="modal" id="modalBusca" role="dialog" aria-modal="true" aria-labelledby="modalBuscaTitle" hidden>
-        <div class="modal-content">
+        <div class="modal-content modal-content--wide">
             <header class="modal-header">
-                <h2 id="modalBuscaTitle"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Buscar paciente
-                </h2><button type="button" class="modal-close" onclick="fecharModal('modalBusca')"
-                    aria-label="Fechar busca"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                <h2 id="modalBuscaTitle"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Localizar Paciente no Sistema</h2>
+                <button type="button" class="modal-close" onclick="fecharModal('modalBusca')" aria-label="Fechar busca">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
             </header>
             <div class="modal-body">
-                <div class="busca-filtros"><label class="sr-only" for="buscaTermo">Termo de busca</label><input
-                        type="search" class="input" id="buscaTermo" placeholder="Nome, CPF, código ou telefone"><button
-                        type="button" class="btn btn-buscar" onclick="executarBusca()"><i class="fa-solid fa-search"
-                            aria-hidden="true"></i> Buscar</button></div>
+                <div class="busca-filtros">
+                    <label class="sr-only" for="buscaTermo">Digite o termo de busca</label>
+                    <input type="search" class="input" id="buscaTermo" placeholder="Digite o Nome completo, CPF, Código do Paciente ou Telefone..." onkeyup="if(event.key==='Enter') executarBusca()">
+                    <button type="button" class="btn btn-buscar" onclick="executarBusca()">
+                        <i class="fa-solid fa-search" aria-hidden="true"></i> Pesquisar
+                    </button>
+                </div>
                 <div class="busca-resultados" id="buscaResultados" aria-live="polite">
-                    <p class="busca-vazio">Digite um termo para buscar.</p>
+                    <p class="busca-vazio">Digite um termo acima e clique em Pesquisar.</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- MODAL DE CPF DUPLICADO -->
+    <div class="modal" id="modalCpfDuplicado" role="dialog" aria-modal="true" aria-labelledby="modalCpfDupTitle" hidden>
+        <div class="modal-content">
+            <header class="modal-header modal-header--warning">
+                <h2 id="modalCpfDupTitle"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Paciente Já Cadastrado</h2>
+                <button type="button" class="modal-close" onclick="fecharModal('modalCpfDuplicado')" aria-label="Fechar alerta">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="modal-body">
+                <p id="cpfDuplicadoMensagem">Já existe um paciente cadastrado com este CPF no sistema.</p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-novo" id="btnAbrirExistente">
+                        <i class="fa-solid fa-folder-open"></i> Abrir Cadastro Existente
+                    </button>
+                    <button type="button" class="btn btn-cancelar" onclick="fecharModal('modalCpfDuplicado')">
+                        Corrigir CPF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE PRÉ-VISUALIZAÇÃO DE ANEXO -->
+    <div class="modal" id="modalPreviewAnexo" role="dialog" aria-modal="true" aria-labelledby="modalPreviewTitle" hidden>
+        <div class="modal-content modal-content--wide">
+            <header class="modal-header">
+                <h2 id="modalPreviewTitle"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Visualizar Anexo</h2>
+                <button type="button" class="modal-close" onclick="fecharModal('modalPreviewAnexo')" aria-label="Fechar visualizador">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="modal-body" id="previewAnexoConteudo">
+                <!-- Conteúdo renderizado dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT JS PRINCIPAL -->
     <script src="cadastro-paciente.js" defer></script>
 </body>
 
