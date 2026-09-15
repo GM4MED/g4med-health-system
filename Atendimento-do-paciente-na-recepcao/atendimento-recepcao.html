@@ -45,19 +45,16 @@
     </style>
     <script>
         (function () {
-            // Design-ui pages are single compositions, so the whole body is editable.
             function markEditable() {
                 document.body.classList.add('artifact-editable');
             }
 
-            // Credit badge with idle-fade. Hover devices only.
             function initChromeUI() {
                 if (!matchMedia('(hover: hover)').matches) return;
 
                 var credit = document.createElement('div');
                 credit.className = 'design-ui-credit';
                 credit.setAttribute('aria-hidden', 'true');
-                // credit.innerHTML = '\u{1F49C} by ClickUp Brain';
                 document.body.appendChild(credit);
 
                 var timer = null;
@@ -87,8 +84,14 @@
     <!-- /skill:chrome -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Tela de atendimento do paciente na recepção do GM4med">
-    <title>Atendimento na Recepção | GM4med</title>
+    <meta name="description" content="Janela de atendimento do paciente na recepção do GM4Med - Intelligent Health System">
+    <title>Atendimento na Recepção | GM4Med</title>
+    
+    <!-- Tipografia oficial GM4Med -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="atendimento-recepcao.css">
 </head>
 
@@ -96,7 +99,7 @@
     <div class="app">
         <header class="topbar">
             <div class="brand">
-                <img id="logoClinica" class="logo-img" src="logo.png11.png" alt="Logo da Clínica"
+                <img id="logoClinica" class="logo-img" src="logo.png11.png" alt="Logo da Clínica GM4Med"
                     style="height: 40px; width: auto; object-fit: contain;">
                 <div class="mark" aria-hidden="true">GM</div>
                 <div>
@@ -105,22 +108,37 @@
                 </div>
             </div>
 
-            <div class="live" aria-label="Status da operação">
-                <span aria-hidden="true"></span>
+            <div class="live" aria-label="Status da operação em tempo real">
+                <span aria-hidden="true" class="live-dot"></span>
                 Operação ativa · <b id="todayLabel">hoje</b>
             </div>
 
-            <div class="toolbar" role="toolbar" aria-label="Ações do atendimento">
-                <button id="btnNovo" class="btn primary" type="button">Novo</button>
-                <button id="btnSalvar" class="btn success" type="button" disabled>Gravar</button>
-                <button id="btnEditar" class="btn warning" type="button" disabled>Editar</button>
-                <button id="btnExcluir" class="btn danger" type="button" disabled>Excluir</button>
-                <button id="btnImprimir" class="btn dark" type="button" disabled>Imprimir ficha</button>
+            <div class="toolbar" role="toolbar" aria-label="Barra de ações da recepção">
+                <button id="btnNovo" class="btn primary" type="button" title="Iniciar novo atendimento (Alt+N)">
+                    <span class="btn-icon">＋</span> Novo
+                </button>
+                <button id="btnSalvar" class="btn success" type="button" disabled title="Gravar atendimento atual (Ctrl+S)">
+                    <span class="btn-icon">✓</span> Gravar
+                </button>
+                <button id="btnEditar" class="btn warning" type="button" disabled title="Editar atendimento selecionado">
+                    <span class="btn-icon">✎</span> Editar
+                </button>
+                <button id="btnBuscar" class="btn quiet" type="button" title="Buscar paciente ou atendimento (Alt+B)">
+                    <span class="btn-icon">🔍</span> Buscar
+                </button>
+                <button id="btnExcluir" class="btn danger" type="button" disabled title="Excluir atendimento selecionado">
+                    <span class="btn-icon">🗑</span> Excluir
+                </button>
+                <button id="btnImprimir" class="btn dark" type="button" disabled title="Imprimir ficha de atendimento">
+                    <span class="btn-icon">🖨</span> Imprimir ficha
+                </button>
                 <button id="btnAnterior" class="btn icon" type="button" disabled
-                    aria-label="Atendimento anterior">‹</button>
+                    aria-label="Atendimento anterior na fila" title="Atendimento anterior">‹</button>
                 <button id="btnProximo" class="btn icon" type="button" disabled
-                    aria-label="Próximo atendimento">›</button>
-                <button id="btnSair" class="btn quiet" type="button">Voltar</button>
+                    aria-label="Próximo atendimento na fila" title="Próximo atendimento">›</button>
+                <button id="btnSair" class="btn quiet" type="button" title="Voltar ao menu principal">
+                    <span class="btn-icon">⎋</span> Sair
+                </button>
             </div>
         </header>
 
@@ -129,191 +147,249 @@
                 <div class="head">
                     <div>
                         <h2 id="formTitle">Ficha de atendimento</h2>
-                        <p id="formState">Selecione um registro ou inicie um novo atendimento.</p>
+                        <p id="formState">Selecione um registro na fila ou inicie um novo atendimento.</p>
                     </div>
-                    <span id="recordId" class="record" aria-label="Identificador do registro">--</span>
+                    <div class="record-badge-wrap">
+                        <span class="record-label">Código ID</span>
+                        <span id="recordId" class="record" aria-label="Identificador do registro">--</span>
+                    </div>
                 </div>
 
-                <nav class="tabs" role="tablist" aria-label="Etapas do atendimento">
+                <nav class="tabs" role="tablist" aria-label="Etapas do cadastro de atendimento">
                     <button id="tabPaciente" class="tab active" type="button" role="tab" aria-selected="true"
-                        aria-controls="dados-paciente">1. Dados do paciente</button>
+                        aria-controls="dados-paciente" tabindex="0">1. Dados do paciente</button>
                     <button id="tabAtendimento" class="tab" type="button" role="tab" aria-selected="false"
-                        aria-controls="dados-atendimento">2. Dados do atendimento</button>
+                        aria-controls="dados-atendimento" tabindex="-1">2. Dados do atendimento</button>
                 </nav>
 
                 <div class="content">
-                    <form id="atendimentoForm" novalidate>
+                    <form id="atendimentoForm" novalidate autocomplete="off">
+                        <!-- ABA I: DADOS DO PACIENTE -->
                         <section id="dados-paciente" class="tab-content active" role="tabpanel"
                             aria-labelledby="tabPaciente">
                             <div class="grid">
-                                <div class="field s2">
-                                    <label for="pacienteId">Código de identificação</label>
-                                    <input id="pacienteId" readonly placeholder="Automático">
-                                </div>
                                 <div class="field s3">
-                                    <label for="cpf">CPF</label>
+                                    <label for="pacienteId">Código / ID do paciente</label>
+                                    <input id="pacienteId" readonly placeholder="Automático (ex: PAC-00001)" tabIndex="-1">
+                                    <span class="field-hint">Gerado automaticamente pelo sistema</span>
+                                </div>
+                                
+                                <div class="field s3">
+                                    <label for="cpf">CPF <span class="required-asterisk">*</span></label>
                                     <input id="cpf" disabled maxlength="14" inputmode="numeric"
-                                        placeholder="000.000.000-00">
+                                        placeholder="000.000.000-00" aria-required="true" aria-describedby="errorCpf">
+                                    <span id="errorCpf" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
-                                <div class="field s7">
-                                    <label for="nomePaciente">Nome do paciente</label>
+
+                                <div class="field s6">
+                                    <label for="nomePaciente">Nome completo do paciente <span class="required-asterisk">*</span></label>
                                     <input id="nomePaciente" disabled required maxlength="120"
-                                        placeholder="Nome completo do paciente">
+                                        placeholder="Digite o nome completo" aria-required="true" aria-describedby="errorNome">
+                                    <span id="errorNome" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
+
                                 <div class="field s3">
-                                    <label for="dataNasc">Data de nascimento</label>
-                                    <input id="dataNasc" type="date" disabled>
+                                    <label for="dataNasc">Data de nascimento <span class="required-asterisk">*</span></label>
+                                    <input id="dataNasc" type="date" disabled aria-required="true" aria-describedby="errorDataNasc">
+                                    <span id="errorDataNasc" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
+
                                 <div class="field s3">
                                     <label for="celular">Telefone celular</label>
                                     <input id="celular" disabled maxlength="15" inputmode="tel"
-                                        placeholder="(00) 00000-0000">
+                                        placeholder="(00) 00000-0000" aria-describedby="errorCelular">
+                                    <span id="errorCelular" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
+
                                 <div class="field s3">
-                                    <label for="convenio">Convênio</label>
-                                    <select id="convenio" disabled>
-                                        <option value="">Selecione...</option>
-                                        <option>Particular</option>
-                                        <option>Unimed</option>
-                                        <option>Amil</option>
-                                        <option>Bradesco Saúde</option>
-                                        <option>SulAmérica</option>
+                                    <label for="convenio">Convênio <span class="required-asterisk">*</span></label>
+                                    <select id="convenio" disabled aria-required="true" aria-describedby="errorConvenio">
+                                        <option value="">Selecione o convênio...</option>
+                                        <option value="Particular">Particular</option>
+                                        <option value="Unimed">Unimed</option>
+                                        <option value="Amil">Amil</option>
+                                        <option value="Bradesco Saúde">Bradesco Saúde</option>
+                                        <option value="SulAmérica">SulAmérica</option>
+                                        <option value="Porto Seguro Saúde">Porto Seguro Saúde</option>
+                                        <option value="NotreDame Intermédica">NotreDame Intermédica</option>
+                                        <option value="CASSI">CASSI</option>
+                                        <option value="Outro">Outro Convênio</option>
                                     </select>
+                                    <span id="errorConvenio" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
-                                <div class="field s2">
+
+                                <div class="field s3">
                                     <label for="carteirinha">Número da carteirinha</label>
-                                    <input id="carteirinha" disabled>
+                                    <input id="carteirinha" disabled placeholder="Ex: 00123456789" aria-describedby="errorCarteirinha">
+                                    <span id="errorCarteirinha" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
-                                <div class="field s1">
-                                    <label for="validadeConvenio">Validade</label>
-                                    <input id="validadeConvenio" disabled maxlength="5" placeholder="MM/AA">
+
+                                <div class="field s3">
+                                    <label for="validadeConvenio">Validade da carteirinha</label>
+                                    <div class="input-with-badge">
+                                        <input id="validadeConvenio" type="month" disabled aria-describedby="errorValidadeConvenio">
+                                        <span id="badgeCarteirinhaStatus" class="card-status-badge hidden" aria-live="polite"></span>
+                                    </div>
+                                    <span id="errorValidadeConvenio" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
                             </div>
                         </section>
 
+                        <!-- ABA II: DADOS DO ATENDIMENTO -->
                         <section id="dados-atendimento" class="tab-content" role="tabpanel"
                             aria-labelledby="tabAtendimento">
                             <div class="grid">
                                 <div class="field s3">
-                                    <label for="dataAtendimento">Data do atendimento</label>
-                                    <input id="dataAtendimento" type="date" disabled required>
+                                    <label for="dataAtendimento">Data do atendimento <span class="required-asterisk">*</span></label>
+                                    <input id="dataAtendimento" type="date" disabled required aria-required="true" aria-describedby="errorDataAtendimento">
+                                    <span id="errorDataAtendimento" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
+
                                 <div class="field s3">
-                                    <label for="horaChegada">Horário de chegada</label>
-                                    <input id="horaChegada" type="time" disabled required>
+                                    <label for="horaChegada">Horário de chegada <span class="required-asterisk">*</span></label>
+                                    <input id="horaChegada" type="time" disabled required aria-required="true" aria-describedby="errorHoraChegada">
+                                    <span id="errorHoraChegada" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
+
                                 <div class="field s3">
-                                    <label for="tipoAtendimento">Tipo de atendimento</label>
-                                    <select id="tipoAtendimento" disabled required>
-                                        <option value="">Selecione...</option>
-                                        <option>Consulta</option>
-                                        <option>Retorno</option>
-                                        <option>Exame</option>
-                                        <option>Procedimento</option>
-                                        <option>Teleconsulta</option>
-                                        <option>Urgência</option>
-                                        <option>Encaixe</option>
+                                    <label for="tipoAtendimento">Tipo de atendimento <span class="required-asterisk">*</span></label>
+                                    <select id="tipoAtendimento" disabled required aria-required="true" aria-describedby="errorTipoAtendimento">
+                                        <option value="">Selecione o tipo...</option>
+                                        <option value="Consulta">1. Consulta</option>
+                                        <option value="Retorno">2. Retorno</option>
+                                        <option value="Exame">3. Exame</option>
+                                        <option value="Procedimento">4. Procedimento</option>
+                                        <option value="Teleconsulta">5. Teleconsulta</option>
+                                        <option value="Urgência">6. Urgência</option>
+                                        <option value="Encaixe">7. Encaixe</option>
                                     </select>
+                                    <span id="errorTipoAtendimento" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
+
                                 <div class="field s3">
-                                    <label for="procedimento">Exame ou procedimento</label>
+                                    <label for="procedimento">Exame / Procedimento agendado</label>
                                     <input id="procedimento" disabled maxlength="120"
-                                        placeholder="Informe o exame ou procedimento">
+                                        placeholder="Localizar ou digitar exame/procedimento...">
                                 </div>
+
                                 <div class="field s4">
-                                    <label for="medico">Médico</label>
-                                    <select id="medico" disabled required>
+                                    <label for="medico">Médico responsável <span class="required-asterisk">*</span></label>
+                                    <select id="medico" disabled required aria-required="true" aria-describedby="errorMedico">
                                         <option value="">Selecione o médico...</option>
-                                        <option>Dr. Ricardo Silva</option>
-                                        <option>Dra. Ana Beatriz</option>
-                                        <option>Dr. Marcos Pereira</option>
+                                        <option value="Dr. Ricardo Silva">Dr. Ricardo Silva (Cardiologia)</option>
+                                        <option value="Dra. Ana Beatriz">Dra. Ana Beatriz (Clínica geral)</option>
+                                        <option value="Dr. Marcos Pereira">Dr. Marcos Pereira (Ortopedia)</option>
+                                        <option value="Dra. Camila Rocha">Dra. Camila Rocha (Pediatria)</option>
+                                        <option value="Dr. Fernando Costa">Dr. Fernando Costa (Dermatologia)</option>
                                     </select>
+                                    <span id="errorMedico" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
+
                                 <div class="field s4">
-                                    <label for="especialidade">Especialidade</label>
-                                    <input id="especialidade" readonly disabled
-                                        placeholder="Preenchida automaticamente">
+                                    <label for="especialidade">Especialidade médica</label>
+                                    <input id="especialidade" readonly disabled placeholder="Preenchida automaticamente">
                                 </div>
+
                                 <div class="field s2">
-                                    <label for="numeroSenha">Número da senha</label>
-                                    <input id="numeroSenha" readonly disabled placeholder="G-001">
+                                    <label for="numeroSenha">Senha de atendimento</label>
+                                    <input id="numeroSenha" readonly disabled placeholder="G-001" class="ticket-input">
                                 </div>
+
                                 <div class="field s2">
                                     <label for="prioridade">Prioridade</label>
                                     <select id="prioridade" disabled>
-                                        <option>Normal</option>
-                                        <option>Idoso</option>
-                                        <option>Gestante</option>
-                                        <option>PCD</option>
-                                        <option>Emergencial</option>
+                                        <option value="Normal">1. Normal</option>
+                                        <option value="Idoso">2. Idoso</option>
+                                        <option value="Gestante">3. Gestante</option>
+                                        <option value="PCD">4. PCD</option>
+                                        <option value="Emergencial">5. Emergencial</option>
                                     </select>
                                 </div>
+
                                 <div class="s12">
-                                    <h3 class="section-title">Confirmação de presença e checklist</h3>
+                                    <h3 class="section-title">Confirmação de presença e checklist da recepção</h3>
                                 </div>
+
                                 <fieldset class="s12 checklist-fieldset">
                                     <legend class="sr-only">Checklist da recepção</legend>
                                     <div class="checklist">
-                                        <label><input id="pacientePresente" type="checkbox" disabled>Paciente
-                                            presente</label>
-                                        <label><input id="docsConferidos" type="checkbox" disabled>Documentos
-                                            conferidos</label>
-                                        <label><input id="convenioValido" type="checkbox" disabled>Convênio
-                                            válido</label>
-                                        <label><input id="autorizacaoRealizada" type="checkbox" disabled>Autorização
-                                            realizada</label>
-                                        <label><input id="lgpdAceita" type="checkbox" disabled>Aceite da LGPD</label>
+                                        <label class="checkbox-card">
+                                            <input id="pacientePresente" type="checkbox" disabled>
+                                            <span class="checkbox-text">Paciente presente</span>
+                                        </label>
+                                        <label class="checkbox-card">
+                                            <input id="docsConferidos" type="checkbox" disabled>
+                                            <span class="checkbox-text">Documentos conferidos</span>
+                                        </label>
+                                        <label class="checkbox-card">
+                                            <input id="convenioValido" type="checkbox" disabled>
+                                            <span class="checkbox-text">Convênio válido</span>
+                                        </label>
+                                        <label class="checkbox-card">
+                                            <input id="autorizacaoRealizada" type="checkbox" disabled>
+                                            <span class="checkbox-text">Autorização realizada</span>
+                                        </label>
+                                        <label class="checkbox-card">
+                                            <input id="lgpdAceita" type="checkbox" disabled>
+                                            <span class="checkbox-text">Termo LGPD aceito</span>
+                                        </label>
                                     </div>
                                 </fieldset>
+
                                 <div class="field s12">
-                                    <label for="obsAtendimento">Observações</label>
+                                    <div class="label-with-counter">
+                                        <label for="obsAtendimento">Observações do atendimento</label>
+                                        <span id="obsCounter" class="char-counter">0 / 500</span>
+                                    </div>
                                     <textarea id="obsAtendimento" disabled maxlength="500"
-                                        placeholder="Observações relevantes sobre o atendimento..."></textarea>
+                                        placeholder="Digite aqui observações administrativas ou clínicas relevantes para este atendimento..."></textarea>
                                 </div>
                             </div>
                         </section>
 
                         <div class="actions">
                             <button id="btnLimpar" class="btn quiet" type="button" disabled>Limpar campos</button>
-                            <button id="btnAvancar" class="btn primary" type="button">Próxima etapa</button>
+                            <button id="btnAvancar" class="btn primary" type="button">Próxima etapa ›</button>
                         </div>
                     </form>
                 </div>
             </section>
 
+            <!-- PAINEL DA FILA DE ESPERA / BUSCA -->
             <section class="panel queue" aria-labelledby="queueTitle">
                 <div class="head queue-head">
                     <div>
-                        <h2 id="queueTitle">Fila de espera</h2>
-                        <p>Atendimentos previstos para hoje</p>
+                        <h2 id="queueTitle">Fila de espera & Atendimentos</h2>
+                        <p>Atendimentos previstos e registrados para hoje</p>
                     </div>
                     <div class="search">
-                        <label class="sr-only" for="inputBusca">Buscar atendimento</label>
-                        <input id="inputBusca" type="search" placeholder="Nome, CPF ou senha"
-                            aria-label="Buscar atendimento">
-                        <button id="btnBuscar" class="btn primary" type="button">Buscar</button>
+                        <label class="sr-only" for="inputBusca">Buscar paciente ou atendimento na fila</label>
+                        <input id="inputBusca" type="search" placeholder="Buscar por Nome, CPF, Senha ou ID..."
+                            aria-label="Buscar atendimento na fila">
                     </div>
                 </div>
-                <div class="summary" aria-label="Resumo da fila">
-                    <span><b id="waitingCount">0</b> aguardando</span>
-                    <span><b id="serviceCount">0</b> em atendimento</span>
-                    <span><b id="priorityCount">0</b> prioritários</span>
+
+                <div class="summary" aria-label="Resumo estatístico da fila">
+                    <span class="summary-pill"><b id="waitingCount">0</b> aguardando</span>
+                    <span class="summary-pill active-pill"><b id="serviceCount">0</b> em atendimento</span>
+                    <span class="summary-pill priority-pill"><b id="priorityCount">0</b> prioritários</span>
                 </div>
-                <div class="table-wrap" tabindex="0">
+
+                <div class="table-wrap" tabindex="0" aria-label="Tabela de atendimentos">
                     <table>
-                        <caption class="sr-only">Lista de atendimentos</caption>
+                        <caption class="sr-only">Lista de atendimentos na recepção</caption>
                         <thead>
                             <tr>
-                                <th>Senha</th>
-                                <th>Horário</th>
-                                <th>Paciente</th>
-                                <th>Tipo</th>
-                                <th>Médico</th>
-                                <th>Status</th>
+                                <th scope="col" style="width: 85px;">Senha</th>
+                                <th scope="col" style="width: 80px;">Horário</th>
+                                <th scope="col">Paciente / CPF</th>
+                                <th scope="col" style="width: 110px;">Tipo</th>
+                                <th scope="col">Médico</th>
+                                <th scope="col" style="width: 125px;">Status</th>
                             </tr>
                         </thead>
                         <tbody id="corpoTabelaAtendimentos" aria-live="polite">
-                            <!-- Registros injetados pelo JavaScript -->
+                            <!-- Registros injetados dinamicamente via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -321,7 +397,61 @@
         </main>
     </div>
 
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <!-- MODAL ACESSÍVEL: CONFIRMAÇÃO DE EXCLUSÃO -->
+    <div id="modalExcluir" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalExcluirTitle" aria-describedby="modalExcluirDesc">
+        <div class="modal-card">
+            <div class="modal-header modal-header-danger">
+                <span class="modal-icon">⚠️</span>
+                <h2 id="modalExcluirTitle">Confirmar Exclusão</h2>
+            </div>
+            <div class="modal-body">
+                <p id="modalExcluirDesc">Tem certeza de que deseja excluir este atendimento?</p>
+                <div id="modalExcluirDetails" class="modal-details-box"></div>
+                <p class="modal-warning-note">Esta ação registrará o cancelamento do registro e não poderá ser desfeita.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelarExclusao" class="btn quiet" type="button">Cancelar</button>
+                <button id="btnConfirmarExclusao" class="btn danger" type="button">Sim, excluir atendimento</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ACESSÍVEL: BUSCA AVANÇADA DE PACIENTES -->
+    <div id="modalBuscar" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalBuscarTitle">
+        <div class="modal-card modal-card-lg">
+            <div class="modal-header">
+                <h2>🔍 Pesquisar Paciente ou Atendimento</h2>
+                <button id="btnFecharModalBuscar" class="modal-close-btn" type="button" aria-label="Fechar busca">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-search-bar">
+                    <input id="inputBuscaModal" type="search" placeholder="Digite Nome, CPF, Código PAC, Senha ou Convênio..." aria-label="Digitar termo de busca">
+                </div>
+                <div class="modal-search-results table-wrap" tabindex="0">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Paciente</th>
+                                <th>CPF</th>
+                                <th>Convênio</th>
+                                <th>Data/Hora</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaResultadosBuscaModal">
+                            <!-- Resultados inseridos dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST DE NOTIFICAÇÃO ACESSÍVEL -->
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+    <!-- DOCUMENTO OFICIAL PARA IMPRESSÃO DA FICHA -->
     <section id="print-document" aria-label="Documento médico para impressão"></section>
 
     <script src="atendimento-recepcao.js"></script>
