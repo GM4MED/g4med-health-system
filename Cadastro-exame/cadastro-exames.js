@@ -1,560 +1,796 @@
-/* =============================================
-   CADASTRO DE EXAMES - SISTEMA GM4
-   JavaScript Funcional
-   Integração: HTML + CSS3 (Shadcn/UI + teal-600)
-   ============================================= */
+/* ==========================================================================
+   GM4Med — JANELA DE CADASTRO DE EXAMES
+   Lógica Front-End, Máquina de Estados, Validações de Saúde, Acessibilidade e API PEP
+   ========================================================================== */
 
-// =============================================
-// ESTADO GLOBAL
-// =============================================
-let exameAtual = null;
-let modoEdicao = false;
-let indiceAtual = -1;
+(function () {
+  'use strict';
 
-// Dados simulados (em produção, viriam do backend)
-let examesCadastrados = [
-    { id: '001', nome: 'HEMOGRAMA COMPLETO', categoria: '02', categoriaNome: '02 - Laboratório / Análises Clínicas', tipo: '01', tipoNome: '01 - Laboratorial', valorParticular: '45,00', valorConvenio: '40,00', custoInterno: '25,00', status: 'A' },
-    { id: '002', nome: 'RAIO-X DE TÓRAX', categoria: '03', categoriaNome: '03 - Diagnóstico por Imagem', tipo: '02', tipoNome: '02 - Imagem', valorParticular: '120,00', valorConvenio: '100,00', custoInterno: '60,00', status: 'A' },
-    { id: '003', nome: 'ULTRASSOM ABDOMINAL', categoria: '04', categoriaNome: '04 - Ultrassonografia', tipo: '03', tipoNome: '03 - Ultrassonografia', valorParticular: '250,00', valorConvenio: '220,00', custoInterno: '150,00', status: 'A' },
-    { id: '004', nome: 'ELETROCARDIOGRAMA', categoria: '01', categoriaNome: '01 - Cardiologia', tipo: '04', tipoNome: '04 - Cardiológico', valorParticular: '80,00', valorConvenio: '70,00', custoInterno: '40,00', status: 'A' },
-    { id: '005', nome: 'ECO DOPPLER VASCULAR', categoria: '05', categoriaNome: '05 - Vascular', tipo: '05', tipoNome: '05 - Vascular', valorParticular: '350,00', valorConvenio: '300,00', custoInterno: '200,00', status: 'I' },
-    { id: '006', nome: 'TOMOGRAFIA COMPUTADORIZADA', categoria: '03', categoriaNome: '03 - Diagnóstico por Imagem', tipo: '02', tipoNome: '02 - Imagem', valorParticular: '450,00', valorConvenio: '400,00', custoInterno: '280,00', status: 'A' },
-    { id: '007', nome: 'RESONÂNCIA MAGNÉTICA', categoria: '03', categoriaNome: '03 - Diagnóstico por Imagem', tipo: '02', tipoNome: '02 - Imagem', valorParticular: '800,00', valorConvenio: '700,00', custoInterno: '500,00', status: 'A' },
-    { id: '008', nome: 'ENDOSCOPIA DIGESTIVA', categoria: '10', categoriaNome: '10 - Endoscopia', tipo: '06', tipoNome: '06 - Endoscópico', valorParticular: '550,00', valorConvenio: '480,00', custoInterno: '320,00', status: 'A' },
-];
+  // --------------------------------------------------------------------------
+  // 1. BASE DE DADOS SIMULADA & ESTADO GLOBAL
+  // --------------------------------------------------------------------------
+  const BANCO_CONVENIOS = {
+    'CON-00001': { id: 'CON-00001', nome: 'UNIMED BRASIL', ans: '345678', cnpj: '45.231.890/0001-12', tel: '(11) 3214-5500', email: 'atendimento@unimed.com.br', status: 'A' },
+    'CON-00002': { id: 'CON-00002', nome: 'BRADESCO SAÚDE', ans: '123456', cnpj: '92.456.789/0001-34', tel: '(11) 4004-2700', email: 'credenciamento@bradescosaude.com.br', status: 'A' },
+    'CON-00003': { id: 'CON-00003', nome: 'AMIL ASSISTÊNCIA MÉDICA', ans: '987654', cnpj: '29.309.123/0001-56', tel: '(11) 3003-1333', email: 'operacional@amil.com.br', status: 'A' },
+    'CON-00004': { id: 'CON-00004', nome: 'SULAMÉRICA SAÚDE', ans: '554433', cnpj: '01.654.987/0001-89', tel: '(11) 4004-4444', email: 'contato@sulamerica.com.br', status: 'A' },
+    'CON-00005': { id: 'CON-00005', nome: 'POSTAL SAÚDE', ans: '112233', cnpj: '18.234.567/0001-90', tel: '(61) 3003-8000', email: 'contato@postalsaude.com.br', status: 'I' }
+  };
 
-// =============================================
-// INICIALIZAÇÃO
-// =============================================
-document.addEventListener('DOMContentLoaded', function () {
-    // Popular tabela inicial
-    popularTabela(examesCadastrados);
-
-    // Configurar event listeners dos botões
-    configurarBotoes();
-
-    // Configurar busca
-    configurarBusca();
-
-    // Configurar formulário
-    configurarFormulario();
-
-    // Gerar ID automático
-    gerarIdAutomatico();
-
-    console.log('Sistema de Cadastro de Exames inicializado com sucesso!');
-});
-
-// =============================================
-// FUNÇÃO DE ABAS (openTab)
-// =============================================
-function openTab(evt, tabName) {
-    // Esconde todas as abas
-    const tabContents = document.getElementsByClassName("tab-content");
-    for (let i = 0; i < tabContents.length; i++) {
-        tabContents[i].classList.remove("active");
+  let examesCadastrados = [
+    {
+      id: 'EXA-00001',
+      nome: 'HEMOGRAMA COMPLETO',
+      categoria: '02',
+      categoriaNome: '02 — Laboratório / Análises Clínicas',
+      tipo: '01',
+      tipoNome: '01 — Laboratorial',
+      convenio_vinculado_id: 'CON-00001',
+      preparo: 'JEJUM OBRIGATÓRIO DE 8 HORAS. EVITAR EXERCÍCIOS FÍSICOS INTENSOS NAS 24h ANTES DA COLETA.',
+      valorParticular: 'R$ 45,00',
+      valorConvenio: 'R$ 40,00',
+      custoInterno: 'R$ 25,00',
+      status: 'A',
+      dataCriacao: '10/01/2026 08:30',
+      usuarioCriacao: 'DRA. ANA PAULA',
+      dataAtualizacao: '15/02/2026 14:20',
+      usuarioAtualizacao: 'ADMIN'
+    },
+    {
+      id: 'EXA-00002',
+      nome: 'RAIO-X DE TÓRAX AP E PERFIL',
+      categoria: '03',
+      categoriaNome: '03 — Diagnóstico por Imagem',
+      tipo: '02',
+      tipoNome: '02 — Imagem',
+      convenio_vinculado_id: 'CON-00002',
+      preparo: 'NÃO REQUER JEJUM. REMOVER ADORNOS METÁLICOS DA REGIÃO TORÁCICA.',
+      valorParticular: 'R$ 120,00',
+      valorConvenio: 'R$ 100,00',
+      custoInterno: 'R$ 60,00',
+      status: 'A',
+      dataCriacao: '12/01/2026 09:15',
+      usuarioCriacao: 'DR. MARCOS',
+      dataAtualizacao: '12/01/2026 09:15',
+      usuarioAtualizacao: 'DR. MARCOS'
+    },
+    {
+      id: 'EXA-00003',
+      nome: 'ULTRASSOM ABDOMINAL TOTAL',
+      categoria: '04',
+      categoriaNome: '04 — Ultrassonografia',
+      tipo: '03',
+      tipoNome: '03 — Ultrassonografia',
+      convenio_vinculado_id: 'CON-00003',
+      preparo: 'JEJUM DE 6 HORAS. TOMAR 4 COPOS DE ÁGUA 1 HORA ANTES E NÃO URINAR.',
+      valorParticular: 'R$ 250,00',
+      valorConvenio: 'R$ 220,00',
+      custoInterno: 'R$ 150,00',
+      status: 'A',
+      dataCriacao: '15/01/2026 10:45',
+      usuarioCriacao: 'DRA. CAMILA',
+      dataAtualizacao: '20/02/2026 11:30',
+      usuarioAtualizacao: 'ADMIN'
+    },
+    {
+      id: 'EXA-00004',
+      nome: 'ELETROCARDIOGRAMA (ECG)',
+      categoria: '01',
+      categoriaNome: '01 — Cardiologia',
+      tipo: '04',
+      tipoNome: '04 — Cardiológico',
+      convenio_vinculado_id: 'CON-00004',
+      preparo: 'NÃO USAR CREMES OU LOÇÕES NO TÓRAX NO DIA DO EXAME.',
+      valorParticular: 'R$ 80,00',
+      valorConvenio: 'R$ 70,00',
+      custoInterno: 'R$ 40,00',
+      status: 'A',
+      dataCriacao: '18/01/2026 11:00',
+      usuarioCriacao: 'DR. ROBERTO',
+      dataAtualizacao: '18/01/2026 11:00',
+      usuarioAtualizacao: 'DR. ROBERTO'
+    },
+    {
+      id: 'EXA-00005',
+      nome: 'ECO DOPPLER VASCULAR MEMBROS INFERIORES',
+      categoria: '05',
+      categoriaNome: '05 — Vascular',
+      tipo: '05',
+      tipoNome: '05 — Vascular',
+      convenio_vinculado_id: '',
+      preparo: 'SEM PREPARO ESPECIAL NECESSÁRIO.',
+      valorParticular: 'R$ 350,00',
+      valorConvenio: 'R$ 0,00',
+      custoInterno: 'R$ 200,00',
+      status: 'I',
+      dataCriacao: '20/01/2026 15:30',
+      usuarioCriacao: 'ADMIN',
+      dataAtualizacao: '01/03/2026 16:00',
+      usuarioAtualizacao: 'ADMIN'
     }
+  ];
 
-    // Remove a classe active de todos os botões
-    const tabLinks = document.getElementsByClassName("tab-link");
-    for (let i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].classList.remove("active");
-    }
+  let estadoApp = 'NAVEGACAO'; // 'NAVEGACAO' | 'NOVO' | 'EDICAO'
+  let indiceAtual = 0;
+  let examePendenteExclusaoId = null;
 
-    // Mostra a aba atual e adiciona a classe active ao botão clicado
-    document.getElementById(tabName).classList.add("active");
-    evt.currentTarget.classList.add("active");
-}
+  // --------------------------------------------------------------------------
+  // 2. ELEMENTOS DO DOM
+  // --------------------------------------------------------------------------
+  const elForm = document.getElementById('exameForm');
+  const elExameId = document.getElementById('exameId');
+  const elNomeExame = document.getElementById('nomeExame');
+  const elCategoriaExame = document.getElementById('categoriaExame');
+  const elTipoExame = document.getElementById('tipoExame');
+  const elConvenioSelect = document.getElementById('convenioSelect');
+  const elStatusExame = document.getElementById('statusExame');
+  const elPreparoExame = document.getElementById('preparoExame');
 
-// =============================================
-// CONFIGURAÇÃO DOS BOTÕES
-// =============================================
-function configurarBotoes() {
-    // Botão Novo
-    document.getElementById('btnNovo').addEventListener('click', function () {
-        novoExame();
-    });
+  // Campos do Convênio
+  const elConvenioId = document.getElementById('convenioId');
+  const elNomeConvenio = document.getElementById('nomeConvenio');
+  const elRegistroAns = document.getElementById('registroAns');
+  const elCnpjConvenio = document.getElementById('cnpjConvenio');
+  const elTelConvenio = document.getElementById('telConvenio');
+  const elEmailConvenio = document.getElementById('emailConvenio');
+  const elStatusConvenio = document.getElementById('statusConvenio');
 
-    // Botão Salvar
-    document.getElementById('btnSalvar').addEventListener('click', function () {
-        salvarExame();
-    });
+  // Financeiro
+  const elValorParticular = document.getElementById('valorParticular');
+  const elValorConvenio = document.getElementById('valorConvenio');
+  const elCustoInterno = document.getElementById('custoInterno');
 
-    // Botão Editar
-    document.getElementById('btnEditar').addEventListener('click', function () {
-        editarExame();
-    });
+  // Auditoria
+  const elDataCriacao = document.getElementById('dataCriacao');
+  const elUsuarioCriacao = document.getElementById('usuarioCriacao');
+  const elDataAtualizacao = document.getElementById('dataAtualizacao');
+  const elUsuarioAtualizacao = document.getElementById('usuarioAtualizacao');
 
-    // Botão Excluir
-    document.getElementById('btnExcluir').addEventListener('click', function () {
-        excluirExame();
-    });
+  // Botões Toolbar
+  const btnNovo = document.getElementById('btnNovo');
+  const btnSalvar = document.getElementById('btnSalvar');
+  const btnEditar = document.getElementById('btnEditar');
+  const btnExcluir = document.getElementById('btnExcluir');
+  const btnAnterior = document.getElementById('btnAnterior');
+  const btnProximo = document.getElementById('btnProximo');
+  const btnBuscar = document.getElementById('btnBuscar');
 
-    // Botão Anterior
-    document.getElementById('btnAnterior').addEventListener('click', function () {
-        navegarRegistro(-1);
-    });
+  // Feedback & Status
+  const elFormStatus = document.getElementById('formStatus');
 
-    // Botão Próximo
-    document.getElementById('btnProximo').addEventListener('click', function () {
-        navegarRegistro(1);
-    });
-}
+  // --------------------------------------------------------------------------
+  // 3. INICIALIZAÇÃO
+  // --------------------------------------------------------------------------
+  document.addEventListener('DOMContentLoaded', function () {
+    inicializarMascaraMonetaria();
+    inicializarValidadorCNPJ();
+    inicializarAcessibilidadeAbas();
+    carregarTabelaExames(examesCadastrados);
 
-// =============================================
-// CONFIGURAÇÃO DA BUSCA
-// =============================================
-function configurarBusca() {
-    const inputBusca = document.getElementById('inputBusca');
-    const btnBusca = inputBusca.nextElementSibling;
-
-    // Busca ao clicar no botão
-    btnBusca.addEventListener('click', function () {
-        realizarBusca(inputBusca.value);
-    });
-
-    // Busca ao pressionar Enter
-    inputBusca.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            realizarBusca(inputBusca.value);
-        }
-    });
-
-    // Busca em tempo real (opcional)
-    inputBusca.addEventListener('input', function () {
-        realizarBusca(inputBusca.value);
-    });
-}
-
-// =============================================
-// CONFIGURAÇÃO DO FORMULÁRIO
-// =============================================
-function configurarFormulario() {
-    const form = document.getElementById('exameForm');
-
-    // Prevenir submit padrão
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-    });
-
-    // Validação em tempo real
-    const camposObrigatorios = form.querySelectorAll('[required]');
-    camposObrigatorios.forEach(campo => {
-        campo.addEventListener('blur', function () {
-            validarCampo(this);
-        });
-    });
-}
-
-// =============================================
-// FUNÇÕES DA TABELA
-// =============================================
-function popularTabela(dados) {
-    const tbody = document.getElementById('corpoTabelaExames');
-    tbody.innerHTML = '';
-
-    if (dados.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="6" style="text-align: center; padding: 2rem; color: #94a3b8;">
-                    <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
-                    Nenhum exame cadastrado
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    dados.forEach((exame, index) => {
-        const tr = document.createElement('tr');
-        tr.dataset.index = index;
-        tr.dataset.id = exame.id;
-
-        tr.innerHTML = `
-            <td>${exame.id}</td>
-            <td>${exame.nome}</td>
-            <td>${exame.categoriaNome}</td>
-            <td>${exame.tipoNome}</td>
-            <td>R$ ${exame.valorParticular}</td>
-            <td><span class="status-badge ${exame.status === 'A' ? 'status-ativo' : 'status-inativo'}">${exame.status === 'A' ? 'Ativo' : 'Inativo'}</span></td>
-        `;
-
-        tbody.appendChild(tr);
-    });
-
-    // Adicionar event listeners nas linhas
-    adicionarInteratividadeTabela();
-}
-
-function adicionarInteratividadeTabela() {
-    const tbody = document.getElementById('corpoTabelaExames');
-    const linhas = tbody.querySelectorAll('tr');
-
-    linhas.forEach(linha => {
-        linha.addEventListener('click', function (e) {
-            // Ignorar cliques em badges
-            if (e.target.classList.contains('status-badge')) {
-                return;
-            }
-
-            // Remove active de todas as linhas
-            linhas.forEach(l => l.classList.remove('active'));
-
-            // Adiciona active na linha clicada
-            this.classList.add('active');
-
-            // Carregar dados no formulário
-            const index = parseInt(this.dataset.index);
-            carregarExameNoFormulario(examesCadastrados[index]);
-
-            // Atualizar estado global
-            indiceAtual = index;
-            exameAtual = examesCadastrados[index];
-
-            // Habilitar botões
-            habilitarBotoesNavegacao(true);
-            document.getElementById('btnEditar').disabled = false;
-            document.getElementById('btnExcluir').disabled = false;
-        });
-    });
-}
-
-// =============================================
-// FUNÇÕES DE CRUD
-// =============================================
-function novoExame() {
-    // Limpar formulário
-    limparFormulario();
-
-    // Gerar novo ID
-    gerarIdAutomatico();
-
-    // Habilitar campos
-    habilitarCamposFormulario(true);
-
-    // Focar no campo nome
-    document.getElementById('nomeExame').focus();
-
-    // Atualizar estado
-    modoEdicao = false;
-    exameAtual = null;
-    indiceAtual = -1;
-
-    // Habilitar botão salvar
-    document.getElementById('btnSalvar').disabled = false;
-
-    // Desabilitar outros botões
-    document.getElementById('btnEditar').disabled = true;
-    document.getElementById('btnExcluir').disabled = true;
-    habilitarBotoesNavegacao(false);
-
-    // Remover seleção da tabela
-    const linhasAtivas = document.querySelectorAll('tr.active');
-    linhasAtivas.forEach(linha => linha.classList.remove('active'));
-}
-
-function salvarExame() {
-    // Validar formulário
-    if (!validarFormulario()) {
-        alert('Por favor, preencha todos os campos obrigatórios.');
-        return;
-    }
-
-    // Coletar dados do formulário
-    const novoExame = coletarDadosFormulario();
-
-    if (modoEdicao && exameAtual) {
-        // Atualizar exame existente
-        const index = examesCadastrados.findIndex(e => e.id === exameAtual.id);
-        if (index !== -1) {
-            examesCadastrados[index] = novoExame;
-            console.log('Exame atualizado:', novoExame.id);
-        }
+    if (examesCadastrados.length > 0) {
+      exibirExamePorIndice(0);
     } else {
-        // Adicionar novo exame
-        examesCadastrados.push(novoExame);
-        console.log('Novo exame cadastrado:', novoExame.id);
+      limparFormulario();
+      atualizarBotoesToolbar();
     }
 
-    // Atualizar tabela
-    popularTabela(examesCadastrados);
-
-    // Limpar formulário
-    limparFormulario();
-    habilitarCamposFormulario(false);
-
-    // Desabilitar botões
-    document.getElementById('btnSalvar').disabled = true;
-    document.getElementById('btnEditar').disabled = true;
-    document.getElementById('btnExcluir').disabled = true;
-
-    // Resetar estado
-    modoEdicao = false;
-    exameAtual = null;
-    indiceAtual = -1;
-
-    alert('Exame salvo com sucesso!');
-}
-
-function editarExame() {
-    if (!exameAtual) {
-        alert('Selecione um exame para editar.');
-        return;
-    }
-
-    // Habilitar campos
-    habilitarCamposFormulario(true);
-
-    // Focar no primeiro campo
-    document.getElementById('nomeExame').focus();
-
-    // Atualizar estado
-    modoEdicao = true;
-
-    // Habilitar botão salvar
-    document.getElementById('btnSalvar').disabled = false;
-    document.getElementById('btnEditar').disabled = true;
-}
-
-function excluirExame() {
-    if (!exameAtual) {
-        alert('Selecione um exame para excluir.');
-        return;
-    }
-
-    // Confirmar exclusão
-    const confirmado = confirm(`Deseja realmente excluir o exame "${exameAtual.nome}"?`);
-
-    if (confirmado) {
-        // Remover do array
-        const index = examesCadastrados.findIndex(e => e.id === exameAtual.id);
-        if (index !== -1) {
-            examesCadastrados.splice(index, 1);
-        }
-
-        // Atualizar tabela
-        popularTabela(examesCadastrados);
-
-        // Limpar formulário
-        limparFormulario();
-        habilitarCamposFormulario(false);
-
-        // Desabilitar botões
-        document.getElementById('btnSalvar').disabled = true;
-        document.getElementById('btnEditar').disabled = true;
-        document.getElementById('btnExcluir').disabled = true;
-        habilitarBotoesNavegacao(false);
-
-        // Resetar estado
-        modoEdicao = false;
-        exameAtual = null;
-        indiceAtual = -1;
-
-        alert('Exame excluído com sucesso!');
-    }
-}
-
-// =============================================
-// NAVEGAÇÃO ENTRE REGISTROS
-// =============================================
-function navegarRegistro(direcao) {
-    if (examesCadastrados.length === 0) {
-        return;
-    }
-
-    let novoIndice = indiceAtual + direcao;
-
-    // Limites
-    if (novoIndice < 0) {
-        novoIndice = 0;
-    }
-    if (novoIndice >= examesCadastrados.length) {
-        novoIndice = examesCadastrados.length - 1;
-    }
-
-    // Carregar exame
-    indiceAtual = novoIndice;
-    exameAtual = examesCadastrados[novoIndice];
-    carregarExameNoFormulario(exameAtual);
-
-    // Atualizar seleção na tabela
-    const linhas = document.querySelectorAll('#corpoTabelaExames tr');
-    linhas.forEach(l => l.classList.remove('active'));
-
-    const linhaSelecionada = document.querySelector(`#corpoTabelaExames tr[data-index="${novoIndice}"]`);
-    if (linhaSelecionada) {
-        linhaSelecionada.classList.add('active');
-        linhaSelecionada.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-}
-
-// =============================================
-// FUNÇÕES AUXILIARES
-// =============================================
-function gerarIdAutomatico() {
-    const proximoId = String(examesCadastrados.length + 1).padStart(3, '0');
-    document.getElementById('exameId').value = proximoId;
-}
-
-function limparFormulario() {
-    const form = document.getElementById('exameForm');
-    form.reset();
-
-    // Limpar valores manualmente
-    document.getElementById('exameId').value = '';
-    document.getElementById('nomeExame').value = '';
-    document.getElementById('categoriaExame').value = '';
-    document.getElementById('tipoExame').value = '';
-    document.getElementById('convenioId').value = '';
-    document.getElementById('nomeConvenio').value = '';
-    document.getElementById('registroAns').value = '';
-    document.getElementById('cnpjConvenio').value = '';
-    document.getElementById('telConvenio').value = '';
-    document.getElementById('emailConvenio').value = '';
-    document.getElementById('valorParticular').value = '';
-    document.getElementById('valorConvenio').value = '';
-    document.getElementById('custoInterno').value = '';
-    document.getElementById('statusExame').value = 'A';
-}
-
-function habilitarCamposFormulario(habilitado) {
-    const campos = document.querySelectorAll('#exameForm input:not([readonly]), #exameForm select');
-    campos.forEach(campo => {
-        campo.disabled = !habilitado;
-    });
-}
-
-function habilitarBotoesNavegacao(habilitado) {
-    document.getElementById('btnAnterior').disabled = !habilitado;
-    document.getElementById('btnProximo').disabled = !habilitado;
-}
-
-function carregarExameNoFormulario(exame) {
-    document.getElementById('exameId').value = exame.id;
-    document.getElementById('nomeExame').value = exame.nome;
-    document.getElementById('categoriaExame').value = exame.categoria;
-    document.getElementById('tipoExame').value = exame.tipo;
-    document.getElementById('valorParticular').value = `R$ ${exame.valorParticular}`;
-    document.getElementById('valorConvenio').value = `R$ ${exame.valorConvenio}`;
-    document.getElementById('custoInterno').value = `R$ ${exame.custoInterno}`;
-    document.getElementById('statusExame').value = exame.status;
-
-    // Campos do convênio (simulados)
-    document.getElementById('convenioId').value = '001';
-    document.getElementById('nomeConvenio').value = 'CONVÊNIO EXEMPLO LTDA';
-    document.getElementById('registroAns').value = '1234567890';
-    document.getElementById('cnpjConvenio').value = '12.345.678/0001-90';
-    document.getElementById('telConvenio').value = '(11) 3456-7890';
-    document.getElementById('emailConvenio').value = 'contato@convenio.com.br';
-}
-
-function coletarDadosFormulario() {
-    // Extrair valor sem "R$ "
-    const valorParticular = document.getElementById('valorParticular').value.replace('R$ ', '').replace(',', '.');
-    const valorConvenio = document.getElementById('valorConvenio').value.replace('R$ ', '').replace(',', '.');
-    const custoInterno = document.getElementById('custoInterno').value.replace('R$ ', '').replace(',', '.');
-
-    return {
-        id: document.getElementById('exameId').value,
-        nome: document.getElementById('nomeExame').value.toUpperCase(),
-        categoria: document.getElementById('categoriaExame').value,
-        categoriaNome: document.getElementById('categoriaExame').options[document.getElementById('categoriaExame').selectedIndex].text,
-        tipo: document.getElementById('tipoExame').value,
-        tipoNome: document.getElementById('tipoExame').options[document.getElementById('tipoExame').selectedIndex].text,
-        valorParticular: valorParticular,
-        valorConvenio: valorConvenio,
-        custoInterno: custoInterno,
-        status: document.getElementById('statusExame').value
+    // Expor API Global para integração com o PEP
+    window.GM4MedExame = {
+      getExames: function () { return Array.from(examesCadastrados); },
+      getExamePorId: function (id) { return examesCadastrados.find(e => e.id === id) || null; },
+      salvarExame: function (dados) { return salvarExameProgramatico(dados); },
+      excluirExame: function (id) { return excluirExameProgramatico(id); }
     };
-}
 
-function validarFormulario() {
-    const nomeExame = document.getElementById('nomeExame').value.trim();
-    const categoriaExame = document.getElementById('categoriaExame').value;
-    const tipoExame = document.getElementById('tipoExame').value;
+    console.log('[GM4Med] Módulo de Cadastro de Exames pronto e homologado.');
+  });
 
-    if (!nomeExame) {
-        return false;
+  // --------------------------------------------------------------------------
+  // 4. MÁQUINA DE ESTADOS & CONTROLE DE INTERFACE
+  // --------------------------------------------------------------------------
+  function setEstado(novoEstado) {
+    estadoApp = novoEstado;
+    const campos = document.querySelectorAll('.campo-edita');
+
+    if (estadoApp === 'NOVO' || estadoApp === 'EDICAO') {
+      campos.forEach(c => c.removeAttribute('disabled'));
+      btnNovo.disabled = true;
+      btnSalvar.disabled = false;
+      btnEditar.disabled = true;
+      btnExcluir.disabled = true;
+      btnAnterior.disabled = true;
+      btnProximo.disabled = true;
+      btnBuscar.disabled = true;
+    } else {
+      campos.forEach(c => c.setAttribute('disabled', 'true'));
+      btnNovo.disabled = false;
+      btnSalvar.disabled = true;
+      btnEditar.disabled = examesCadastrados.length === 0;
+      btnExcluir.disabled = examesCadastrados.length === 0;
+      btnAnterior.disabled = indiceAtual <= 0;
+      btnProximo.disabled = indiceAtual >= examesCadastrados.length - 1;
+      btnBuscar.disabled = false;
+    }
+  }
+
+  function anunciarStatus(mensagem) {
+    if (elFormStatus) {
+      elFormStatus.textContent = mensagem;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // 5. NAVEGAÇÃO DE ABAS & TECLADO (WAI-ARIA)
+  // --------------------------------------------------------------------------
+  window.switchTab = function (tabId) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      const isTarget = tab.getAttribute('data-tab') === tabId;
+      tab.classList.toggle('active', isTarget);
+      tab.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+    });
+
+    panels.forEach(panel => {
+      const isTarget = panel.id === tabId;
+      if (isTarget) {
+        panel.classList.remove('hidden');
+        panel.classList.add('active');
+      } else {
+        panel.classList.add('hidden');
+        panel.classList.remove('active');
+      }
+    });
+  };
+
+  function inicializarAcessibilidadeAbas() {
+    const tablist = document.querySelector('[role="tablist"]');
+    if (!tablist) return;
+
+    tablist.addEventListener('keydown', function (e) {
+      const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+      const activeIndex = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const nextIndex = (activeIndex + 1) % tabs.length;
+        tabs[nextIndex].focus();
+        tabs[nextIndex].click();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prevIndex = (activeIndex - 1 + tabs.length) % tabs.length;
+        tabs[prevIndex].focus();
+        tabs[prevIndex].click();
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // 6. OPERAÇÕES DE EXAME (NOVO, SALVAR, EDITAR, EXCLUIR, NAVEGAR)
+  // --------------------------------------------------------------------------
+  window.acaoNovoExame = function () {
+    setEstado('NOVO');
+    limparFormulario();
+    elExameId.value = gerarProximoId();
+    elStatusExame.value = 'A';
+
+    const agora = formatarDataHora(new Date());
+    elDataCriacao.value = agora;
+    elUsuarioCriacao.value = 'OPERADOR ATUAL';
+    elDataAtualizacao.value = agora;
+    elUsuarioAtualizacao.value = 'OPERADOR ATUAL';
+
+    switchTab('dados-exame');
+    elNomeExame.focus();
+    anunciarStatus('Modo de inserção de novo exame ativado.');
+  };
+
+  window.acaoEditarExame = function () {
+    if (examesCadastrados.length === 0 || indiceAtual < 0) return;
+    setEstado('EDICAO');
+    elNomeExame.focus();
+    anunciarStatus(`Editando o exame ${elExameId.value}.`);
+  };
+
+  window.acaoSalvarExame = function () {
+    if (!validarFormulario()) {
+      anunciarStatus('Existem erros no formulário. Verifique os campos destacados em vermelho.');
+      return;
     }
 
-    if (!categoriaExame) {
-        return false;
+    const payload = extrairDadosFormulario();
+
+    if (estadoApp === 'NOVO') {
+      examesCadastrados.push(payload);
+      indiceAtual = examesCadastrados.length - 1;
+      anunciarStatus(`Exame ${payload.nome} gravado com sucesso!`);
+    } else if (estadoApp === 'EDICAO') {
+      examesCadastrados[indiceAtual] = payload;
+      anunciarStatus(`Exame ${payload.nome} atualizado com sucesso!`);
     }
 
-    if (!tipoExame) {
-        return false;
+    // Disparar Evento de Integração com PEP
+    window.dispatchEvent(new CustomEvent('gm4med:exame-saved', { detail: payload }));
+
+    carregarTabelaExames(examesCadastrados);
+    exibirExamePorIndice(indiceAtual);
+    setEstado('NAVEGACAO');
+  };
+
+  window.acaoExcluirExame = function () {
+    if (examesCadastrados.length === 0 || indiceAtual < 0) return;
+    const exame = examesCadastrados[indiceAtual];
+    examePendenteExclusaoId = exame.id;
+
+    const elMsg = document.getElementById('modalConfirmMessage');
+    if (elMsg) {
+      elMsg.textContent = `Tem certeza de que deseja excluir o exame "${exame.nome}" (ID: ${exame.id}) do sistema? Esta ação não pode ser desfeita.`;
     }
+
+    abrirModal('modalConfirmacao');
+  };
+
+  document.getElementById('btnConfirmarExclusao')?.addEventListener('click', function () {
+    if (!examePendenteExclusaoId) return;
+
+    const idx = examesCadastrados.findIndex(e => e.id === examePendenteExclusaoId);
+    if (idx !== -1) {
+      const removido = examesCadastrados.splice(idx, 1)[0];
+      fecharModal('modalConfirmacao');
+      anunciarStatus(`Exame ${removido.nome} excluído.`);
+
+      if (examesCadastrados.length > 0) {
+        indiceAtual = Math.min(idx, examesCadastrados.length - 1);
+        exibirExamePorIndice(indiceAtual);
+      } else {
+        indiceAtual = -1;
+        limparFormulario();
+      }
+      carregarTabelaExames(examesCadastrados);
+      setEstado('NAVEGACAO');
+    }
+  });
+
+  window.acaoNavegarRegistro = function (direcao) {
+    if (estadoApp !== 'NAVEGACAO') return;
+    const novoIndice = indiceAtual + direcao;
+    if (novoIndice >= 0 && novoIndice < examesCadastrados.length) {
+      exibirExamePorIndice(novoIndice);
+    }
+  };
+
+  function exibirExamePorIndice(idx) {
+    if (idx < 0 || idx >= examesCadastrados.length) return;
+    indiceAtual = idx;
+    const item = examesCadastrados[idx];
+
+    elExameId.value = item.id;
+    elNomeExame.value = item.nome;
+    elCategoriaExame.value = item.categoria || '';
+    elTipoExame.value = item.tipo || '';
+    elConvenioSelect.value = item.convenio_vinculado_id || '';
+    elStatusExame.value = item.status || 'A';
+    elPreparoExame.value = item.preparo || '';
+
+    elValorParticular.value = item.valorParticular || 'R$ 0,00';
+    elValorConvenio.value = item.valorConvenio || 'R$ 0,00';
+    elCustoInterno.value = item.custoInterno || 'R$ 0,00';
+
+    elDataCriacao.value = item.dataCriacao || '';
+    elUsuarioCriacao.value = item.usuarioCriacao || '';
+    elDataAtualizacao.value = item.dataAtualizacao || '';
+    elUsuarioAtualizacao.value = item.usuarioAtualizacao || '';
+
+    carregarDadosConvenioSelecionado();
+    destacarLinhaTabela(idx);
+    setEstado('NAVEGACAO');
+  }
+
+  window.carregarDadosConvenioSelecionado = function () {
+    const convId = elConvenioSelect.value;
+    const dadosConv = BANCO_CONVENIOS[convId];
+
+    if (dadosConv) {
+      elConvenioId.value = dadosConv.id;
+      elNomeConvenio.value = dadosConv.nome;
+      elRegistroAns.value = dadosConv.ans;
+      elCnpjConvenio.value = dadosConv.cnpj;
+      elTelConvenio.value = dadosConv.tel;
+      elEmailConvenio.value = dadosConv.email;
+      elStatusConvenio.value = dadosConv.status;
+    } else {
+      elConvenioId.value = '';
+      elNomeConvenio.value = '';
+      elRegistroAns.value = '';
+      elCnpjConvenio.value = '';
+      elTelConvenio.value = '';
+      elEmailConvenio.value = '';
+      elStatusConvenio.value = 'A';
+    }
+  };
+
+  // --------------------------------------------------------------------------
+  // 7. VALIDAÇÕES DE FORMULÁRIO (CNPJ, EMAIL, CAMPOS OBRIGATÓRIOS)
+  // --------------------------------------------------------------------------
+  function validarFormulario() {
+    let valido = true;
+
+    // Nome
+    const nomeVal = elNomeExame.value.trim();
+    const fbNome = document.getElementById('nomeExameFeedback');
+    if (!nomeVal) {
+      setCampoInvalido(elNomeExame, fbNome, 'O nome do exame é obrigatório.');
+      valido = false;
+    } else {
+      setCampoValido(elNomeExame, fbNome);
+    }
+
+    // Categoria
+    const catVal = elCategoriaExame.value;
+    const fbCat = document.getElementById('categoriaFeedback');
+    if (!catVal) {
+      setCampoInvalido(elCategoriaExame, fbCat, 'Selecione uma categoria médica.');
+      valido = false;
+    } else {
+      setCampoValido(elCategoriaExame, fbCat);
+    }
+
+    // Tipo
+    const tipoVal = elTipoExame.value;
+    const fbTipo = document.getElementById('tipoFeedback');
+    if (!tipoVal) {
+      setCampoInvalido(elTipoExame, fbTipo, 'Selecione o tipo do exame.');
+      valido = false;
+    } else {
+      setCampoValido(elTipoExame, fbTipo);
+    }
+
+    // CNPJ se preenchido
+    if (elCnpjConvenio.value.trim()) {
+      const fbCnpj = document.getElementById('cnpjFeedback');
+      if (!validarCNPJMatematico(elCnpjConvenio.value)) {
+        setCampoInvalido(elCnpjConvenio, fbCnpj, 'CNPJ inválido (verifique os dígitos verificadores).');
+        valido = false;
+      } else {
+        setCampoValido(elCnpjConvenio, fbCnpj);
+      }
+    }
+
+    return valido;
+  }
+
+  function setCampoInvalido(campo, feedbackEl, mensagem) {
+    campo.classList.add('is-invalid');
+    campo.classList.remove('is-valid');
+    if (feedbackEl) {
+      feedbackEl.textContent = mensagem;
+      feedbackEl.className = 'field-feedback error';
+    }
+  }
+
+  function setCampoValido(campo, feedbackEl) {
+    campo.classList.remove('is-invalid');
+    campo.classList.add('is-valid');
+    if (feedbackEl) {
+      feedbackEl.textContent = '';
+      feedbackEl.className = 'field-feedback success';
+    }
+  }
+
+  function validarCNPJMatematico(cnpj) {
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+    if (cnpj.length !== 14) return false;
+    if (/^(\d)\1+$/.test(cnpj)) return false;
+
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+    }
+
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado != digitos.charAt(0)) return false;
+
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (let i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado != digitos.charAt(1)) return false;
 
     return true;
-}
+  }
 
-function validarCampo(campo) {
-    if (campo.hasAttribute('required') && !campo.value.trim()) {
-        campo.style.borderColor = '#ef4444';
-        campo.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
-        return false;
-    } else {
-        campo.style.borderColor = '#e2e8f0';
-        campo.style.boxShadow = 'none';
-        return true;
+  function inicializarValidadorCNPJ() {
+    if (elCnpjConvenio) {
+      elCnpjConvenio.addEventListener('input', function (e) {
+        let v = e.target.value.replace(/\D/g, '');
+        v = v.replace(/^(\d{2})(\d)/, '$1.$2');
+        v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+        v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
+        v = v.replace(/(\d{4})(\d)/, '$1-$2');
+        e.target.value = v.substring(0, 18);
+      });
     }
-}
+  }
 
-function realizarBusca(termo) {
-    const termoNormalizado = termo.toLowerCase().trim();
-
-    if (!termoNormalizado) {
-        popularTabela(examesCadastrados);
-        return;
-    }
-
-    const resultados = examesCadastrados.filter(exame => {
-        return exame.nome.toLowerCase().includes(termoNormalizado) ||
-            exame.id.includes(termoNormalizado) ||
-            exame.categoriaNome.toLowerCase().includes(termoNormalizado);
-    });
-
-    popularTabela(resultados);
-}
-
-// =============================================
-// MÁSCARAS E FORMATAÇÕES (Opcional)
-// =============================================
-function aplicarMascaraMoeda(campo) {
-    campo.addEventListener('input', function () {
-        let valor = this.value.replace(/\D/g, '');
-        valor = (valor / 100).toFixed(2) + '';
-        valor = valor.replace('.', ',');
-        valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-        this.value = 'R$ ' + valor;
-    });
-}
-
-// Aplicar máscaras aos campos de valor
-document.addEventListener('DOMContentLoaded', function () {
-    const camposMoeda = ['valorParticular', 'valorConvenio', 'custoInterno'];
-    camposMoeda.forEach(campoId => {
-        const campo = document.getElementById(campoId);
-        if (campo) {
-            aplicarMascaraMoeda(campo);
+  // --------------------------------------------------------------------------
+  // 8. MÁSCARA MONETÁRIA BRL
+  // --------------------------------------------------------------------------
+  function inicializarMascaraMonetaria() {
+    const inputsMonetarios = [elValorParticular, elValorConvenio, elCustoInterno];
+    inputsMonetarios.forEach(input => {
+      if (!input) return;
+      input.addEventListener('input', function (e) {
+        let digits = e.target.value.replace(/\D/g, '');
+        if (!digits) {
+          e.target.value = 'R$ 0,00';
+          return;
         }
+        let number = parseFloat(digits) / 100;
+        e.target.value = number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      });
     });
-});
+  }
 
-// =============================================
-// FUNÇÕES DE UTILIDADE
-// =============================================
-function formatarMoeda(valor) {
-    return `R$ ${parseFloat(valor).toFixed(2).replace('.', ',')}`;
-}
+  // --------------------------------------------------------------------------
+  // 9. TABELA E BUSCA
+  // --------------------------------------------------------------------------
+  function carregarTabelaExames(lista) {
+    const corpo = document.getElementById('corpoTabelaExames');
+    if (!corpo) return;
 
-function formatarCNPJ(cnpj) {
-    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
-}
+    corpo.innerHTML = '';
+    if (lista.length === 0) {
+      corpo.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400 font-medium">Nenhum exame cadastrado.</td></tr>`;
+      return;
+    }
 
-function formatarTelefone(telefone) {
-    return telefone.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
-}
+    lista.forEach((item, index) => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-slate-50 transition-colors border-b border-slate-200';
+      if (index === indiceAtual && lista === examesCadastrados) {
+        tr.classList.add('selected');
+      }
 
-// Exportar funções para escopo global (se necessário)
-window.openTab = openTab;
+      const statusBadge = item.status === 'A'
+        ? `<span class="badge-status badge-ativo"><i class="fa-solid fa-circle text-[8px]"></i> Ativo</span>`
+        : `<span class="badge-status badge-inativo"><i class="fa-solid fa-circle text-[8px]"></i> Inativo</span>`;
+
+      const catTexto = item.categoriaNome || (elCategoriaExame.querySelector(`option[value="${item.categoria}"]`)?.textContent || item.categoria);
+      const tipoTexto = item.tipoNome || (elTipoExame.querySelector(`option[value="${item.tipo}"]`)?.textContent || item.tipo);
+
+      tr.innerHTML = `
+        <td class="p-3.5 font-bold text-teal-700">${item.id}</td>
+        <td class="p-3.5 font-semibold text-slate-800">${item.nome}</td>
+        <td class="p-3.5 text-xs text-slate-600">${catTexto}</td>
+        <td class="p-3.5 text-xs text-slate-600">${tipoTexto}</td>
+        <td class="p-3.5 text-sm font-semibold text-slate-700">${item.valorParticular || 'R$ 0,00'}</td>
+        <td class="p-3.5 text-sm text-slate-600">${item.valorConvenio || 'R$ 0,00'}</td>
+        <td class="p-3.5 text-center">${statusBadge}</td>
+      `;
+
+      tr.addEventListener('click', function () {
+        if (estadoApp !== 'NAVEGACAO') return;
+        const idxReal = examesCadastrados.findIndex(e => e.id === item.id);
+        if (idxReal !== -1) {
+          exibirExamePorIndice(idxReal);
+        }
+      });
+
+      corpo.appendChild(tr);
+    });
+  }
+
+  function destacarLinhaTabela(idx) {
+    const linhas = document.querySelectorAll('#corpoTabelaExames tr');
+    linhas.forEach((tr, i) => {
+      tr.classList.toggle('selected', i === idx);
+    });
+  }
+
+  window.executarBuscaExames = function () {
+    const termo = document.getElementById('inputBusca')?.value.trim().toLowerCase();
+    if (!termo) {
+      carregarTabelaExames(examesCadastrados);
+      return;
+    }
+
+    const filtrados = examesCadastrados.filter(e =>
+      e.id.toLowerCase().includes(termo) ||
+      e.nome.toLowerCase().includes(termo) ||
+      (e.categoriaNome && e.categoriaNome.toLowerCase().includes(termo)) ||
+      (e.tipoNome && e.tipoNome.toLowerCase().includes(termo))
+    );
+
+    carregarTabelaExames(filtrados);
+    anunciarStatus(`Busca concluída. ${filtrados.length} exames encontrados.`);
+  };
+
+  // --------------------------------------------------------------------------
+  // 10. MODAIS (ABRIR, FECHAR, BUSCA AVANÇADA)
+  // --------------------------------------------------------------------------
+  window.abrirModalBusca = function () {
+    abrirModal('modalBusca');
+    const input = document.getElementById('inputBuscaModal');
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+    document.getElementById('resultadosBuscaModal').innerHTML = '<p class="text-sm text-slate-500 text-center py-6">Digite um termo acima e clique em Pesquisar.</p>';
+  };
+
+  window.executarBuscaModal = function () {
+    const termo = document.getElementById('inputBuscaModal')?.value.trim().toLowerCase();
+    const elRes = document.getElementById('resultadosBuscaModal');
+    if (!elRes) return;
+
+    if (!termo) {
+      elRes.innerHTML = '<p class="text-sm text-red-500 text-center py-4">Digite um termo para pesquisar.</p>';
+      return;
+    }
+
+    const res = examesCadastrados.filter(e =>
+      e.id.toLowerCase().includes(termo) ||
+      e.nome.toLowerCase().includes(termo) ||
+      (e.categoriaNome && e.categoriaNome.toLowerCase().includes(termo))
+    );
+
+    if (res.length === 0) {
+      elRes.innerHTML = '<p class="text-sm text-slate-500 text-center py-6">Nenhum exame encontrado com este critério.</p>';
+      return;
+    }
+
+    elRes.innerHTML = res.map(e => `
+      <div class="busca-item flex items-center justify-between p-3 hover:bg-teal-50 cursor-pointer rounded-lg border-b border-slate-100" data-id="${e.id}">
+        <div>
+          <span class="font-bold text-teal-700 text-sm">${e.id}</span> — <span class="font-semibold text-slate-800 text-sm">${e.nome}</span>
+          <p class="text-xs text-slate-500">${e.categoriaNome || e.categoria}</p>
+        </div>
+        <span class="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-700 rounded">${e.valorParticular || 'R$ 0,00'}</span>
+      </div>
+    `).join('');
+
+    elRes.querySelectorAll('.busca-item').forEach(item => {
+      item.addEventListener('click', function () {
+        const id = this.getAttribute('data-id');
+        const idx = examesCadastrados.findIndex(e => e.id === id);
+        if (idx !== -1) {
+          exibirExamePorIndice(idx);
+          fecharModal('modalBusca');
+        }
+      });
+    });
+  };
+
+  window.abrirModal = function (modalId) {
+    const m = document.getElementById(modalId);
+    if (m) {
+      m.removeAttribute('hidden');
+    }
+  };
+
+  window.fecharModal = function (modalId) {
+    const m = document.getElementById(modalId);
+    if (m) {
+      m.setAttribute('hidden', 'true');
+    }
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      fecharModal('modalBusca');
+      fecharModal('modalConfirmacao');
+    }
+  });
+
+  // --------------------------------------------------------------------------
+  // 11. HELPERS E EXPORTAÇÃO PROGRAMÁTICA
+  // --------------------------------------------------------------------------
+  function limparFormulario() {
+    elForm.reset();
+    document.querySelectorAll('.field-feedback').forEach(f => {
+      f.textContent = '';
+      f.className = 'field-feedback';
+    });
+    document.querySelectorAll('.input').forEach(i => i.classList.remove('is-invalid', 'is-valid'));
+    elValorParticular.value = 'R$ 0,00';
+    elValorConvenio.value = 'R$ 0,00';
+    elCustoInterno.value = 'R$ 0,00';
+    carregarDadosConvenioSelecionado();
+  }
+
+  function extrairDadosFormulario() {
+    const catOpt = elCategoriaExame.options[elCategoriaExame.selectedIndex];
+    const tipoOpt = elTipoExame.options[elTipoExame.selectedIndex];
+
+    return {
+      id: elExameId.value,
+      nome: elNomeExame.value.trim().toUpperCase(),
+      categoria: elCategoriaExame.value,
+      categoriaNome: catOpt ? catOpt.textContent : '',
+      tipo: elTipoExame.value,
+      tipoNome: tipoOpt ? tipoOpt.textContent : '',
+      convenio_vinculado_id: elConvenioSelect.value,
+      status: elStatusExame.value,
+      preparo: elPreparoExame.value.trim().toUpperCase(),
+      valorParticular: elValorParticular.value,
+      valorConvenio: elValorConvenio.value,
+      custoInterno: elCustoInterno.value,
+      dataCriacao: elDataCriacao.value || formatarDataHora(new Date()),
+      usuarioCriacao: elUsuarioCriacao.value || 'ADMIN',
+      dataAtualizacao: formatarDataHora(new Date()),
+      usuarioAtualizacao: 'ADMIN'
+    };
+  }
+
+  function gerarProximoId() {
+    const maxNum = examesCadastrados.reduce((max, item) => {
+      const n = parseInt(item.id.replace('EXA-', ''), 10);
+      return !isNaN(n) && n > max ? n : max;
+    }, 0);
+    const prox = maxNum + 1;
+    return `EXA-${String(prox).padStart(5, '0')}`;
+  }
+
+  function formatarDataHora(data) {
+    const pad = n => String(n).padStart(2, '0');
+    const dia = pad(data.getDate());
+    const mes = pad(data.getMonth() + 1);
+    const ano = data.getFullYear();
+    const hora = pad(data.getHours());
+    const min = pad(data.getMinutes());
+    return `${dia}/${mes}/${ano} ${hora}:${min}`;
+  }
+
+  function salvarExameProgramatico(dados) {
+    if (!dados || !dados.nome) return { sucesso: false, erro: 'Nome do exame é obrigatório.' };
+
+    const novoId = dados.id || gerarProximoId();
+    const itemFinal = Object.assign({
+      id: novoId,
+      categoria: '15',
+      tipo: '01',
+      status: 'A',
+      valorParticular: 'R$ 0,00',
+      valorConvenio: 'R$ 0,00',
+      custoInterno: 'R$ 0,00',
+      dataCriacao: formatarDataHora(new Date()),
+      usuarioCriacao: 'API',
+      dataAtualizacao: formatarDataHora(new Date()),
+      usuarioAtualizacao: 'API'
+    }, dados);
+
+    const idxExistente = examesCadastrados.findIndex(e => e.id === novoId);
+    if (idxExistente !== -1) {
+      examesCadastrados[idxExistente] = itemFinal;
+    } else {
+      examesCadastrados.push(itemFinal);
+    }
+
+    carregarTabelaExames(examesCadastrados);
+    window.dispatchEvent(new CustomEvent('gm4med:exame-saved', { detail: itemFinal }));
+    return { sucesso: true, exame: itemFinal };
+  }
+
+  function excluirExameProgramatico(id) {
+    const idx = examesCadastrados.findIndex(e => e.id === id);
+    if (idx !== -1) {
+      const removido = examesCadastrados.splice(idx, 1)[0];
+      carregarTabelaExames(examesCadastrados);
+      return { sucesso: true, removido: removido };
+    }
+    return { sucesso: false, erro: 'Exame não encontrado.' };
+  }
+
+})();

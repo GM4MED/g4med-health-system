@@ -1,31 +1,30 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="w-full h-full">
+<html lang="pt-BR" class="w-full h-full">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sistema de Cadastro de Exames - Sistema GM4">
-    <meta name="author" content="Sistema GM4">
+    <meta name="description" content="Janela de Cadastro de Exames do sistema GM4med — Gestão em saúde com convênios, financeiro e acessibilidade.">
+    <meta name="author" content="Sistema GM4med">
 
-    <title>Cadastro de Exames | Sistema GM4</title>
+    <title>Cadastro de Exames | GM4med</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6.5.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- FontAwesome (Ícones) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Google Fonts (Plus Jakarta Sans) -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
-    <!-- Configuração do Tailwind -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
                     },
                     colors: {
                         teal: {
@@ -46,267 +45,363 @@
         }
     </script>
 
-    <!-- CSS Externo -->
-    <link rel="stylesheet" href="./cadastro-exames.css">
+    <!-- CSS Customizado -->
+    <link rel="stylesheet" href="cadastro-exames.css">
 </head>
 
-<body class="w-full min-h-screen bg-slate-50 m-0 p-0 font-sans flex flex-col">
-    <!-- Container Principal Full-Width & Full-Height -->
-    <div class="w-full min-h-screen flex flex-col px-6 md:px-8 py-6">
-
-        <!-- Header -->
-        <header class="w-full flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-200">
+<body class="w-full min-h-screen bg-slate-50 text-slate-800 m-0 p-0 font-sans flex flex-col antialiased">
+    <div class="app w-full min-h-screen flex flex-col">
+        <!-- TOPBAR / HEADER PRINCIPAL DO SISTEMA GM4MED -->
+        <header class="topbar w-full flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40" role="banner">
             <div class="header-title flex items-center gap-3">
-                <i class="fas fa-microscope text-2xl text-teal-600"></i>
-                <h1 class="text-2xl font-bold text-slate-800">Cadastro de Exames</h1>
+                <i class="fa-solid fa-microscope text-2xl text-teal-600" aria-hidden="true"></i>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold text-slate-800 tracking-tight">Cadastro de Exames</h1>
+                    <p class="text-xs text-slate-500 font-medium">Gestão unificada de exames, convênios, custos e integração clínica GM4med</p>
+                </div>
             </div>
-            <div class="toolbar flex flex-wrap items-center gap-2">
-                <button id="btnNovo" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Novo Exame
+
+            <!-- TOOLBAR PRINCIPAL DE COMANDOS -->
+            <div class="toolbar flex flex-wrap items-center gap-2" role="toolbar" aria-label="Ações do cadastro de exames">
+                <button id="btnNovo" type="button" class="btn btn-primary" onclick="acaoNovoExame()">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i><span>Novo Exame</span>
                 </button>
-                <button id="btnSalvar" class="btn btn-success" disabled>
-                    <i class="fas fa-save"></i> Gravar
+                <button id="btnSalvar" type="button" class="btn btn-success" onclick="acaoSalvarExame()" disabled>
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i><span>Gravar</span>
                 </button>
-                <button id="btnEditar" class="btn btn-warning" disabled>
-                    <i class="fas fa-edit"></i> Editar
+                <button id="btnEditar" type="button" class="btn btn-warning" onclick="acaoEditarExame()" disabled>
+                    <i class="fa-solid fa-pen" aria-hidden="true"></i><span>Editar</span>
                 </button>
-                <button id="btnExcluir" class="btn btn-danger" disabled>
-                    <i class="fas fa-trash"></i> Excluir
+                <button id="btnExcluir" type="button" class="btn btn-danger" onclick="acaoExcluirExame()" disabled>
+                    <i class="fa-solid fa-trash" aria-hidden="true"></i><span>Excluir</span>
                 </button>
-                <button id="btnAnterior" class="btn btn-dark" disabled>
-                    <i class="fas fa-chevron-left"></i> Anterior
+                <button id="btnAnterior" type="button" class="btn btn-dark" onclick="acaoNavegarRegistro(-1)" disabled title="Exame anterior" aria-label="Exame anterior">
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i><span>Anterior</span>
                 </button>
-                <button id="btnProximo" class="btn btn-dark" disabled>
-                    Próximo <i class="fas fa-chevron-right"></i>
+                <button id="btnProximo" type="button" class="btn btn-dark" onclick="acaoNavegarRegistro(1)" disabled title="Próximo exame" aria-label="Próximo exame">
+                    <span>Próximo</span> <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                 </button>
-                <button id="btnSair" class="btn btn-dark" onclick="window.location.href='../Menu-Principal.html'">
-                    <i class="fas fa-arrow-left"></i> Voltar
+                <button id="btnBuscar" type="button" class="btn btn-dark" onclick="abrirModalBusca()">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span>Buscar</span>
                 </button>
+                <a id="btnSair" class="btn btn-sair" href="../Menu-Principal.html">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i><span>Voltar</span>
+                </a>
             </div>
         </header>
 
-        <!-- Main Content -->
-        <main class="w-full flex-1 flex flex-col gap-6 py-6">
-            <!-- Área do Formulário -->
-            <section class="form-area w-full bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <nav class="tabs-nav flex border-b border-slate-200 bg-slate-50">
-                    <button
-                        class="tab-link active px-6 py-3 font-semibold text-sm text-slate-600 hover:text-teal-600 transition-colors"
-                        onclick="openTab(event, 'dados-exame')">1. Dados do Exame</button>
-                    <button
-                        class="tab-link px-6 py-3 font-semibold text-sm text-slate-600 hover:text-teal-600 transition-colors"
-                        onclick="openTab(event, 'convenios')">2. Convênios & Financeiro</button>
+        <!-- BARRA DE STATUS ACESSÍVEL PARA LEITORES DE TELA -->
+        <p id="formStatus" class="sr-only" role="status" aria-live="polite"></p>
+
+        <!-- CONTEÚDO PRINCIPAL DA JANELA -->
+        <main class="w-full flex-1 flex flex-col gap-6 px-4 md:px-8 py-6">
+            <!-- ÁREA DO FORMULÁRIO COM ABAS -->
+            <section class="card-form w-full bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden" aria-label="Formulário de Cadastro de Exames">
+                <!-- NAVEGAÇÃO ENTRE ABAS -->
+                <nav class="tabs-nav flex flex-wrap border-b border-slate-200 bg-slate-50 px-2 pt-2" role="tablist" aria-label="Seções do cadastro de exame">
+                    <button type="button" class="tab-btn active" id="tab1-button" role="tab" aria-selected="true" aria-controls="dados-exame" data-tab="dados-exame" onclick="switchTab('dados-exame')">
+                        <span class="tab-num">01</span><i class="fa-solid fa-notes-medical" aria-hidden="true"></i><span>1. Dados do Exame</span>
+                    </button>
+                    <button type="button" class="tab-btn" id="tab2-button" role="tab" aria-selected="false" aria-controls="convenios" data-tab="convenios" onclick="switchTab('convenios')">
+                        <span class="tab-num">02</span><i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i><span>2. Convênios & Financeiro</span>
+                    </button>
                 </nav>
 
-                <div class="form-content p-6">
-                    <form id="exameForm">
-                        <!-- Aba 1: Dados do Exame -->
-                        <div id="dados-exame" class="tab-content active">
+                <div class="form-content p-4 md:p-6">
+                    <form id="exameForm" novalidate>
+                        <!-- ABA 1: DADOS DO EXAME -->
+                        <section id="dados-exame" class="tab-content active" role="tabpanel" aria-labelledby="tab1-button">
+                            <h2 class="section-title"><i class="fa-solid fa-file-waveform" aria-hidden="true"></i> Informações Cadastrais do Exame</h2>
+                            
                             <div class="form-grid grid grid-cols-12 gap-4">
                                 <div class="form-group col-span-12 md:col-span-2">
-                                    <label for="exameId"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Código
-                                        ID</label>
-                                    <input type="text" id="exameId" readonly placeholder="Auto"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100 text-slate-600">
+                                    <label for="exameId" class="block text-xs font-bold text-slate-700 uppercase mb-1">Código ID (Automático)</label>
+                                    <input type="text" id="exameId" name="id" readonly placeholder="EXA-00000" class="input input-readonly">
                                 </div>
+
                                 <div class="form-group col-span-12 md:col-span-10">
-                                    <label for="nomeExame"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nome do
-                                        Exame</label>
-                                    <input type="text" id="nomeExame"
-                                        class="uppercase w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
-                                        disabled required autocomplete="off">
+                                    <label for="nomeExame" class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                        Nome do Exame <span class="text-red-500 font-bold" aria-hidden="true">*</span>
+                                    </label>
+                                    <input type="text" id="nomeExame" name="nome" class="input campo-edita uppercase" placeholder="DIGITE O NOME DO EXAME (EX: HEMOGRAMA COMPLETO, ECOCARDIOGRAMA...)" maxlength="100" required disabled autocomplete="off">
+                                    <small class="field-feedback" id="nomeExameFeedback" aria-live="polite"></small>
                                 </div>
 
                                 <div class="form-group col-span-12 md:col-span-6">
-                                    <label for="categoriaExame"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Categoria</label>
-                                    <select id="categoriaExame"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none bg-white"
-                                        disabled>
-                                        <option value="">Selecione...</option>
-                                        <option value="01">01 - Cardiologia</option>
-                                        <option value="02">02 - Laboratório / Análises Clínicas</option>
-                                        <option value="03">03 - Diagnóstico por Imagem</option>
-                                        <option value="04">04 - Ultrassonografia</option>
-                                        <option value="05">05 - Vascular</option>
-                                        <option value="06">06 - Pneumologia</option>
-                                        <option value="07">07 - Neurologia</option>
-                                        <option value="08">08 - Oftalmologia</option>
-                                        <option value="09">09 - Otorrinolaringologia</option>
-                                        <option value="10">10 - Endoscopia</option>
-                                        <option value="11">11 - Ginecologia e Obstetrícia</option>
-                                        <option value="12">12 - Patologia</option>
-                                        <option value="13">13 - Reprodução Humana</option>
-                                        <option value="14">14 - Procedimentos Ambulatoriais</option>
-                                        <option value="15">15 - Outros</option>
+                                    <label for="categoriaExame" class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                        Categoria Médica <span class="text-red-500 font-bold" aria-hidden="true">*</span>
+                                    </label>
+                                    <select id="categoriaExame" name="categoria" class="input campo-edita" required disabled>
+                                        <option value="" selected disabled>SELECIONE A CATEGORIA...</option>
+                                        <option value="01">01 — Cardiologia</option>
+                                        <option value="02">02 — Laboratório / Análises Clínicas</option>
+                                        <option value="03">03 — Diagnóstico por Imagem</option>
+                                        <option value="04">04 — Ultrassonografia</option>
+                                        <option value="05">05 — Vascular</option>
+                                        <option value="06">06 — Pneumologia</option>
+                                        <option value="07">07 — Neurologia</option>
+                                        <option value="08">08 — Oftalmologia</option>
+                                        <option value="09">09 — Otorrinolaringologia</option>
+                                        <option value="10">10 — Endoscopia</option>
+                                        <option value="11">11 — Ginecologia e Obstetrícia</option>
+                                        <option value="12">12 — Patologia</option>
+                                        <option value="13">13 — Reprodução Humana</option>
+                                        <option value="14">14 — Procedimentos Ambulatoriais</option>
+                                        <option value="15">15 — Outros</option>
                                     </select>
+                                    <small class="field-feedback" id="categoriaFeedback" aria-live="polite"></small>
                                 </div>
 
                                 <div class="form-group col-span-12 md:col-span-6">
-                                    <label for="tipoExame"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tipo de
-                                        Exame</label>
-                                    <select id="tipoExame"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none bg-white"
-                                        disabled>
-                                        <option value="">Selecione...</option>
-                                        <option value="01">01 - Laboratorial</option>
-                                        <option value="02">02 - Imagem</option>
-                                        <option value="03">03 - Ultrassonografia</option>
-                                        <option value="04">04 - Cardiológico</option>
-                                        <option value="05">05 - Vascular</option>
-                                        <option value="06">06 - Endoscópico</option>
-                                        <option value="07">07 - Neurológico</option>
-                                        <option value="08">08 - Oftalmológico</option>
-                                        <option value="09">09 - Otorrinolaringológico</option>
-                                        <option value="10">10 - Funcional</option>
-                                        <option value="11">11 - Procedimento</option>
-                                        <option value="12">12 - Anatomopatológico</option>
-                                        <option value="13">13 - Citológico</option>
+                                    <label for="tipoExame" class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                        Tipo de Exame <span class="text-red-500 font-bold" aria-hidden="true">*</span>
+                                    </label>
+                                    <select id="tipoExame" name="tipo" class="input campo-edita" required disabled>
+                                        <option value="" selected disabled>SELECIONE O TIPO...</option>
+                                        <option value="01">01 — Laboratorial</option>
+                                        <option value="02">02 — Imagem</option>
+                                        <option value="03">03 — Ultrassonografia</option>
+                                        <option value="04">04 — Cardiológico</option>
+                                        <option value="05">05 — Vascular</option>
+                                        <option value="06">06 — Endoscópico</option>
+                                        <option value="07">07 — Neurológico</option>
+                                        <option value="08">08 — Oftalmológico</option>
+                                        <option value="09">09 — Otorrinolaringológico</option>
+                                        <option value="10">10 — Funcional</option>
+                                        <option value="11">11 — Procedimento</option>
+                                        <option value="12">12 — Anatomopatológico</option>
+                                        <option value="13">13 — Citológico</option>
                                     </select>
+                                    <small class="field-feedback" id="tipoFeedback" aria-live="polite"></small>
+                                </div>
+
+                                <div class="form-group col-span-12 md:col-span-8">
+                                    <label for="convenioSelect" class="block text-xs font-bold text-slate-700 uppercase mb-1">Convênio Padrão Vinculado</label>
+                                    <select id="convenioSelect" name="convenio_vinculado_id" class="input campo-edita" disabled onchange="carregarDadosConvenioSelecionado()">
+                                        <option value="">NENHUM (PARTICULAR APENAS)</option>
+                                        <option value="CON-00001">UNIMED — REG. ANS 345678 (ATIVO)</option>
+                                        <option value="CON-00002">BRADESCO SAÚDE — REG. ANS 123456 (ATIVO)</option>
+                                        <option value="CON-00003">AMIL ASSISTÊNCIA MÉDICA — REG. ANS 987654 (ATIVO)</option>
+                                        <option value="CON-00004">SULAMÉRICA SAÚDE — REG. ANS 554433 (ATIVO)</option>
+                                        <option value="CON-00005">POSTAL SAÚDE — REG. ANS 112233 (INATIVO)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-span-12 md:col-span-4">
+                                    <label for="statusExame" class="block text-xs font-bold text-slate-700 uppercase mb-1">Status do Exame no Sistema</label>
+                                    <select id="statusExame" name="status" class="input campo-edita" disabled>
+                                        <option value="A">Ativo (Disponível)</option>
+                                        <option value="I">Inativo (Bloqueado)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-span-12">
+                                    <label for="preparoExame" class="block text-xs font-bold text-slate-700 uppercase mb-1">Orientações de Preparo para o Paciente / Notas Clínicas</label>
+                                    <textarea id="preparoExame" name="preparo" class="input textarea campo-edita uppercase" rows="3" placeholder="DESCREVA O PREPARO NECESSÁRIO (EX: JEJUM DE 8 HORAS, BEBER 1 LITRO DE ÁGUA...)" disabled></textarea>
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        <!-- Aba 2: Convênios & Financeiro -->
-                        <div id="convenios" class="tab-content hidden">
-                            <div class="form-grid grid grid-cols-12 gap-4">
-                                <div class="col-span-12">
-                                    <h3
-                                        class="section-title text-base font-bold text-slate-800 border-b border-slate-200 pb-2 mb-4 mt-2">
-                                        Dados do Convênio Vinculado</h3>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-2">
-                                    <label for="convenioId"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Código
-                                        ID</label>
-                                    <input type="text" id="convenioId"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-6">
-                                    <label for="nomeConvenio"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nome do
-                                        Convênio</label>
-                                    <input type="text" id="nomeConvenio"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-4">
-                                    <label for="registroAns"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Registro
-                                        ANS</label>
-                                    <input type="text" id="registroAns"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-4">
-                                    <label for="cnpjConvenio"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">CNPJ</label>
-                                    <input type="text" id="cnpjConvenio"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-4">
-                                    <label for="telConvenio"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Telefone</label>
-                                    <input type="text" id="telConvenio"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-4">
-                                    <label for="emailConvenio"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">E-mail</label>
-                                    <input type="email" id="emailConvenio"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
+                        <!-- ABA 2: CONVÊNIOS & FINANCEIRO -->
+                        <section id="convenios" class="tab-content hidden" role="tabpanel" aria-labelledby="tab2-button">
+                            <h2 class="section-title"><i class="fa-solid fa-hospital" aria-hidden="true"></i> Aba 2 — Dados do Convênio Vinculado & Tabela Financeira</h2>
+                            
+                            <!-- SEÇÃO 1: DADOS DO CONVÊNIO -->
+                            <div class="subsection-box mb-6 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <h3 class="text-sm font-bold text-teal-700 uppercase mb-3 flex items-center gap-2">
+                                    <i class="fa-solid fa-id-card-clip"></i> Cadastro e Registro do Convênio
+                                </h3>
+                                
+                                <div class="form-grid grid grid-cols-12 gap-4">
+                                    <div class="form-group col-span-12 md:col-span-2">
+                                        <label for="convenioId" class="block text-xs font-bold text-slate-700 uppercase mb-1">ID Convênio</label>
+                                        <input type="text" id="convenioId" name="convenio_id" readonly placeholder="CON-00000" class="input input-readonly">
+                                    </div>
+                                    
+                                    <div class="form-group col-span-12 md:col-span-6">
+                                        <label for="nomeConvenio" class="block text-xs font-bold text-slate-700 uppercase mb-1">Nome do Convênio</label>
+                                        <input type="text" id="nomeConvenio" name="nome_convenio" class="input campo-edita uppercase" placeholder="NOME DO CONVÊNIO" disabled>
+                                    </div>
 
-                                <div class="col-span-12">
-                                    <h3
-                                        class="section-title text-base font-bold text-slate-800 border-b border-slate-200 pb-2 mb-4 mt-4">
-                                        Valores e Status</h3>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-3">
-                                    <label for="valorParticular"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Valor
-                                        Particular</label>
-                                    <input type="text" id="valorParticular" placeholder="R$ 0,00"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-3">
-                                    <label for="valorConvenio"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Valor
-                                        Convênio</label>
-                                    <input type="text" id="valorConvenio" placeholder="R$ 0,00"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-3">
-                                    <label for="custoInterno"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Custo
-                                        Interno</label>
-                                    <input type="text" id="custoInterno" placeholder="R$ 0,00"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-span-12 md:col-span-3">
-                                    <label for="statusExame"
-                                        class="block text-xs font-semibold text-slate-600 uppercase mb-1">Status</label>
-                                    <select id="statusExame"
-                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-100"
-                                        disabled>
-                                        <option value="A">Ativo</option>
-                                        <option value="I">Inativo</option>
-                                    </select>
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="registroAns" class="block text-xs font-bold text-slate-700 uppercase mb-1">Registro ANS</label>
+                                        <input type="text" id="registroAns" name="registro_ans" class="input campo-edita" placeholder="000000" maxlength="10" disabled>
+                                    </div>
+
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="cnpjConvenio" class="block text-xs font-bold text-slate-700 uppercase mb-1">CNPJ do Convênio</label>
+                                        <input type="text" id="cnpjConvenio" name="cnpj_convenio" class="input campo-edita" inputmode="numeric" placeholder="00.000.000/0000-00" maxlength="18" disabled>
+                                        <small class="field-feedback" id="cnpjFeedback" aria-live="polite"></small>
+                                    </div>
+
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="telConvenio" class="block text-xs font-bold text-slate-700 uppercase mb-1">Telefone de Contato</label>
+                                        <input type="tel" id="telConvenio" name="tel_convenio" class="input campo-edita" placeholder="(00) 0000-0000" disabled>
+                                    </div>
+
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="emailConvenio" class="block text-xs font-bold text-slate-700 uppercase mb-1">E-mail Operacional</label>
+                                        <input type="email" id="emailConvenio" name="email_convenio" class="input campo-edita" placeholder="convenio@exemplo.com.br" disabled>
+                                        <small class="field-feedback" id="emailConvenioFeedback" aria-live="polite"></small>
+                                    </div>
+
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="statusConvenio" class="block text-xs font-bold text-slate-700 uppercase mb-1">Status do Convênio</label>
+                                        <select id="statusConvenio" name="status_convenio" class="input campo-edita" disabled>
+                                            <option value="A">Ativo (Credenciado)</option>
+                                            <option value="I">Inativo (Descredenciado)</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <!-- SEÇÃO 2: VALORES FINANCEIROS -->
+                            <div class="subsection-box mb-6 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <h3 class="text-sm font-bold text-teal-700 uppercase mb-3 flex items-center gap-2">
+                                    <i class="fa-solid fa-sack-dollar"></i> Controle Financeiro e Tabela de Preços
+                                </h3>
+
+                                <div class="form-grid grid grid-cols-12 gap-4">
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="valorParticular" class="block text-xs font-bold text-slate-700 uppercase mb-1">Valor Particular (Tabela)</label>
+                                        <input type="text" id="valorParticular" name="valor_particular" class="input campo-edita" inputmode="numeric" placeholder="R$ 0,00" value="R$ 0,00" disabled>
+                                    </div>
+
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="valorConvenio" class="block text-xs font-bold text-slate-700 uppercase mb-1">Valor Repasse Convênio</label>
+                                        <input type="text" id="valorConvenio" name="valor_convenio" class="input campo-edita" inputmode="numeric" placeholder="R$ 0,00" value="R$ 0,00" disabled>
+                                    </div>
+
+                                    <div class="form-group col-span-12 md:col-span-4">
+                                        <label for="custoInterno" class="block text-xs font-bold text-slate-700 uppercase mb-1">Custo Interno Operacional</label>
+                                        <input type="text" id="custoInterno" name="custo_interno" class="input campo-edita" inputmode="numeric" placeholder="R$ 0,00" value="R$ 0,00" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SEÇÃO 3: CONTROLE INTERNO & AUDITORIA -->
+                            <div class="subsection-box p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <h3 class="text-sm font-bold text-slate-700 uppercase mb-3 flex items-center gap-2">
+                                    <i class="fa-solid fa-clipboard-check"></i> Controle Interno e Log de Auditoria
+                                </h3>
+
+                                <div class="form-grid grid grid-cols-12 gap-4">
+                                    <div class="form-group col-span-12 md:col-span-3">
+                                        <label for="dataCriacao" class="block text-xs font-bold text-slate-600 uppercase mb-1">Data/Hora Criação</label>
+                                        <input type="text" id="dataCriacao" name="data_criacao" readonly placeholder="DD/MM/AAAA HH:MM" class="input input-readonly">
+                                    </div>
+                                    <div class="form-group col-span-12 md:col-span-3">
+                                        <label for="usuarioCriacao" class="block text-xs font-bold text-slate-600 uppercase mb-1">Usuário Cadastrador</label>
+                                        <input type="text" id="usuarioCriacao" name="usuario_criacao" readonly placeholder="ADMIN" class="input input-readonly">
+                                    </div>
+                                    <div class="form-group col-span-12 md:col-span-3">
+                                        <label for="dataAtualizacao" class="block text-xs font-bold text-slate-600 uppercase mb-1">Última Atualização</label>
+                                        <input type="text" id="dataAtualizacao" name="data_atualizacao" readonly placeholder="DD/MM/AAAA HH:MM" class="input input-readonly">
+                                    </div>
+                                    <div class="form-group col-span-12 md:col-span-3">
+                                        <label for="usuarioAtualizacao" class="block text-xs font-bold text-slate-600 uppercase mb-1">Usuário Atualizador</label>
+                                        <input type="text" id="usuarioAtualizacao" name="usuario_atualizacao" readonly placeholder="ADMIN" class="input input-readonly">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </form>
                 </div>
             </section>
 
-            <!-- Área da Tabela -->
-            <section
-                class="grid-area w-full bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col flex-1">
-                <div
-                    class="grid-header flex flex-wrap items-center justify-between gap-4 p-4 border-b border-slate-200 bg-slate-50">
-                    <span class="font-bold text-slate-800 flex items-center gap-2"><i
-                            class="fas fa-list text-teal-600"></i> Exames Cadastrados</span>
+            <!-- ÁREA DA TABELA DE EXAMES E MÓDULO DE BUSCA -->
+            <section class="grid-area w-full bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col flex-1" aria-label="Tabela de Exames Cadastrados">
+                <div class="grid-header flex flex-wrap items-center justify-between gap-4 p-4 border-b border-slate-200 bg-slate-50">
+                    <span class="font-extrabold text-slate-800 flex items-center gap-2 text-base">
+                        <i class="fa-solid fa-list text-teal-600" aria-hidden="true"></i> Exames Cadastrados no Sistema
+                    </span>
+                    
                     <div class="grid-search flex items-center gap-2">
-                        <input type="text" id="inputBusca" placeholder="Buscar por nome ou código..."
-                            class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none w-64">
-                        <button type="button" class="btn-search-icon" aria-label="Pesquisar">
-                            <i class="fas fa-search"></i>
+                        <label for="inputBusca" class="sr-only">Buscar exames por código, nome, categoria ou tipo</label>
+                        <input type="search" id="inputBusca" placeholder="Buscar por código, nome, categoria, tipo..." class="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none w-64 md:w-80" onkeyup="if(event.key==='Enter') executarBuscaExames()">
+                        <button type="button" class="btn-search-icon bg-teal-600 text-white rounded-lg px-3 py-2 hover:bg-teal-700 transition-colors" aria-label="Executar busca" onclick="executarBuscaExames()">
+                            <i class="fa-solid fa-search" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
+
                 <div class="table-wrapper w-full overflow-x-auto flex-1">
-                    <table id="tabelaExames" class="w-full text-left border-collapse">
+                    <table id="tabelaExames" class="w-full text-left border-collapse min-w-[760px]">
                         <thead>
-                            <tr
-                                class="bg-slate-100 text-slate-600 uppercase text-xs font-semibold border-b border-slate-200">
-                                <th class="p-3" style="width: 80px;">ID</th>
-                                <th class="p-3">Nome do Exame</th>
-                                <th class="p-3" style="width: 200px;">Categoria</th>
-                                <th class="p-3" style="width: 150px;">Tipo</th>
-                                <th class="p-3" style="width: 100px;">Valor Part.</th>
-                                <th class="p-3" style="width: 100px;">Status</th>
+                            <tr class="bg-slate-100 text-slate-700 uppercase text-xs font-extrabold border-b border-slate-200">
+                                <th class="p-3.5 w-24">Código ID</th>
+                                <th class="p-3.5">Nome do Exame</th>
+                                <th class="p-3.5 w-48">Categoria</th>
+                                <th class="p-3.5 w-36">Tipo</th>
+                                <th class="p-3.5 w-36">Valor Part.</th>
+                                <th class="p-3.5 w-36">Convênio</th>
+                                <th class="p-3.5 w-28 text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody id="corpoTabelaExames" class="divide-y divide-slate-200 text-sm text-slate-700">
+                            <!-- Preenchido via JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </section>
         </main>
+
+        <!-- FOOTER INTEGRADO -->
+        <footer class="footer px-6 py-4 border-t border-slate-200 bg-white text-slate-400 text-xs text-center font-medium">
+            © 2026 GM4med — Intelligent Health System. Módulo de Exames e Convênios. Todos os direitos reservados.
+        </footer>
     </div>
 
-    <!-- JavaScript Externo -->
-    <script src="./cadastro-exames.js"></script>
+    <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO -->
+    <div class="modal" id="modalConfirmacao" role="dialog" aria-modal="true" aria-labelledby="modalConfirmTitle" hidden>
+        <div class="modal-content">
+            <header class="modal-header modal-header--danger flex items-center justify-between p-4 border-b border-slate-200 bg-red-50">
+                <h2 id="modalConfirmTitle" class="text-base font-bold text-red-700 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Confirmação de Exclusão
+                </h2>
+                <button type="button" class="modal-close text-slate-500 hover:text-slate-800" onclick="fecharModal('modalConfirmacao')" aria-label="Fechar confirmação">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="modal-body p-6">
+                <p id="modalConfirmMessage" class="text-sm text-slate-700">Deseja realmente excluir este exame do sistema?</p>
+                <div class="modal-actions flex justify-end gap-3 mt-6">
+                    <button type="button" class="btn btn-dark" onclick="fecharModal('modalConfirmacao')">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">
+                        <i class="fa-solid fa-trash" aria-hidden="true"></i> Confirmar Exclusão
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE BUSCA AVANÇADA -->
+    <div class="modal" id="modalBusca" role="dialog" aria-modal="true" aria-labelledby="modalBuscaTitle" hidden>
+        <div class="modal-content modal-content--wide max-w-2xl w-full bg-white rounded-xl shadow-xl overflow-hidden">
+            <header class="modal-header flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
+                <h2 id="modalBuscaTitle" class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-teal-600" aria-hidden="true"></i> Localizar Exame no Sistema
+                </h2>
+                <button type="button" class="modal-close text-slate-500 hover:text-slate-800" onclick="fecharModal('modalBusca')" aria-label="Fechar busca">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="modal-body p-6">
+                <div class="flex gap-2 mb-4">
+                    <input type="search" id="inputBuscaModal" placeholder="Digite Código, Nome do Exame, Categoria ou Tipo..." class="input flex-1" onkeyup="if(event.key==='Enter') executarBuscaModal()">
+                    <button type="button" class="btn btn-primary" onclick="executarBuscaModal()">
+                        <i class="fa-solid fa-search"></i> Pesquisar
+                    </button>
+                </div>
+                <div id="resultadosBuscaModal" class="busca-resultados divide-y divide-slate-200 max-h-80 overflow-y-auto" aria-live="polite">
+                    <p class="text-sm text-slate-500 text-center py-6">Digite um termo acima e clique em Pesquisar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT JAVASCRIPT DA JANELA -->
+    <script src="cadastro-exames.js" defer></script>
 </body>
 
 </html>
