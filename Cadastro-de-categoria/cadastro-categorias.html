@@ -4,133 +4,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Categorias | Sistema GM4</title>
+    <meta name="description" content="Janela de Cadastro de Categorias de Exames do GM4Med - Intelligent Health System">
+    <title>Cadastro de Categorias de Exames | GM4Med</title>
+
+    <!-- Tipografia oficial GM4Med -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="cadastro-categorias.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <div class="header-title">
-                <i class="fas fa-tags"></i>
-                <h1>Cadastro de Categorias de Exames</h1>
+    <div class="GM4med-container">
+        <!-- BARRA SUPERIOR & TOOLBAR -->
+        <header class="GM4med-header">
+            <div class="GM4med-header__brand">
+                <div class="GM4med-header__icon-box" aria-hidden="true">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div>
+                    <span class="GM4med-header__eyebrow">GM4Med · Gestão de Exames</span>
+                    <h1 class="GM4med-header__title">Cadastro de Categorias de Exames</h1>
+                </div>
             </div>
-            <div class="toolbar">
-                <button id="btnNovo" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Novo
+
+            <div class="GM4med-toolbar" role="toolbar" aria-label="Barra de ações do cadastro">
+                <button id="btnNovo" class="GM4med-btn GM4med-btn--primary" type="button" title="Iniciar novo cadastro (Alt+N)">
+                    <i class="fas fa-plus" aria-hidden="true"></i> Novo
                 </button>
-                <button id="btnSalvar" class="btn btn-success" disabled>
-                    <i class="fas fa-save"></i> Gravar
+                <button id="btnSalvar" class="GM4med-btn GM4med-btn--success" type="button" disabled title="Gravar registro (Ctrl+S)">
+                    <i class="fas fa-check" aria-hidden="true"></i> Gravar
                 </button>
-                <button id="btnEditar" class="btn btn-warning" disabled>
-                    <i class="fas fa-edit"></i> Editar
+                <button id="btnEditar" class="GM4med-btn GM4med-btn--warning" type="button" disabled title="Editar categoria selecionada">
+                    <i class="fas fa-edit" aria-hidden="true"></i> Editar
                 </button>
-                <button id="btnExcluir" class="btn btn-danger" disabled>
-                    <i class="fas fa-trash"></i> Excluir
+                <button id="btnBuscar" class="GM4med-btn GM4med-btn--quiet" type="button" title="Busca avançada de categorias (Alt+B)">
+                    <i class="fas fa-search" aria-hidden="true"></i> Buscar
                 </button>
-                <button id="btnAnterior" class="btn btn-dark" disabled>
-                    <i class="fas fa-chevron-left"></i> Anterior
+                <button id="btnExcluir" class="GM4med-btn GM4med-btn--danger" type="button" disabled title="Excluir categoria selecionada">
+                    <i class="fas fa-trash" aria-hidden="true"></i> Excluir
                 </button>
-                <button id="btnProximo" class="btn btn-dark" disabled>
-                    Próximo <i class="fas fa-chevron-right"></i>
+                <button id="btnAnterior" class="GM4med-btn GM4med-btn--icon" type="button" disabled aria-label="Registro anterior" title="Registro anterior">
+                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
                 </button>
-                <button id="btnSair" class="btn btn-dark" onclick="window.location.href='../Menu-Principal.html'">
-                    <i class="fas fa-arrow-left"></i> Voltar
+                <button id="btnProximo" class="GM4med-btn GM4med-btn--icon" type="button" disabled aria-label="Próximo registro" title="Próximo registro">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </button>
+                <button id="btnSair" class="GM4med-btn GM4med-btn--quiet" type="button" title="Voltar ao menu principal">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Sair
                 </button>
             </div>
         </header>
 
-        <main>
-            <section class="form-area">
-                <nav class="tabs-nav">
-                    <button class="tab-link active" onclick="openTab(event, 'dados-categoria')">1. Dados da
-                        Categoria</button>
-                    <button class="tab-link" onclick="openTab(event, 'metadados')">2. Auditoria & Controle</button>
+        <main class="GM4med-main">
+            <!-- ÁREA DE FORMULÁRIO E ABAS -->
+            <section class="GM4med-panel" aria-labelledby="formTitle">
+                <div class="GM4med-panel__head">
+                    <div>
+                        <h2 id="formTitle">Ficha da Categoria</h2>
+                        <p id="formState">Selecione uma categoria na lista abaixo ou clique em "Novo" para cadastrar.</p>
+                    </div>
+                    <div class="GM4med-badge-wrap">
+                        <span class="GM4med-badge-wrap__label">Código ID</span>
+                        <span id="recordIdBadge" class="GM4med-badge-wrap__value">--</span>
+                    </div>
+                </div>
+
+                <nav class="GM4med-tabs" role="tablist" aria-label="Etapas do cadastro">
+                    <button id="tabCategoria" class="GM4med-tab GM4med-tab--active" type="button" role="tab" aria-selected="true" aria-controls="dados-categoria" tabindex="0">
+                        1. Dados da Categoria
+                    </button>
+                    <button id="tabAuditoria" class="GM4med-tab" type="button" role="tab" aria-selected="false" aria-controls="metadados" tabindex="-1">
+                        2. Auditoria & Controle
+                    </button>
                 </nav>
 
-                <div class="form-content">
-                    <form id="categoriaForm">
+                <div class="GM4med-content">
+                    <form id="categoriaForm" novalidate autocomplete="off">
                         <!-- ABA 1: DADOS DA CATEGORIA -->
-                        <div id="dados-categoria" class="tab-content active">
-                            <div class="form-grid">
-                                <div class="form-group col-2">
-                                    <label>Código ID</label>
-                                    <input type="text" id="categoriaId" readonly placeholder="Auto">
-                                </div>
-                                <div class="form-group col-8">
-                                    <label>Nome da Categoria</label>
-                                    <input type="text" id="nomeCategoria" class="uppercase" maxlength="25" disabled
-                                        required>
-                                </div>
-                                <div class="form-group col-2">
-                                    <label>Sigla</label>
-                                    <input type="text" id="siglaCategoria" class="uppercase" maxlength="4" disabled>
+                        <section id="dados-categoria" class="GM4med-tab-content GM4med-tab-content--active" role="tabpanel" aria-labelledby="tabCategoria">
+                            <div class="GM4med-grid">
+                                <div class="GM4med-field GM4med-col-2">
+                                    <label for="categoriaId">Código / ID</label>
+                                    <input type="text" id="categoriaId" readonly placeholder="Automático" tabindex="-1" class="GM4med-input GM4med-input--readonly">
+                                    <span class="GM4med-field__hint">Gerado automaticamente</span>
                                 </div>
 
-                                <div class="form-group col-10">
-                                    <label>Descrição da Categoria</label>
-                                    <input type="text" id="descricaoCategoria" maxlength="50" disabled>
+                                <div class="GM4med-field GM4med-col-7">
+                                    <label for="nomeCategoria">Nome da Categoria <span class="GM4med-required">*</span></label>
+                                    <input type="text" id="nomeCategoria" class="GM4med-input GM4med-input--uppercase" maxlength="25" disabled placeholder="Digite o nome da categoria (ex: CARDIOLOGIA)" aria-required="true" aria-describedby="errorNome">
+                                    <span id="errorNome" class="GM4med-error-message" aria-live="polite"></span>
                                 </div>
-                                <div class="form-group col-2">
-                                    <label>Status</label>
-                                    <select id="statusCategoria" disabled>
-                                        <option value="A">Ativo</option>
-                                        <option value="I">Inativo</option>
+
+                                <div class="GM4med-field GM4med-col-3">
+                                    <label for="siglaCategoria">Sigla <span class="GM4med-required">*</span></label>
+                                    <input type="text" id="siglaCategoria" class="GM4med-input GM4med-input--uppercase" maxlength="4" disabled placeholder="EX: CARD" aria-required="true" aria-describedby="errorSigla">
+                                    <span id="errorSigla" class="GM4med-error-message" aria-live="polite"></span>
+                                </div>
+
+                                <div class="GM4med-field GM4med-col-9">
+                                    <div class="GM4med-field__label-row">
+                                        <label for="descricaoCategoria">Descrição da Categoria</label>
+                                        <span id="descCounter" class="GM4med-counter">0 / 50</span>
+                                    </div>
+                                    <input type="text" id="descricaoCategoria" class="GM4med-input" maxlength="50" disabled placeholder="Descrição sucinta dos exames pertencentes à categoria...">
+                                </div>
+
+                                <div class="GM4med-field GM4med-col-3">
+                                    <label for="statusCategoria">Status <span class="GM4med-required">*</span></label>
+                                    <select id="statusCategoria" class="GM4med-select" disabled aria-required="true">
+                                        <option value="Ativo" selected>Ativo</option>
+                                        <option value="Inativo">Inativo</option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        <!-- ABA 2: METADADOS (AUDITORIA) -->
-                        <div id="metadados" class="tab-content">
-                            <div class="form-grid">
-                                <div class="form-group col-4">
-                                    <label>Data do Cadastro</label>
-                                    <input type="date" id="dataCadastro" disabled>
+                        <!-- ABA 2: AUDITORIA & CONTROLE -->
+                        <section id="metadados" class="GM4med-tab-content" role="tabpanel" aria-labelledby="tabAuditoria">
+                            <div class="GM4med-grid">
+                                <div class="GM4med-field GM4med-col-4">
+                                    <label for="dataCadastro">Data do Cadastro</label>
+                                    <input type="date" id="dataCadastro" class="GM4med-input" disabled readonly>
                                 </div>
-                                <div class="form-group col-4">
-                                    <label>Usuário de Cadastro</label>
-                                    <input type="text" id="usuarioCadastro" maxlength="12" disabled>
+
+                                <div class="GM4med-field GM4med-col-4">
+                                    <label for="usuarioCadastro">Usuário de Cadastro</label>
+                                    <input type="text" id="usuarioCadastro" class="GM4med-input" maxlength="12" disabled readonly placeholder="ADMIN">
                                 </div>
-                                <div class="form-group col-4">
-                                    <label>Data da Alteração</label>
-                                    <input type="date" id="dataAlteracao" disabled>
+
+                                <div class="GM4med-field GM4med-col-4">
+                                    <label for="dataAlteracao">Data da Última Alteração</label>
+                                    <input type="date" id="dataAlteracao" class="GM4med-input" disabled readonly>
                                 </div>
                             </div>
-                        </div>
+                        </section>
                     </form>
                 </div>
             </section>
 
-            <section class="grid-area">
-                <div class="grid-header">
-                    <span><i class="fas fa-list"></i> Categorias Cadastradas</span>
-                    <div class="grid-search">
-                        <input type="text" id="inputBusca" placeholder="Filtrar por nome ou sigla...">
-                        <button class="btn btn-primary btn-sm"><i class="fas fa-search"></i></button>
+            <!-- SEÇÃO GRID DE CONSULTA E BUSCA EM TEMPO REAL -->
+            <section class="GM4med-grid-area" aria-labelledby="gridTitle">
+                <div class="GM4med-grid-area__header">
+                    <div>
+                        <h2 id="gridTitle" class="GM4med-grid-area__title"><i class="fas fa-list-ul" aria-hidden="true"></i> Categorias Cadastradas</h2>
+                        <span id="gridSummary" class="GM4med-grid-area__summary">Total: 0 categorias</span>
+                    </div>
+
+                    <div class="GM4med-grid-area__search">
+                        <label for="inputBusca" class="sr-only">Filtrar categorias</label>
+                        <div class="GM4med-search-input-wrap">
+                            <i class="fas fa-search GM4med-search-icon" aria-hidden="true"></i>
+                            <input type="search" id="inputBusca" class="GM4med-input GM4med-input--search" placeholder="Filtrar por nome, sigla ou código...">
+                        </div>
                     </div>
                 </div>
-                <div class="table-wrapper">
-                    <table id="tabelaCategorias">
+
+                <!-- TABELA COM ORDENAÇÃO -->
+                <div class="GM4med-table-wrapper" tabindex="0" aria-label="Lista de categorias cadastradas">
+                    <table id="tabelaCategorias" class="GM4med-table">
+                        <caption class="sr-only">Categorias de exames cadastradas</caption>
                         <thead>
                             <tr>
-                                <th width="100">Cód.</th>
-                                <th>Categoria</th>
-                                <th width="150">Sigla</th>
-                                <th width="150">Status</th>
+                                <th scope="col" style="width: 100px;" data-sort="id" class="sortable">
+                                    Código <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                                </th>
+                                <th scope="col" data-sort="nome" class="sortable">
+                                    Categoria / Nome <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                                </th>
+                                <th scope="col" style="width: 120px;" data-sort="sigla" class="sortable">
+                                    Sigla <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                                </th>
+                                <th scope="col" style="width: 130px;" data-sort="status" class="sortable">
+                                    Status <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                                </th>
                             </tr>
                         </thead>
-                        <tbody id="corpoTabelaCategorias">
-                            <!-- Injetado via JS -->
+                        <tbody id="corpoTabelaCategorias" aria-live="polite">
+                            <!-- Linhas inseridas via JS -->
                         </tbody>
                     </table>
+                </div>
+
+                <!-- CONTROLES DE PAGINAÇÃO DO GRID -->
+                <div class="GM4med-pagination">
+                    <span id="paginationInfo" class="GM4med-pagination__info">Exibindo 0 a 0 de 0</span>
+                    <div class="GM4med-pagination__controls">
+                        <button id="btnPagPrev" class="GM4med-btn GM4med-btn--quiet GM4med-btn--sm" type="button" disabled>‹ Anterior</button>
+                        <span id="paginationPages" class="GM4med-pagination__pages">Página 1 de 1</span>
+                        <button id="btnPagNext" class="GM4med-btn GM4med-btn--quiet GM4med-btn--sm" type="button" disabled>Próxima ›</button>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
+
+    <!-- MODAL ACESSÍVEL: CONFIRMAÇÃO DE EXCLUSÃO -->
+    <div id="modalExcluir" class="GM4med-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalExcluirTitle" aria-describedby="modalExcluirDesc">
+        <div class="GM4med-modal-card">
+            <div class="GM4med-modal-header GM4med-modal-header--danger">
+                <i class="fas fa-exclamation-triangle GM4med-modal-icon" aria-hidden="true"></i>
+                <h2 id="modalExcluirTitle">Confirmar Exclusão de Categoria</h2>
+            </div>
+            <div class="GM4med-modal-body">
+                <p id="modalExcluirDesc">Deseja realmente excluir esta categoria de exame?</p>
+                <div id="modalExcluirDetails" class="GM4med-modal-details"></div>
+                <p class="GM4med-modal-warning">Caso a categoria esteja vinculada a exames ativos, o registro será inativado em vez de removido fisicamente.</p>
+            </div>
+            <div class="GM4med-modal-footer">
+                <button id="btnCancelarExclusao" class="GM4med-btn GM4med-btn--quiet" type="button">Cancelar</button>
+                <button id="btnConfirmarExclusao" class="GM4med-btn GM4med-btn--danger" type="button">Sim, excluir categoria</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ACESSÍVEL: BUSCA AVANÇADA -->
+    <div id="modalBuscar" class="GM4med-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalBuscarTitle">
+        <div class="GM4med-modal-card GM4med-modal-card--lg">
+            <div class="GM4med-modal-header">
+                <h2><i class="fas fa-search" aria-hidden="true"></i> Pesquisar Categoria de Exames</h2>
+                <button id="btnFecharModalBuscar" class="GM4med-modal-close" type="button" aria-label="Fechar busca">×</button>
+            </div>
+            <div class="GM4med-modal-body">
+                <div class="GM4med-modal-search-bar">
+                    <input id="inputBuscaModal" type="search" class="GM4med-input" placeholder="Digite código, nome da categoria ou sigla para filtrar..." aria-label="Digitar filtro">
+                </div>
+                <div class="GM4med-table-wrapper" tabindex="0">
+                    <table class="GM4med-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Categoria</th>
+                                <th>Sigla</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaResultadosBuscaModal">
+                            <!-- Resultados filtrados dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST DE NOTIFICAÇÃO -->
+    <div id="toast" class="GM4med-toast hidden" role="status" aria-live="polite"></div>
+
     <script src="cadastro-categorias.js"></script>
 </body>
 
