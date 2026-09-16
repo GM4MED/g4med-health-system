@@ -1,38 +1,48 @@
 /* ==========================================================================
-   VARIÁVEIS DE CORES E CONFIGURAÇÕES GERAIS
+   DESIGN SYSTEM - PALETA DE CORES E DIRETRIZES DE ESTILO
    ========================================================================== */
 :root {
+    --ds-bg-modal: #FFFFFF;
+    --ds-text-primary: #333333;
+    --ds-text-secondary: #555555;
+    --ds-header-bg: #0B1F3A;
+    --ds-header-text: #FFFFFF;
+    --ds-action-primary: #FF6B00;
+    --ds-action-primary-hover: #E05E00;
+    --ds-action-secondary: #00B8A9;
+    --ds-action-secondary-hover-bg: rgba(0, 184, 169, 0.05);
+    --ds-border: #E0E0E0;
+    --ds-placeholder: #999999;
+    --ds-error: #D93025;
+    --ds-error-bg: #FDF2F2;
+
     --slate-50: #f8fafc;
     --slate-100: #f1f5f9;
-    --slate-200: #e2e8f0;
-    --slate-300: #cbd5e1;
-    --slate-400: #94a3b8;
-    --slate-500: #64748b;
-    --slate-600: #475569;
-    --slate-700: #334155;
-    --slate-800: #1e293b;
-    --slate-900: #0f172a;
+    --slate-200: #E0E0E0;
+    --slate-300: #E0E0E0;
+    --slate-400: #999999;
+    --slate-500: #555555;
+    --slate-600: #555555;
+    --slate-700: #333333;
+    --slate-800: #333333;
+    --slate-900: #333333;
 
-    --teal-50: #f0fdfa;
-    --teal-100: #ccfbf1;
-    --teal-200: #99f6e4;
-    --teal-500: #14b8a6;
-    --teal-600: #0d9488;
-    --teal-700: #0f766e;
-    --teal-800: #115e59;
+    --teal-50: #E6F8F6;
+    --teal-100: #CCF2EE;
+    --teal-200: #99E5DC;
+    --teal-500: #00B8A9;
+    --teal-600: #00B8A9;
+    --teal-700: #008F83;
+    --teal-800: #00665E;
+
+    --danger-50: #FDF2F2;
+    --danger-600: #D93025;
 
     --success-50: #ecfdf5;
     --success-600: #16a34a;
 
-    --danger-50: #fef2f2;
-    --danger-600: #dc2626;
-
-    --warning-50: #fffbeb;
-    --warning-200: #fde68a;
-    --warning-800: #92400e;
-
     --shadow-soft: 0 8px 30px rgba(15, 23, 42, 0.08);
-    --shadow-modal: 0 20px 60px rgba(15, 23, 42, 0.2);
+    --shadow-modal: 0 20px 60px rgba(11, 31, 58, 0.25);
 }
 
 /* ==========================================================================
@@ -47,7 +57,7 @@ body {
     min-width: 320px;
     margin: 0;
     background: var(--slate-50);
-    color: var(--slate-900);
+    color: var(--ds-text-primary);
     font-family:
         ui-sans-serif,
         system-ui,
@@ -83,13 +93,13 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-    outline: 3px solid rgba(20, 184, 166, 0.28);
+    outline: 3px solid rgba(255, 107, 0, 0.28);
     outline-offset: 2px;
 }
 
 ::selection {
-    background: var(--teal-100);
-    color: var(--teal-800);
+    background: #FFE4D1;
+    color: #333333;
 }
 
 /* ==========================================================================
@@ -97,21 +107,21 @@ textarea:focus-visible {
    ========================================================================== */
 .form-label {
     display: block;
-    margin-bottom: 0.5rem;
-    color: var(--slate-700);
+    margin-bottom: 0.375rem;
+    color: var(--ds-text-primary);
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .form-input {
     display: block;
     width: 100%;
-    min-height: 3rem;
-    border: 1px solid var(--slate-300);
+    min-height: 2.75rem;
+    border: 1px solid var(--ds-border);
     border-radius: 0.75rem;
-    background: #fff;
-    padding: 0.75rem 0.875rem;
-    color: var(--slate-900);
+    background: var(--ds-bg-modal);
+    padding: 0.625rem 0.875rem;
+    color: var(--ds-text-primary);
     font-size: 0.875rem;
     line-height: 1.4;
     transition:
@@ -123,58 +133,70 @@ textarea:focus-visible {
 }
 
 .form-input::placeholder {
-    color: var(--slate-400);
+    color: var(--ds-placeholder);
 }
 
 .form-input:hover {
-    border-color: var(--slate-400);
+    border-color: #BDBDBD;
 }
 
 .form-input:focus {
-    border-color: var(--teal-500);
+    border-color: var(--ds-action-primary);
     outline: none;
-    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.14);
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.18);
 }
 
 .form-input:disabled,
 .form-input[readonly] {
     cursor: not-allowed;
-    background: var(--slate-100);
-    color: var(--slate-500);
+    background: #F5F5F5;
+    color: var(--ds-text-secondary);
 }
 
 .form-input[aria-invalid="true"] {
-    border-color: var(--danger-600);
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    border-color: var(--ds-error) !important;
+    box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.18) !important;
+    background-color: var(--ds-error-bg) !important;
 }
 
 .form-error {
     min-height: 1.25rem;
     margin-top: 0.375rem;
-    color: var(--danger-600);
+    color: var(--ds-error);
     font-size: 0.75rem;
+    font-weight: 500;
     line-height: 1.4;
 }
 
 .form-help {
     margin-top: 0.375rem;
-    color: var(--slate-600);
-    font-size: 0.8125rem;
+    color: var(--ds-text-secondary);
+    font-size: 0.75rem; /* 12px */
     font-weight: 500;
     line-height: 1.4;
 }
 
-.form-input[aria-invalid="true"] {
-    border-color: var(--danger-600) !important;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
-    background-color: #fef2f2 !important;
+/* Seta dos Dropdowns em #555555 */
+select.form-input {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23555555' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
 }
 
 /* ==========================================================================
    MULTI-SELECT COMPONENT (ESPECIALIDADES)
    ========================================================================== */
 .specialties-multiselect {
+    border: 1px solid var(--ds-border);
+    background: var(--ds-bg-modal);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.specialties-multiselect:focus-within {
+    border-color: var(--ds-action-primary);
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.18);
 }
 
 .specialty-pill {
@@ -183,9 +205,9 @@ textarea:focus-visible {
     gap: 0.375rem;
     padding: 0.25rem 0.625rem;
     border-radius: 9999px;
-    background-color: var(--teal-50);
-    border: 1px solid var(--teal-200);
-    color: var(--teal-800);
+    background-color: #E6F8F6;
+    border: 1px solid var(--ds-action-secondary);
+    color: #005C54;
     font-size: 0.8125rem;
     font-weight: 600;
     line-height: 1.2;
@@ -199,13 +221,13 @@ textarea:focus-visible {
     width: 1.125rem;
     height: 1.125rem;
     border-radius: 9999px;
-    color: var(--teal-700);
+    color: var(--ds-action-secondary);
     transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .specialty-pill-remove:hover {
-    background-color: var(--teal-200);
-    color: var(--teal-900);
+    background-color: rgba(0, 184, 169, 0.2);
+    color: #005C54;
 }
 
 .specialties-dropdown-option {
@@ -216,7 +238,7 @@ textarea:focus-visible {
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
-    color: var(--slate-700);
+    color: var(--ds-text-primary);
     cursor: pointer;
     user-select: none;
     transition: background-color 0.15s ease, color 0.15s ease;
@@ -224,38 +246,23 @@ textarea:focus-visible {
 
 .specialties-dropdown-option:hover,
 .specialties-dropdown-option.is-highlighted {
-    background-color: var(--teal-50);
-    color: var(--teal-800);
+    background-color: #F5F5F5;
+    color: var(--ds-text-primary);
 }
 
 .specialties-dropdown-option.is-selected {
-    background-color: var(--teal-100);
-    color: var(--teal-900);
+    background-color: #E6F8F6;
+    color: #005C54;
     font-weight: 600;
 }
 
-select[multiple] {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-
-select[multiple] option {
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-}
-
-textarea {
-    min-height: 7rem;
-    resize: vertical;
-}
-
 /* ==========================================================================
-   BOTÕES
+   BOTÕES (DESIGN SYSTEM)
    ========================================================================== */
 .action-primary,
 .action-secondary {
     display: inline-flex;
-    min-height: 3rem;
+    min-height: 2.75rem;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
@@ -273,15 +280,16 @@ textarea {
     will-change: transform;
 }
 
+/* Botão Salvar (Primário: Laranja Vibrante) */
 .action-primary {
-    border: 1px solid var(--teal-600);
-    background: var(--teal-600);
-    color: #fff;
+    border: 1px solid var(--ds-action-primary);
+    background: var(--ds-action-primary);
+    color: #FFFFFF;
 }
 
 .action-primary:hover {
-    border-color: var(--teal-700);
-    background: var(--teal-700);
+    border-color: var(--ds-action-primary-hover);
+    background: var(--ds-action-primary-hover);
 }
 
 .action-primary:active,
@@ -295,15 +303,17 @@ textarea {
     cursor: not-allowed;
 }
 
+/* Botão Cancelar (Secundário: Turquesa Outlined) */
 .action-secondary {
-    border: 1px solid var(--slate-300);
-    background: #fff;
-    color: var(--slate-700);
+    border: 1px solid var(--ds-action-secondary);
+    background: transparent;
+    color: var(--ds-action-secondary);
 }
 
 .action-secondary:hover {
-    border-color: var(--slate-400);
-    background: var(--slate-50);
+    border-color: var(--ds-action-secondary);
+    background-color: var(--ds-action-secondary-hover-bg);
+    color: var(--ds-action-secondary);
 }
 
 /* ==========================================================================
@@ -382,7 +392,7 @@ textarea {
 }
 
 .toggle input:checked+.toggle-slider {
-    background: var(--teal-600);
+    background: var(--ds-action-primary) !important;
 }
 
 .toggle input:checked+.toggle-slider::before {
@@ -390,7 +400,7 @@ textarea {
 }
 
 .toggle input:focus-visible+.toggle-slider {
-    outline: 3px solid rgba(20, 184, 166, 0.28);
+    outline: 3px solid rgba(255, 107, 0, 0.28);
     outline-offset: 2px;
 }
 
