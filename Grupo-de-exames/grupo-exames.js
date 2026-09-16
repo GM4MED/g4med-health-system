@@ -276,6 +276,132 @@
         state.modalAnterior = null;
     }
 
+    // Estado do Multi-Select de Especialidades
+    const especialidadesDisponiveis = [
+        "Clínica Médica",
+        "Cardiologia",
+        "Pediatria",
+        "Ginecologia",
+        "Neurologia",
+        "Oftalmologia",
+        "Dermatologia",
+        "Ortopedia",
+        "Endocrinologia",
+        "Outras"
+    ];
+    let selectedSpecialties = new Set();
+
+    function setSpecialtiesValues(valores = []) {
+        selectedSpecialties = new Set(valores);
+        renderSpecialtiesTags();
+        syncSpecialtiesWithSelect();
+    }
+
+    function renderSpecialtiesTags() {
+        const container = document.getElementById("specialtiesTags");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        selectedSpecialties.forEach((esp) => {
+            const pill = document.createElement("span");
+            pill.className = "specialty-pill";
+            pill.innerHTML = `
+                <span>${escaparHtml(esp)}</span>
+                <button type="button" class="specialty-pill-remove" aria-label="Remover ${escaparHtml(esp)}" data-remove-specialty="${escaparHtml(esp)}">
+                    &times;
+                </button>
+            `;
+            container.appendChild(pill);
+        });
+    }
+
+    function syncSpecialtiesWithSelect() {
+        const select = elementos.groupSpecialties;
+        if (!select) return;
+
+        [...select.options].forEach((option) => {
+            option.selected = selectedSpecialties.has(option.value);
+        });
+    }
+
+    function renderSpecialtiesDropdownOptions(filtro = "") {
+        const listContainer = document.getElementById("specialtiesOptionsList");
+        const noResults = document.getElementById("specialtiesNoResults");
+        if (!listContainer) return;
+
+        listContainer.innerHTML = "";
+        const termo = normalizarTexto(filtro);
+
+        const filtrados = especialidadesDisponiveis.filter((esp) =>
+            !termo || normalizarTexto(esp).includes(termo)
+        );
+
+        if (filtrados.length === 0) {
+            noResults?.classList.remove("hidden");
+            return;
+        }
+        noResults?.classList.add("hidden");
+
+        filtrados.forEach((esp) => {
+            const isSelected = selectedSpecialties.has(esp);
+            const item = document.createElement("div");
+            item.className = `specialties-dropdown-option ${isSelected ? "is-selected" : ""}`;
+            item.setAttribute("role", "option");
+            item.setAttribute("aria-selected", String(isSelected));
+            item.dataset.specialtyValue = esp;
+
+            item.innerHTML = `
+                <span class="flex items-center gap-2">
+                    <input type="checkbox" ${isSelected ? "checked" : ""} class="h-4 w-4 rounded border-slate-300 accent-teal-600 text-teal-600 focus:ring-teal-500 pointer-events-none">
+                    <span>${escaparHtml(esp)}</span>
+                </span>
+                ${isSelected ? '<span class="text-teal-600 font-bold text-xs">✓</span>' : ""}
+            `;
+            listContainer.appendChild(item);
+        });
+    }
+
+    function toggleSpecialtyOption(esp) {
+        if (selectedSpecialties.has(esp)) {
+            selectedSpecialties.delete(esp);
+        } else {
+            selectedSpecialties.add(esp);
+        }
+        renderSpecialtiesTags();
+        syncSpecialtiesWithSelect();
+        const searchInput = document.getElementById("specialtySearchInput");
+        renderSpecialtiesDropdownOptions(searchInput ? searchInput.value : "");
+    }
+
+    function openSpecialtiesDropdown() {
+        const dropdown = document.getElementById("specialtiesDropdown");
+        const input = document.getElementById("specialtySearchInput");
+        if (!dropdown) return;
+
+        dropdown.classList.remove("hidden");
+        input?.setAttribute("aria-expanded", "true");
+        renderSpecialtiesDropdownOptions(input ? input.value : "");
+    }
+
+    function closeSpecialtiesDropdown() {
+        const dropdown = document.getElementById("specialtiesDropdown");
+        const input = document.getElementById("specialtySearchInput");
+        if (!dropdown) return;
+
+        dropdown.classList.add("hidden");
+        input?.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleSpecialtiesDropdown() {
+        const dropdown = document.getElementById("specialtiesDropdown");
+        if (dropdown?.classList.contains("hidden")) {
+            openSpecialtiesDropdown();
+        } else {
+            closeSpecialtiesDropdown();
+        }
+    }
+
     function configurarNovoGrupo() {
         state.grupoAtual = null;
 
@@ -285,7 +411,18 @@
 
         elementos.groupCode.value = obterProximoCodigo();
         elementos.groupStatus.checked = true;
+        
+        // Reset de erros
+        elementos.groupName?.setAttribute("aria-invalid", "false");
+        elementos.groupCategory?.setAttribute("aria-invalid", "false");
+        elementos.groupNameError?.classList.add("hidden");
+        elementos.groupCategoryError?.classList.add("hidden");
         elementos.groupExamsError.textContent = "";
+
+        setSpecialtiesValues([]);
+        const searchInput = document.getElementById("specialtySearchInput");
+        if (searchInput) searchInput.value = "";
+        closeSpecialtiesDropdown();
 
         renderizarExamesDoGrupo([]);
         selecionarAba("general");
@@ -316,7 +453,11 @@
         elementos.groupDescription.value = grupo.descricao || "";
         elementos.groupStatus.checked = grupo.status === "ATIVO";
 
-        selecionarValores(elementos.groupSpecialties, grupo.especialidades || []);
+        setSpecialtiesValues(grupo.especialidades || []);
+        const searchInput = document.getElementById("specialtySearchInput");
+        if (searchInput) searchInput.value = "";
+        closeSpecialtiesDropdown();
+
         preencherCampo("generalPreparation", grupo.preparoGeral);
         preencherCampo("patientInstructions", grupo.orientacoesPaciente);
         preencherCampo("internalNotes", grupo.observacoesInternas);
@@ -564,23 +705,35 @@
 
     function validarFormulario(dados) {
         let valido = true;
+        let primeiroCampoInvalido = null;
 
         elementos.groupName.setAttribute("aria-invalid", "false");
         elementos.groupCategory.setAttribute("aria-invalid", "false");
-        elementos.groupNameError.textContent = "";
-        elementos.groupCategoryError.textContent = "";
+        
+        elementos.groupNameError.classList.add("hidden");
+        elementos.groupNameError.innerHTML = "";
+        
+        elementos.groupCategoryError.classList.add("hidden");
+        elementos.groupCategoryError.innerHTML = "";
+        
         elementos.groupExamsError.textContent = "";
+
+        const iconeErro = `<svg class="h-4 w-4 shrink-0 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
 
         if (!dados.nome) {
             elementos.groupName.setAttribute("aria-invalid", "true");
-            elementos.groupNameError.textContent = "Este campo é obrigatório.";
+            elementos.groupNameError.innerHTML = `${iconeErro} <span>O nome do grupo é obrigatório.</span>`;
+            elementos.groupNameError.classList.remove("hidden");
             valido = false;
+            if (!primeiroCampoInvalido) primeiroCampoInvalido = elementos.groupName;
         }
 
         if (!dados.categoria) {
             elementos.groupCategory.setAttribute("aria-invalid", "true");
-            elementos.groupCategoryError.textContent = "Este campo é obrigatório.";
+            elementos.groupCategoryError.innerHTML = `${iconeErro} <span>Selecione uma categoria válida.</span>`;
+            elementos.groupCategoryError.classList.remove("hidden");
             valido = false;
+            if (!primeiroCampoInvalido) primeiroCampoInvalido = elementos.groupCategory;
         }
 
         if (!dados.exames.length) {
@@ -589,7 +742,13 @@
         }
 
         if (!valido) {
-            mostrarToast("Revise os campos obrigatórios.", "error");
+            if (primeiroCampoInvalido) {
+                selecionarAba("general");
+                primeiroCampoInvalido.focus();
+            } else if (!dados.exames.length) {
+                selecionarAba("exams");
+            }
+            mostrarToast("Por favor, preencha os campos obrigatórios destacados.", "error");
         }
 
         return valido;
@@ -835,9 +994,64 @@
         elementos.newGroupBtn.addEventListener("click", configurarNovoGrupo);
         elementos.emptyCreateBtn.addEventListener("click", configurarNovoGrupo);
 
+        // Limpeza de erros em tempo real
+        elementos.groupName?.addEventListener("input", () => {
+            if (elementos.groupName.value.trim()) {
+                elementos.groupName.setAttribute("aria-invalid", "false");
+                elementos.groupNameError?.classList.add("hidden");
+            }
+        });
+
+        elementos.groupCategory?.addEventListener("change", () => {
+            if (elementos.groupCategory.value) {
+                elementos.groupCategory.setAttribute("aria-invalid", "false");
+                elementos.groupCategoryError?.classList.add("hidden");
+            }
+        });
+
+        // Componente Multi-Select de Especialidades
+        const searchInput = document.getElementById("specialtySearchInput");
+        const toggleBtn = document.getElementById("specialtyDropdownToggle");
+        const clearBtn = document.getElementById("clearAllSpecialtiesBtn");
+
+        if (searchInput) {
+            searchInput.addEventListener("focus", () => openSpecialtiesDropdown());
+            searchInput.addEventListener("click", () => openSpecialtiesDropdown());
+            searchInput.addEventListener("input", (e) => {
+                openSpecialtiesDropdown();
+                renderSpecialtiesDropdownOptions(e.target.value);
+            });
+            searchInput.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") {
+                    closeSpecialtiesDropdown();
+                } else if (e.key === "Backspace" && !searchInput.value && selectedSpecialties.size > 0) {
+                    const arr = Array.from(selectedSpecialties);
+                    const last = arr[arr.length - 1];
+                    if (last) toggleSpecialtyOption(last);
+                }
+            });
+        }
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                toggleSpecialtiesDropdown();
+            });
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                selectedSpecialties.clear();
+                renderSpecialtiesTags();
+                syncSpecialtiesWithSelect();
+                renderSpecialtiesDropdownOptions(searchInput ? searchInput.value : "");
+            });
+        }
+
         [elementos.searchGroup, elementos.filterCategory, elementos.filterSpecialty, elementos.filterStatus].forEach((campo) => {
-            campo.addEventListener("input", () => { state.paginaAtual = 1; renderizarTabela(); });
-            campo.addEventListener("change", () => { state.paginaAtual = 1; renderizarTabela(); });
+            campo?.addEventListener("input", () => { state.paginaAtual = 1; renderizarTabela(); });
+            campo?.addEventListener("change", () => { state.paginaAtual = 1; renderizarTabela(); });
         });
 
         elementos.clearFiltersBtn.addEventListener("click", limparFiltros);
@@ -857,8 +1071,8 @@
         elementos.addSelectedExamsBtn.addEventListener("click", adicionarExamesSelecionados);
 
         [elementos.searchExam, elementos.filterExamType, elementos.filterExamMaterial, elementos.filterExamStatus].forEach((campo) => {
-            campo.addEventListener("input", renderizarResultadosExames);
-            campo.addEventListener("change", renderizarResultadosExames);
+            campo?.addEventListener("input", renderizarResultadosExames);
+            campo?.addEventListener("change", renderizarResultadosExames);
         });
 
         elementos.confirmActionBtn.addEventListener("click", executarConfirmacao);
@@ -873,6 +1087,28 @@
         });
 
         document.addEventListener("click", (event) => {
+            // Remoção de tag de especialidade
+            const removeSpecialtyBtn = event.target.closest("[data-remove-specialty]");
+            if (removeSpecialtyBtn) {
+                event.stopPropagation();
+                toggleSpecialtyOption(removeSpecialtyBtn.dataset.removeSpecialty);
+                return;
+            }
+
+            // Seleção de opção no dropdown de especialidades (permanece aberto!)
+            const specialtyOption = event.target.closest("[data-specialty-value]");
+            if (specialtyOption) {
+                event.stopPropagation();
+                toggleSpecialtyOption(specialtyOption.dataset.specialtyValue);
+                return;
+            }
+
+            // Fechar dropdown de especialidades se clicar fora
+            const specialtiesMultiSelect = document.getElementById("specialtiesMultiSelect");
+            if (specialtiesMultiSelect && !specialtiesMultiSelect.contains(event.target)) {
+                closeSpecialtiesDropdown();
+            }
+
             const menuButton = event.target.closest(".row-action-menu");
             if (menuButton) {
                 event.stopPropagation();
@@ -922,6 +1158,7 @@
 
         document.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
+                closeSpecialtiesDropdown();
                 if (activeMenu) {
                     closeRowMenu(activeMenu);
                 }

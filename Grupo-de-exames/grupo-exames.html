@@ -624,21 +624,17 @@
 
                             <p id="generalSectionDescription" class="section-description mt-1">
                                 Informe os dados principais utilizados para identificação e
-                                organização do grupo.
-                            </p>
-                        </header>
-
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                organização do                        <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
 
                             <!-- Código -->
-                            <div class="space-y-2">
+                            <div class="space-y-1.5">
                                 <label for="groupCode" class="form-label">
                                     Código
                                 </label>
 
                                 <input id="groupCode" name="codigo" type="text" readonly aria-readonly="true"
                                     autocomplete="off" placeholder="Gerado automaticamente"
-                                    class="form-input cursor-not-allowed bg-slate-100 text-slate-500" />
+                                    class="form-input cursor-not-allowed bg-slate-100 text-slate-600 font-mono text-sm" />
 
                                 <p class="form-help">
                                     O código será gerado automaticamente pelo sistema.
@@ -646,12 +642,12 @@
                             </div>
 
                             <!-- Status -->
-                            <fieldset class="space-y-2">
+                            <fieldset class="space-y-1.5">
                                 <legend class="form-label">
                                     Status
                                 </legend>
 
-                                <div class="flex min-h-12 items-center justify-between rounded-xl
+                                <div class="flex min-h-[3rem] items-center justify-between rounded-xl
                        border border-slate-300 bg-white px-4 py-2
                        focus-within:border-teal-600
                        focus-within:ring-2
@@ -673,21 +669,16 @@
                                 </div>
 
                                 <p class="form-help">
-                                    Desative para impedir que o grupo seja utilizado em novos
-                                    cadastros.
+                                    Desative para impedir que o grupo seja utilizado.
                                 </p>
                             </fieldset>
 
                             <!-- Nome -->
-                            <div class="space-y-2 md:col-span-2">
+                            <div class="space-y-1.5">
                                 <label for="groupName" class="form-label">
                                     Nome do grupo
-                                    <span class="text-red-600" aria-hidden="true">
-                                        *
-                                    </span>
-                                    <span class="sr-only">
-                                        campo obrigatório
-                                    </span>
+                                    <span class="text-red-600" aria-hidden="true">*</span>
+                                    <span class="sr-only">campo obrigatório</span>
                                 </label>
 
                                 <input id="groupName" name="nome" type="text" maxlength="120" required
@@ -696,14 +687,14 @@
                                     aria-invalid="false" />
 
                                 <p id="groupNameHelp" class="form-help">
-                                    Informe um nome claro e objetivo para identificar o grupo.
+                                    Nome claro para identificar o grupo.
                                 </p>
 
-                                <p id="groupNameError" class="form-error hidden" role="alert" aria-live="polite"></p>
+                                <p id="groupNameError" class="form-error hidden text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5" role="alert" aria-live="polite"></p>
                             </div>
 
                             <!-- Sigla -->
-                            <div class="space-y-2">
+                            <div class="space-y-1.5">
                                 <label for="groupShortName" class="form-label">
                                     Sigla
                                 </label>
@@ -712,198 +703,101 @@
                                     placeholder="Ex.: PL" class="form-input" aria-describedby="groupShortNameHelp" />
 
                                 <p id="groupShortNameHelp" class="form-help">
-                                    Opcional. Utilize uma abreviação curta para facilitar a
-                                    identificação.
+                                    Abreviação curta para identificação rápida (opcional).
                                 </p>
                             </div>
 
                             <!-- Categoria -->
-                            <div class="space-y-2">
+                            <div class="space-y-1.5">
                                 <label for="groupCategory" class="form-label">
                                     Categoria
-                                    <span class="text-red-600" aria-hidden="true">
-                                        *
-                                    </span>
-                                    <span class="sr-only">
-                                        campo obrigatório
-                                    </span>
+                                    <span class="text-red-600" aria-hidden="true">*</span>
+                                    <span class="sr-only">campo obrigatório</span>
                                 </label>
 
                                 <select id="groupCategory" name="categoria" required class="form-input"
                                     aria-required="true" aria-describedby="groupCategoryHelp groupCategoryError"
                                     aria-invalid="false">
-                                    <option value="">
-                                        Selecione uma categoria
-                                    </option>
-
-                                    <option value="Laboratorial">
-                                        Laboratorial
-                                    </option>
-
-                                    <option value="Imagem">
-                                        Imagem
-                                    </option>
-
-                                    <option value="Cardiológico">
-                                        Cardiológico
-                                    </option>
-
-                                    <option value="Endoscópico">
-                                        Endoscópico
-                                    </option>
-
-                                    <option value="Oftalmológico">
-                                        Oftalmológico
-                                    </option>
-
-                                    <option value="Ginecológico">
-                                        Ginecológico
-                                    </option>
-
-                                    <option value="Neurológico">
-                                        Neurológico
-                                    </option>
-
-                                    <option value="Anatomopatológico">
-                                        Anatomopatológico
-                                    </option>
-
-                                    <option value="Microbiológico">
-                                        Microbiológico
-                                    </option>
-
-                                    <option value="Check-up">
-                                        Check-up
-                                    </option>
-
-                                    <option value="Outros">
-                                        Outros
-                                    </option>
+                                    <option value="">Selecione uma categoria</option>
+                                    <option value="Laboratorial">Laboratorial</option>
+                                    <option value="Imagem">Imagem</option>
+                                    <option value="Cardiológico">Cardiológico</option>
+                                    <option value="Endoscópico">Endoscópico</option>
+                                    <option value="Oftalmológico">Oftalmológico</option>
+                                    <option value="Ginecológico">Ginecológico</option>
+                                    <option value="Neurológico">Neurológico</option>
+                                    <option value="Anatomopatológico">Anatomopatológico</option>
+                                    <option value="Microbiológico">Microbiológico</option>
+                                    <option value="Check-up">Check-up</option>
+                                    <option value="Outros">Outros</option>
                                 </select>
 
                                 <p id="groupCategoryHelp" class="form-help">
-                                    Selecione a categoria que melhor representa o grupo.
+                                    Selecione a categoria técnica do grupo.
                                 </p>
 
-                                <p id="groupCategoryError" class="form-error hidden" role="alert" aria-live="polite">
-                                </p>
+                                <p id="groupCategoryError" class="form-error hidden text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5" role="alert" aria-live="polite"></p>
                             </div>
 
-                            <!-- Especialidades -->
-                            <div class="space-y-2 md:col-span-2">
-                                <fieldset>
-                                    <legend class="form-label">
-                                        Especialidades relacionadas
-                                    </legend>
+                            <!-- Especialidades (Multi-Select com Busca) -->
+                            <div class="space-y-1.5">
+                                <label for="specialtySearchInput" class="form-label">
+                                    Especialidades relacionadas
+                                </label>
 
-                                    <p id="groupSpecialtiesHelp" class="form-help mb-3">
-                                        Selecione uma ou mais especialidades relacionadas ao
-                                        grupo de exames.
-                                    </p>
-
-                                    <!--
-                    Combobox / Tags:
-                    A implementação dinâmica pode ser controlada pelo
-                    JavaScript. O select permanece como fallback semântico.
-                -->
-                                    <div id="specialtiesContainer" class="rounded-xl border border-slate-300 bg-white p-3
-                           transition
-                           focus-within:border-teal-600
-                           focus-within:ring-2
-                           focus-within:ring-teal-600/20">
-                                        <!-- Tags selecionadas -->
-                                        <div id="specialtiesTags" class="mb-2 flex flex-wrap gap-2" aria-live="polite"
-                                            aria-label="Especialidades selecionadas">
-                                            <!--
-                            Exemplo gerado pelo JavaScript:
-
-                            <span class="inline-flex items-center gap-1
-                                         rounded-full bg-teal-50 px-3 py-1
-                                         text-sm font-medium text-teal-800">
-                                Cardiologia
-
-                                <button
-                                    type="button"
-                                    aria-label="Remover Cardiologia"
-                                    class="rounded-full p-0.5
-                                           hover:bg-teal-100
-                                           focus:outline-none
-                                           focus:ring-2
-                                           focus:ring-teal-600"
-                                >
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </span>
-                        -->
-                                        </div>
-
-                                        <!-- Campo de seleção -->
-                                        <label for="groupSpecialties" class="sr-only">
-                                            Adicionar especialidade
-                                        </label>
-
-                                        <select id="groupSpecialties" name="especialidades" multiple class="form-input min-h-12 border-0 p-0
-                               shadow-none focus:border-0
-                               focus:ring-0" aria-describedby="groupSpecialtiesHelp">
-                                            <option value="Clínica Médica">
-                                                Clínica Médica
-                                            </option>
-
-                                            <option value="Cardiologia">
-                                                Cardiologia
-                                            </option>
-
-                                            <option value="Pediatria">
-                                                Pediatria
-                                            </option>
-
-                                            <option value="Ginecologia">
-                                                Ginecologia
-                                            </option>
-
-                                            <option value="Neurologia">
-                                                Neurologia
-                                            </option>
-
-                                            <option value="Oftalmologia">
-                                                Oftalmologia
-                                            </option>
-
-                                            <option value="Dermatologia">
-                                                Dermatologia
-                                            </option>
-
-                                            <option value="Ortopedia">
-                                                Ortopedia
-                                            </option>
-
-                                            <option value="Endocrinologia">
-                                                Endocrinologia
-                                            </option>
-
-                                            <option value="Outras">
-                                                Outras
-                                            </option>
-                                        </select>
+                                <div id="specialtiesMultiSelect" class="specialties-multiselect relative rounded-xl border border-slate-300 bg-white p-2 transition focus-within:border-teal-600 focus-within:ring-2 focus-within:ring-teal-600/20">
+                                    <!-- Container de Tags + Campo de Busca -->
+                                    <div id="specialtiesContainer" class="flex flex-wrap items-center gap-1.5 min-h-[36px]">
+                                        <div id="specialtiesTags" class="flex flex-wrap gap-1.5" aria-live="polite" aria-label="Especialidades selecionadas"></div>
+                                        <input type="text" id="specialtySearchInput" autocomplete="off" placeholder="Buscar especialidades..." class="flex-1 min-w-[120px] bg-transparent border-0 p-1 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-0" aria-expanded="false" aria-haspopup="listbox" aria-controls="specialtiesDropdown">
+                                        <button type="button" id="specialtyDropdownToggle" class="p-1 text-slate-400 hover:text-slate-600 focus:outline-none shrink-0" aria-label="Alternar menu de especialidades">
+                                            <svg class="h-4 w-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                        </button>
                                     </div>
 
-                                    <p class="form-help mt-2">
-                                        Em computadores, utilize Ctrl (Windows/Linux) ou
-                                        Command (macOS) para múltiplas seleções. Em dispositivos
-                                        móveis, toque nas opções desejadas.
-                                    </p>
-                                </fieldset>
+                                    <!-- Dropdown de Opções (Permanece aberto ao clicar) -->
+                                    <div id="specialtiesDropdown" class="specialties-dropdown hidden absolute left-0 right-0 top-full z-40 mt-1 max-h-48 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl" role="listbox">
+                                        <div class="mb-1 flex items-center justify-between border-b border-slate-100 pb-1.5 px-2 text-xs font-semibold text-slate-500">
+                                            <span>Clique para selecionar</span>
+                                            <button type="button" id="clearAllSpecialtiesBtn" class="text-teal-600 hover:text-teal-800 hover:underline focus:outline-none text-xs font-medium">Limpar tudo</button>
+                                        </div>
+                                        <div id="specialtiesOptionsList" class="space-y-0.5">
+                                            <!-- Opções geradas via JS -->
+                                        </div>
+                                        <div id="specialtiesNoResults" class="hidden px-3 py-3 text-center text-xs text-slate-500">
+                                            Nenhuma especialidade encontrada.
+                                        </div>
+                                    </div>
+
+                                    <!-- Select oculta para fallback/compatibilidade -->
+                                    <select id="groupSpecialties" name="especialidades" multiple class="sr-only" tabindex="-1" aria-hidden="true">
+                                        <option value="Clínica Médica">Clínica Médica</option>
+                                        <option value="Cardiologia">Cardiologia</option>
+                                        <option value="Pediatria">Pediatria</option>
+                                        <option value="Ginecologia">Ginecologia</option>
+                                        <option value="Neurologia">Neurologia</option>
+                                        <option value="Oftalmologia">Oftalmologia</option>
+                                        <option value="Dermatologia">Dermatologia</option>
+                                        <option value="Ortopedia">Ortopedia</option>
+                                        <option value="Endocrinologia">Endocrinologia</option>
+                                        <option value="Outras">Outras</option>
+                                    </select>
+                                </div>
+
+                                <p id="groupSpecialtiesHelp" class="form-help">
+                                    Selecione uma ou mais especialidades. O menu permanece aberto ao escolher.
+                                </p>
                             </div>
 
                             <!-- Descrição -->
-                            <div class="space-y-2 md:col-span-2">
+                            <div class="space-y-1.5 md:col-span-2">
                                 <label for="groupDescription" class="form-label">
                                     Descrição
                                 </label>
 
-                                <textarea id="groupDescription" name="descricao" rows="4" maxlength="500"
+                                <textarea id="groupDescription" name="descricao" rows="3" maxlength="500"
                                     placeholder="Descreva a finalidade deste grupo de exames."
-                                    class="form-input min-h-32 resize-y"
+                                    class="form-input min-h-[5.5rem] resize-y"
                                     aria-describedby="groupDescriptionHelp groupDescriptionCounter"></textarea>
 
                                 <div class="flex items-center justify-between gap-4">
@@ -911,7 +805,7 @@
                                         Descreva brevemente a finalidade e utilização do grupo.
                                     </p>
 
-                                    <span id="groupDescriptionCounter" class="shrink-0 text-xs text-slate-500"
+                                    <span id="groupDescriptionCounter" class="shrink-0 text-xs font-medium text-slate-600"
                                         aria-live="polite">
                                         0/500
                                     </span>
