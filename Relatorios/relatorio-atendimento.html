@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatórios & BI · Atendimentos · GM4med</title>
+    <title>GM4med BI · Relatório de Atendimentos</title>
+    <meta name="description" content="Consulte e acompanhe os atendimentos realizados, cancelados e agendados no sistema GM4Med.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -20,226 +23,383 @@
     <!-- TOPBAR -->
     <header class="topbar">
         <div class="topbar-left">
-            <a href="../Menu-Principal.html" class="back-btn" title="Voltar"><i data-lucide="arrow-left"></i></a>
+            <a href="../Menu-Principal.html" class="back-btn" title="Voltar ao Menu Principal" aria-label="Voltar ao Menu Principal">
+                <i data-lucide="arrow-left" aria-hidden="true"></i>
+            </a>
             <div class="brand">
-                <div class="brand-mark"><i data-lucide="bar-chart-3"></i></div>
+                <div class="brand-mark" aria-hidden="true"><i data-lucide="bar-chart-3"></i></div>
                 <div>
-                    <div class="brand-name">GM4med <span>BI</span></div>
-                    <div class="brand-sub">Relatórios de Atendimento</div>
+                    <div class="brand-name">GM4med <span class="badge-bi">BI</span></div>
+                    <div class="brand-sub">Módulo de Relatórios</div>
                 </div>
             </div>
         </div>
+
         <div class="topbar-right">
-            <button class="icon-btn" id="toggleTheme" title="Tema"><i data-lucide="moon"></i></button>
-            <button class="icon-btn" title="Atualizar" id="btnRefresh"><i data-lucide="refresh-cw"></i></button>
-            <button class="icon-btn has-dot" title="Alertas"><i data-lucide="bell"></i><span
-                    class="dot"></span></button>
+            <button class="icon-btn" id="toggleTheme" title="Alternar Tema" aria-label="Alternar Tema">
+                <i data-lucide="moon" aria-hidden="true"></i>
+            </button>
+            <button class="icon-btn" id="btnRefresh" title="Atualizar Dados" aria-label="Atualizar Dados">
+                <i data-lucide="refresh-cw" aria-hidden="true"></i>
+            </button>
+            <button class="icon-btn has-dot" title="Notificações e Alertas" aria-label="Notificações e Alertas">
+                <i data-lucide="bell" aria-hidden="true"></i>
+                <span class="dot" aria-hidden="true"></span>
+            </button>
             <div class="user-chip">
-                <div class="avatar">DR</div>
-                <div class="user-meta"><span class="user-name">Dr. Rodrigo</span><span class="user-role">Gestor
-                        BI</span></div>
+                <div class="avatar" aria-hidden="true">DR</div>
+                <div class="user-meta">
+                    <span class="user-name">Dr. Rodrigo</span>
+                    <span class="user-role">Gestor BI</span>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="page">
+    <!-- REPORT MODULE NAVIGATION TABS -->
+    <nav class="report-nav" aria-label="Navegação entre relatórios">
+        <div class="report-nav-inner">
+            <a href="relatorio-atendimento.html" class="report-nav-link active" aria-current="page">
+                <i data-lucide="stethoscope" aria-hidden="true"></i>
+                <span>Relatório de Atendimentos</span>
+            </a>
+            <a href="relatorio-paciente.html" class="report-nav-link">
+                <i data-lucide="users" aria-hidden="true"></i>
+                <span>Relatório de Pacientes</span>
+            </a>
+        </div>
+    </nav>
 
-        <!-- HEADER -->
-        <section class="page-header">
+    <main class="page" id="mainContent">
+
+        <!-- PAGE HEADER -->
+        <section class="page-header" aria-labelledby="pageTitle">
             <div class="page-title">
-                <span class="crumb"><a href="../index.html">Início</a> · Relatórios ·
-                    <strong>Atendimentos</strong></span>
-                <h1>Inteligência de Atendimentos</h1>
-                <p>Análise 360° da operação clínica — volume, performance, ocupação e tendências em tempo real.</p>
+                <nav class="crumb-nav" aria-label="Breadcrumb">
+                    <span class="crumb">
+                        <a href="../Menu-Principal.html">Início</a> · Relatórios · <strong>Atendimentos</strong>
+                    </span>
+                </nav>
+                <h1 id="pageTitle">Relatório de Atendimentos</h1>
+                <p>Consulte e acompanhe os atendimentos realizados, cancelados e agendados em determinado período.</p>
             </div>
+
             <div class="page-actions">
-                <div class="period-tabs" id="periodTabs">
-                    <button data-period="7">7 dias</button>
-                    <button data-period="30" class="active">30 dias</button>
-                    <button data-period="90">90 dias</button>
-                    <button data-period="365">12 meses</button>
-                    <button data-period="custom"><i data-lucide="calendar"></i> Personalizado</button>
+                <div class="period-tabs" id="periodTabs" role="toolbar" aria-label="Atalhos de período">
+                    <button type="button" data-period="7">7 dias</button>
+                    <button type="button" data-period="30" class="active">30 dias</button>
+                    <button type="button" data-period="90">90 dias</button>
+                    <button type="button" data-period="365">12 meses</button>
+                    <button type="button" data-period="custom"><i data-lucide="calendar" aria-hidden="true"></i> Personalizado</button>
                 </div>
-                <button class="btn ghost" id="btnPrint"><i data-lucide="printer"></i> Imprimir</button>
-                <button class="btn ghost" id="btnExport"><i data-lucide="download"></i> Exportar</button>
-                <button class="btn primary" id="btnShare"><i data-lucide="share-2"></i> Compartilhar</button>
+
+                <div class="export-dropdown-wrapper">
+                    <button type="button" class="btn ghost" id="btnExportMenu" aria-expanded="false" aria-haspopup="true" aria-controls="exportMenu">
+                        <i data-lucide="download" aria-hidden="true"></i>
+                        <span>Exportar</span>
+                        <i data-lucide="chevron-down" class="chevron" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu hidden" id="exportMenu" role="menu" aria-label="Opções de exportação">
+                        <button type="button" class="dropdown-item" id="btnExportPdf" role="menuitem">
+                            <i data-lucide="file-text" aria-hidden="true"></i> Exportar relatório (PDF)
+                        </button>
+                        <button type="button" class="dropdown-item" id="btnExportExcel" role="menuitem">
+                            <i data-lucide="file-spreadsheet" aria-hidden="true"></i> Exportar lista (Excel)
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn ghost" id="btnPrint" title="Imprimir Relatório">
+                    <i data-lucide="printer" aria-hidden="true"></i> Imprimir
+                </button>
+                <button type="button" class="btn primary" id="btnShare" title="Compartilhar Link">
+                    <i data-lucide="share-2" aria-hidden="true"></i> Compartilhar
+                </button>
             </div>
         </section>
 
         <!-- FILTERS -->
-        <section class="filter-bar">
+        <section class="filter-bar" aria-label="Filtros do Relatório de Atendimentos">
             <div class="filter-group">
-                <label>Período</label>
-                <div class="date-range">
-                    <input type="date" id="dateFrom"><span>—</span><input type="date" id="dateTo">
-                </div>
+                <label for="dateFrom">Data inicial</label>
+                <input type="date" id="dateFrom" class="input-date">
             </div>
+
             <div class="filter-group">
-                <label>Unidade</label>
-                <select id="fUnit">
-                    <option>Todas as unidades</option>
-                    <option>Itaim Bibi · Matriz</option>
-                    <option>Alphaville</option>
-                    <option>Jardins</option>
+                <label for="dateTo">Data final</label>
+                <input type="date" id="dateTo" class="input-date">
+            </div>
+
+            <div class="filter-group">
+                <label for="fDoc">Profissional</label>
+                <select id="fDoc" class="select-control">
+                    <option value="">Todos os profissionais</option>
+                    <option value="Dr. João Silva">Dr. João Silva</option>
+                    <option value="Dra. Maria Souza">Dra. Maria Souza</option>
+                    <option value="Dra. Mariana Costa">Dra. Mariana Costa</option>
+                    <option value="Dr. Felipe Andrade">Dr. Felipe Andrade</option>
+                    <option value="Dra. Helena Vieira">Dra. Helena Vieira</option>
+                    <option value="Dr. Rafael Mendes">Dr. Rafael Mendes</option>
                 </select>
             </div>
+
             <div class="filter-group">
-                <label>Especialidade</label>
-                <select id="fSpec">
-                    <option>Todas</option>
-                    <option>Cardiologia</option>
-                    <option>Ortopedia</option>
-                    <option>Pediatria</option>
-                    <option>Ginecologia</option>
-                    <option>Dermatologia</option>
-                    <option>Neurologia</option>
+                <label for="fStatus">Status</label>
+                <select id="fStatus" class="select-control">
+                    <option value="">Todos</option>
+                    <option value="Realizado">Realizado</option>
+                    <option value="Cancelado">Cancelado</option>
+                    <option value="Agendado">Agendado</option>
                 </select>
             </div>
+
             <div class="filter-group">
-                <label>Médico</label>
-                <select id="fDoc">
-                    <option>Todos os profissionais</option>
+                <label for="fSpec">Especialidade</label>
+                <select id="fSpec" class="select-control">
+                    <option value="">Todas</option>
+                    <option value="Cardiologia">Cardiologia</option>
+                    <option value="Ortopedia">Ortopedia</option>
+                    <option value="Pediatria">Pediatria</option>
+                    <option value="Ginecologia">Ginecologia</option>
+                    <option value="Dermatologia">Dermatologia</option>
+                    <option value="Neurologia">Neurologia</option>
                 </select>
             </div>
+
             <div class="filter-group">
-                <label>Convênio</label>
-                <select id="fIns">
-                    <option>Todos</option>
-                    <option>Particular</option>
-                    <option>Unimed</option>
-                    <option>Bradesco Saúde</option>
-                    <option>Amil</option>
-                    <option>SulAmérica</option>
+                <label for="fUnit">Unidade</label>
+                <select id="fUnit" class="select-control">
+                    <option value="">Todas as unidades</option>
+                    <option value="Itaim Bibi · Matriz">Itaim Bibi · Matriz</option>
+                    <option value="Alphaville">Alphaville</option>
+                    <option value="Jardins">Jardins</option>
                 </select>
             </div>
+
             <div class="filter-actions">
-                <button class="btn ghost sm" id="btnClear"><i data-lucide="rotate-ccw"></i> Limpar</button>
-                <button class="btn primary sm" id="btnApply"><i data-lucide="filter"></i> Aplicar</button>
+                <button type="button" class="btn ghost sm" id="btnClear">
+                    <i data-lucide="rotate-ccw" aria-hidden="true"></i> Limpar filtros
+                </button>
+                <button type="button" class="btn primary sm" id="btnApply">
+                    <i data-lucide="filter" aria-hidden="true"></i> Aplicar filtros
+                </button>
+            </div>
+
+            <div id="dateValidationError" class="filter-error-msg hidden" aria-live="polite" role="alert">
+                <i data-lucide="alert-circle" aria-hidden="true"></i>
+                <span id="dateValidationText">A data final não pode ser anterior à data inicial.</span>
             </div>
         </section>
 
-        <!-- KPI ROW -->
-        <section class="kpi-row">
-            <div class="kpi-card">
+        <!-- KPI ROW (OBLIGATORY REQS) -->
+        <section class="kpi-row" aria-label="Indicadores de Atendimentos">
+            <!-- 1. Total de atendimentos -->
+            <article class="kpi-card" aria-labelledby="kpiTotalLabel">
                 <div class="kpi-head">
-                    <div class="kpi-icon brand"><i data-lucide="activity"></i></div>
-                    <span class="kpi-trend up"><i data-lucide="trending-up"></i> +12.4%</span>
+                    <div class="kpi-icon brand" aria-hidden="true"><i data-lucide="activity"></i></div>
+                    <span class="kpi-trend up" aria-label="Variação positiva de 12.4%"><i data-lucide="trending-up" aria-hidden="true"></i> +12.4%</span>
                 </div>
-                <span class="kpi-label">Total de Atendimentos</span>
-                <span class="kpi-value" data-counter="4827">0</span>
-                <div class="kpi-foot"><canvas class="spark" data-spark="brand"></canvas></div>
-            </div>
-            <div class="kpi-card">
+                <span class="kpi-label" id="kpiTotalLabel">Total de Atendimentos</span>
+                <span class="kpi-value" id="kpiTotalValue" data-counter="4827">0</span>
+                <p class="kpi-subtext">Total de atendimentos encontrados no período</p>
+                <div class="kpi-foot"><canvas class="spark" data-spark="brand" aria-label="Gráfico de tendência de atendimentos"></canvas></div>
+            </article>
+
+            <!-- 2. Realizados -->
+            <article class="kpi-card" aria-labelledby="kpiRealizedLabel">
                 <div class="kpi-head">
-                    <div class="kpi-icon ok"><i data-lucide="check-circle-2"></i></div>
-                    <span class="kpi-trend up"><i data-lucide="trending-up"></i> +3.1%</span>
+                    <div class="kpi-icon ok" aria-hidden="true"><i data-lucide="check-circle-2"></i></div>
+                    <span class="kpi-status-tag ok">Concluídos</span>
                 </div>
-                <span class="kpi-label">Taxa de Conclusão</span>
-                <span class="kpi-value">87.4<small>%</small></span>
-                <div class="kpi-foot"><canvas class="spark" data-spark="ok"></canvas></div>
-            </div>
-            <div class="kpi-card">
+                <span class="kpi-label" id="kpiRealizedLabel">Realizados</span>
+                <span class="kpi-value" id="kpiRealizedValue" data-counter="3234">0</span>
+                <p class="kpi-subtext">Quantidade de atendimentos efetuados</p>
+                <div class="kpi-foot"><canvas class="spark" data-spark="ok" aria-label="Gráfico de tendência de realizados"></canvas></div>
+            </article>
+
+            <!-- 3. Cancelados -->
+            <article class="kpi-card" aria-labelledby="kpiCanceledLabel">
                 <div class="kpi-head">
-                    <div class="kpi-icon warn"><i data-lucide="user-x"></i></div>
-                    <span class="kpi-trend down"><i data-lucide="trending-down"></i> -1.8%</span>
+                    <div class="kpi-icon danger" aria-hidden="true"><i data-lucide="x-circle"></i></div>
+                    <span class="kpi-status-tag danger">Cancelamentos</span>
                 </div>
-                <span class="kpi-label">Taxa de No-Show</span>
-                <span class="kpi-value">6.2<small>%</small></span>
-                <div class="kpi-foot"><canvas class="spark" data-spark="warn"></canvas></div>
-            </div>
-            <div class="kpi-card">
+                <span class="kpi-label" id="kpiCanceledLabel">Cancelados</span>
+                <span class="kpi-value" id="kpiCanceledValue" data-counter="241">0</span>
+                <p class="kpi-subtext">Quantidade de atendimentos cancelados</p>
+                <div class="kpi-foot"><canvas class="spark" data-spark="danger" aria-label="Gráfico de tendência de cancelados"></canvas></div>
+            </article>
+
+            <!-- 4. Agendados -->
+            <article class="kpi-card" aria-labelledby="kpiScheduledLabel">
                 <div class="kpi-head">
-                    <div class="kpi-icon info"><i data-lucide="clock"></i></div>
-                    <span class="kpi-trend up"><i data-lucide="trending-down"></i> -4min</span>
+                    <div class="kpi-icon info" aria-hidden="true"><i data-lucide="calendar-clock"></i></div>
+                    <span class="kpi-status-tag info">Em carteira</span>
                 </div>
-                <span class="kpi-label">Tempo Médio de Espera</span>
-                <span class="kpi-value">14<small>min</small></span>
-                <div class="kpi-foot"><canvas class="spark" data-spark="info"></canvas></div>
-            </div>
-            <div class="kpi-card">
+                <span class="kpi-label" id="kpiScheduledLabel">Agendados</span>
+                <span class="kpi-value" id="kpiScheduledValue" data-counter="1352">0</span>
+                <p class="kpi-subtext">Quantidade de atendimentos agendados</p>
+                <div class="kpi-foot"><canvas class="spark" data-spark="info" aria-label="Gráfico de tendência de agendados"></canvas></div>
+            </article>
+
+            <!-- 5. Taxa de comparecimento -->
+            <article class="kpi-card" aria-labelledby="kpiAttendanceRateLabel">
                 <div class="kpi-head">
-                    <div class="kpi-icon purple"><i data-lucide="timer"></i></div>
-                    <span class="kpi-trend up"><i data-lucide="trending-up"></i> estável</span>
+                    <div class="kpi-icon purple" aria-hidden="true"><i data-lucide="user-check"></i></div>
+                    <span class="kpi-trend up" aria-label="Aumento de 3.1% em relação ao período anterior"><i data-lucide="trending-up" aria-hidden="true"></i> +3.1%</span>
                 </div>
-                <span class="kpi-label">Duração Média</span>
-                <span class="kpi-value">28<small>min</small></span>
-                <div class="kpi-foot"><canvas class="spark" data-spark="purple"></canvas></div>
-            </div>
-            <div class="kpi-card">
+                <span class="kpi-label" id="kpiAttendanceRateLabel">Taxa de Comparecimento</span>
+                <span class="kpi-value" id="kpiAttendanceRateValue">93.1<small>%</small></span>
+                <p class="kpi-subtext">Proporção de pacientes que compareceram às consultas</p>
+                <div class="kpi-foot"><canvas class="spark" data-spark="purple" aria-label="Gráfico de tendência da taxa de comparecimento"></canvas></div>
+            </article>
+
+            <!-- 6. Tempo Médio de Espera -->
+            <article class="kpi-card" aria-labelledby="kpiWaitTimeLabel">
                 <div class="kpi-head">
-                    <div class="kpi-icon rose"><i data-lucide="star"></i></div>
-                    <span class="kpi-trend up"><i data-lucide="trending-up"></i> +0.2</span>
+                    <div class="kpi-icon warn" aria-hidden="true"><i data-lucide="clock"></i></div>
+                    <span class="kpi-trend up" aria-label="Redução de 4 minutos no tempo médio"><i data-lucide="trending-down" aria-hidden="true"></i> -4 min</span>
                 </div>
-                <span class="kpi-label">NPS Pacientes</span>
-                <span class="kpi-value">9.1<small>/10</small></span>
-                <div class="kpi-foot"><canvas class="spark" data-spark="rose"></canvas></div>
-            </div>
+                <span class="kpi-label" id="kpiWaitTimeLabel">Tempo Médio de Espera</span>
+                <span class="kpi-value" id="kpiWaitTimeValue">14<small>min</small></span>
+                <p class="kpi-subtext">Tempo da recepção até a consulta médica</p>
+                <div class="kpi-foot"><canvas class="spark" data-spark="warn" aria-label="Gráfico de tendência do tempo de espera"></canvas></div>
+            </article>
         </section>
 
         <!-- INSIGHTS -->
-        <section class="insights-row">
+        <section class="insights-row" aria-label="Insights da Operação Clínica">
             <div class="insight">
-                <div class="insight-icon ok"><i data-lucide="lightbulb"></i></div>
+                <div class="insight-icon ok" aria-hidden="true"><i data-lucide="lightbulb"></i></div>
                 <div>
                     <strong>Destaque do período</strong>
-                    <p>A <b>Cardiologia</b> registrou pico de demanda às terças (+18%). Recomendação: abrir 2 horários
-                        extras das 14h às 16h.</p>
+                    <p>A <b>Cardiologia</b> registrou pico de demanda às terças-feiras (+18%). Recomendação: abrir 2 horários extras entre 14h e 16h.</p>
                 </div>
             </div>
             <div class="insight">
-                <div class="insight-icon warn"><i data-lucide="alert-triangle"></i></div>
+                <div class="insight-icon warn" aria-hidden="true"><i data-lucide="alert-triangle"></i></div>
                 <div>
-                    <strong>Atenção</strong>
-                    <p><b>3 médicos</b> estão com taxa de no-show acima da média. Considere ativar lembretes 2h antes
-                        via WhatsApp.</p>
+                    <strong>Atenção operacional</strong>
+                    <p><b>3 médicos</b> apresentam taxa de não comparecimento acima da média da clínica. Considere ativar lembretes via WhatsApp 2h antes.</p>
                 </div>
             </div>
             <div class="insight">
-                <div class="insight-icon info"><i data-lucide="rocket"></i></div>
+                <div class="insight-icon info" aria-hidden="true"><i data-lucide="rocket"></i></div>
                 <div>
-                    <strong>Oportunidade</strong>
-                    <p>Quartas-feiras têm <b>23% de capacidade ociosa</b>. Campanha de retorno pode aumentar receita em
-                        ~R$ 32k/mês.</p>
+                    <strong>Oportunidade de agenda</strong>
+                    <p>Quartas-feiras contam com <b>23% de capacidade ociosa</b>. Campanhas de retorno podem incrementar receitas clínicas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABELA — RELATÓRIO DE ATENDIMENTOS (PRINCIPAL) -->
+        <section class="card table-card" aria-labelledby="tableTitle">
+            <div class="card-head">
+                <div>
+                    <h2 id="tableTitle"><i data-lucide="table" aria-hidden="true"></i> Registros de Atendimentos</h2>
+                    <span class="card-sub">Consulta analítica dos atendimentos conforme filtros aplicados</span>
+                </div>
+                <div class="card-actions">
+                    <div class="search-mini">
+                        <i data-lucide="search" aria-hidden="true"></i>
+                        <input id="atendSearch" type="search" placeholder="Buscar paciente ou médico..." aria-label="Buscar atendimento por paciente ou médico">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrap" id="tableContainer">
+                <!-- SKELETON / LOADING STATE -->
+                <div id="atendimentosLoadingState" class="state-box hidden" aria-live="polite" role="status">
+                    <div class="spinner" aria-hidden="true"></div>
+                    <p>Carregando relatório de atendimentos...</p>
+                </div>
+
+                <!-- ERROR STATE -->
+                <div id="atendimentosErrorState" class="state-box state-error hidden" aria-live="assertive" role="alert">
+                    <div class="state-icon" aria-hidden="true"><i data-lucide="alert-triangle"></i></div>
+                    <h3>Não foi possível carregar o relatório</h3>
+                    <p>Ocorreu uma falha na comunicação com o servidor ou no processamento dos dados.</p>
+                    <button type="button" class="btn primary sm" id="btnRetryAtendimentos">
+                        <i data-lucide="refresh-cw" aria-hidden="true"></i> Tentar novamente
+                    </button>
+                </div>
+
+                <!-- EMPTY STATE -->
+                <div id="atendimentosEmptyState" class="state-box state-empty hidden" aria-live="polite">
+                    <div class="state-icon" aria-hidden="true"><i data-lucide="folder-open"></i></div>
+                    <h3>Não encontramos registros</h3>
+                    <p>Nenhum atendimento corresponde aos filtros selecionados. Tente ajustar o período ou o profissional.</p>
+                    <button type="button" class="btn ghost sm" id="btnResetFiltersEmpty">
+                        <i data-lucide="rotate-ccw" aria-hidden="true"></i> Limpar filtros
+                    </button>
+                </div>
+
+                <!-- MAIN DATA TABLE -->
+                <table class="data-table" id="atendimentosTable" aria-describedby="tableTitle">
+                    <caption>Lista detalhada de atendimentos no período selecionado</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Data/Hora</th>
+                            <th scope="col">Paciente</th>
+                            <th scope="col">Profissional</th>
+                            <th scope="col">Tipo de Atendimento</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="atendimentosTableBody">
+                        <!-- Content rendered dynamically via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination-bar" id="paginationBar">
+                <span class="pagination-info" id="paginationInfo">Exibindo 0 de 0 registros</span>
+                <div class="pagination-controls">
+                    <button type="button" class="btn ghost sm" id="btnPrevPage" disabled aria-label="Página anterior">
+                        <i data-lucide="chevron-left" aria-hidden="true"></i> Anterior
+                    </button>
+                    <div id="pageNumbers" class="page-numbers"></div>
+                    <button type="button" class="btn ghost sm" id="btnNextPage" disabled aria-label="Próxima página">
+                        Próxima <i data-lucide="chevron-right" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
         </section>
 
         <!-- CHARTS GRID -->
-        <section class="grid">
+        <section class="grid" aria-label="Análise Gráfica">
 
             <!-- CHART 1: VOLUME POR MÉDICO -->
             <div class="card span-2">
                 <div class="card-head">
                     <div>
-                        <h3><i data-lucide="users-round"></i> Volume de Atendimentos por Médico</h3>
-                        <span class="card-sub">Top 10 profissionais por volume no período</span>
+                        <h3><i data-lucide="users-round" aria-hidden="true"></i> Volume de Atendimentos por Médico</h3>
+                        <span class="card-sub">Top profissionais por volume no período</span>
                     </div>
                     <div class="card-actions">
                         <div class="seg" data-target="chartDoctors">
-                            <button class="active" data-mode="bar">Barras</button>
-                            <button data-mode="bar-h">Horizontal</button>
+                            <button type="button" class="active" data-mode="bar">Barras</button>
+                            <button type="button" data-mode="bar-h">Horizontal</button>
                         </div>
-                        <button class="icon-btn sm" title="Exportar"><i data-lucide="download"></i></button>
-                        <button class="icon-btn sm" title="Maximizar"><i data-lucide="maximize-2"></i></button>
                     </div>
                 </div>
-                <div class="chart-wrap"><canvas id="chartDoctors"></canvas></div>
+                <div class="chart-wrap"><canvas id="chartDoctors" aria-label="Gráfico de volume de atendimentos por médico" role="img"></canvas></div>
             </div>
 
             <!-- CHART 2: STATUS -->
             <div class="card">
                 <div class="card-head">
                     <div>
-                        <h3><i data-lucide="pie-chart"></i> Status das Consultas</h3>
-                        <span class="card-sub">Distribuição percentual</span>
+                        <h3><i data-lucide="pie-chart" aria-hidden="true"></i> Distribuição por Status</h3>
+                        <span class="card-sub">Proporção das consultas</span>
                     </div>
-                    <button class="icon-btn sm" title="Mais"><i data-lucide="more-horizontal"></i></button>
                 </div>
                 <div class="chart-wrap doughnut">
-                    <canvas id="chartStatus"></canvas>
+                    <canvas id="chartStatus" aria-label="Gráfico de rosca dos status de atendimento" role="img"></canvas>
                     <div class="dough-center">
-                        <span class="dough-num">4.827</span>
-                        <span class="dough-lbl">Atendimentos</span>
+                        <span class="dough-num" id="doughTotal">4.827</span>
+                        <span class="dough-lbl">Total</span>
                     </div>
                 </div>
                 <div class="legend" id="legendStatus"></div>
@@ -249,101 +409,79 @@
             <div class="card">
                 <div class="card-head">
                     <div>
-                        <h3><i data-lucide="layers"></i> Por Especialidade</h3>
+                        <h3><i data-lucide="layers" aria-hidden="true"></i> Por Especialidade</h3>
                         <span class="card-sub">Distribuição por área médica</span>
                     </div>
-                    <button class="icon-btn sm" title="Mais"><i data-lucide="more-horizontal"></i></button>
                 </div>
-                <div class="chart-wrap"><canvas id="chartSpec"></canvas></div>
+                <div class="chart-wrap"><canvas id="chartSpec" aria-label="Gráfico por especialidade" role="img"></canvas></div>
             </div>
 
             <!-- CHART 4: DIAS DA SEMANA -->
             <div class="card">
                 <div class="card-head">
                     <div>
-                        <h3><i data-lucide="calendar-clock"></i> Dia da Semana</h3>
-                        <span class="card-sub">Heatmap de demanda</span>
+                        <h3><i data-lucide="calendar-clock" aria-hidden="true"></i> Demanda por Dia da Semana</h3>
+                        <span class="card-sub">Volume médio diário</span>
                     </div>
-                    <button class="icon-btn sm" title="Mais"><i data-lucide="more-horizontal"></i></button>
                 </div>
-                <div class="chart-wrap"><canvas id="chartWeek"></canvas></div>
+                <div class="chart-wrap"><canvas id="chartWeek" aria-label="Gráfico por dia da semana" role="img"></canvas></div>
             </div>
 
             <!-- CHART 5: HEATMAP HORÁRIO -->
             <div class="card">
                 <div class="card-head">
                     <div>
-                        <h3><i data-lucide="grid-3x3"></i> Mapa de Calor — Hora × Dia</h3>
-                        <span class="card-sub">Intensidade de atendimentos por slot</span>
+                        <h3><i data-lucide="grid-3x3" aria-hidden="true"></i> Mapa de Calor — Hora × Dia</h3>
+                        <span class="card-sub">Concentração de atendimentos por horário</span>
                     </div>
-                    <button class="icon-btn sm" title="Mais"><i data-lucide="more-horizontal"></i></button>
                 </div>
                 <div class="heatmap" id="heatmap"></div>
                 <div class="heatmap-legend">
-                    <span>Baixo</span>
-                    <div class="scale"><span></span><span></span><span></span><span></span><span></span></div>
-                    <span>Alto</span>
+                    <span>Menor</span>
+                    <div class="scale"><span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span><span class="c5"></span></div>
+                    <span>Maior</span>
                 </div>
             </div>
 
-            <!-- CHART 6: HISTÓRICO -->
+            <!-- CHART 6: HISTÓRICO Mensal -->
             <div class="card span-3">
                 <div class="card-head">
                     <div>
-                        <h3><i data-lucide="line-chart"></i> Histórico Mensal de Atendimentos</h3>
+                        <h3><i data-lucide="line-chart" aria-hidden="true"></i> Histórico Mensal de Atendimentos</h3>
                         <span class="card-sub">Comparativo entre realizado, meta e ano anterior</span>
                     </div>
                     <div class="card-actions">
                         <div class="seg" data-target="chartHistory">
-                            <button class="active" data-metric="all">Tudo</button>
-                            <button data-metric="real">Realizado</button>
-                            <button data-metric="target">Meta</button>
-                            <button data-metric="prev">Ano Anterior</button>
+                            <button type="button" class="active" data-metric="all">Tudo</button>
+                            <button type="button" data-metric="real">Realizado</button>
+                            <button type="button" data-metric="target">Meta</button>
+                            <button type="button" data-metric="prev">Ano Anterior</button>
                         </div>
-                        <button class="icon-btn sm"><i data-lucide="download"></i></button>
                     </div>
                 </div>
-                <div class="chart-wrap tall"><canvas id="chartHistory"></canvas></div>
+                <div class="chart-wrap tall"><canvas id="chartHistory" aria-label="Gráfico histórico mensal" role="img"></canvas></div>
             </div>
 
-            <!-- TOP CONVÊNIOS -->
-            <div class="card">
+            <!-- RANKING DE MÉDICOS -->
+            <div class="card span-3">
                 <div class="card-head">
                     <div>
-                        <h3><i data-lucide="id-card"></i> Top Convênios</h3>
-                        <span class="card-sub">Participação no volume</span>
-                    </div>
-                </div>
-                <div class="bar-list" id="topInsurance"></div>
-            </div>
-
-            <!-- TOP MÉDICOS RANKING -->
-            <div class="card span-2">
-                <div class="card-head">
-                    <div>
-                        <h3><i data-lucide="trophy"></i> Ranking de Médicos</h3>
-                        <span class="card-sub">Performance composta — volume, NPS e pontualidade</span>
-                    </div>
-                    <div class="card-actions">
-                        <div class="seg">
-                            <button class="active">Geral</button>
-                            <button>Volume</button>
-                            <button>NPS</button>
-                            <button>Pontualidade</button>
-                        </div>
+                        <h3><i data-lucide="trophy" aria-hidden="true"></i> Performance dos Profissionais</h3>
+                        <span class="card-sub">Desempenho consolidado — volume, NPS e pontualidade</span>
                     </div>
                 </div>
                 <div class="table-wrap">
                     <table class="rank-table" id="rankTable">
+                        <caption>Ranking de médicos por índice de desempenho</caption>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Profissional</th>
-                                <th>Especialidade</th>
-                                <th>Atendimentos</th>
-                                <th>NPS</th>
-                                <th>Pontualidade</th>
-                                <th>Score</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Profissional</th>
+                                <th scope="col">Especialidade</th>
+                                <th scope="col">Atendimentos</th>
+                                <th scope="col">NPS</th>
+                                <th scope="col">Pontualidade</th>
+                                <th scope="col">Score</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -353,57 +491,34 @@
 
         </section>
 
-        <!-- BREAKDOWN TABLE -->
-        <section class="card">
-            <div class="card-head">
-                <div>
-                    <h3><i data-lucide="table-2"></i> Detalhamento por Especialidade</h3>
-                    <span class="card-sub">Métricas consolidadas e variação vs. período anterior</span>
-                </div>
-                <div class="card-actions">
-                    <div class="search-mini"><i data-lucide="search"></i><input id="tblSearch"
-                            placeholder="Buscar especialidade..."></div>
-                    <button class="btn ghost sm"><i data-lucide="download"></i> CSV</button>
-                </div>
-            </div>
-            <div class="table-wrap">
-                <table class="data-table" id="breakdownTable">
-                    <thead>
-                        <tr>
-                            <th>Especialidade</th>
-                            <th class="num">Atendimentos</th>
-                            <th class="num">No-Show</th>
-                            <th class="num">Tempo médio</th>
-                            <th class="num">NPS</th>
-                            <th class="num">Receita</th>
-                            <th class="num">Variação</th>
-                            <th>Tendência</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                    <tfoot>
-                        <tr>
-                            <th>TOTAL</th>
-                            <th class="num" id="tFAtend">0</th>
-                            <th class="num" id="tFNs">0%</th>
-                            <th class="num" id="tFTm">0min</th>
-                            <th class="num" id="tFNps">0</th>
-                            <th class="num" id="tFRev">R$ 0</th>
-                            <th class="num">—</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </section>
-
+        <!-- FOOTER -->
         <footer class="page-footer">
             <span>© 2026 GM4med · Inteligência Hospitalar · Última atualização: <b id="lastUpdate">agora</b></span>
-            <span>Dados consolidados · Fonte: Data Warehouse v3.2 · SLA 99.98%</span>
+            <span>Sistema Frontend-Ready · Conectado ao Data Warehouse</span>
         </footer>
     </main>
 
-    <div id="toastBox" class="toast-box"></div>
+    <!-- TOAST NOTIFICATIONS AREA -->
+    <div id="toastBox" class="toast-box" aria-live="polite"></div>
+
+    <!-- DETAIL MODAL -->
+    <div id="atendimentoDetailModal" class="modal-backdrop hidden" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle"><i data-lucide="file-text" aria-hidden="true"></i> Detalhes do Atendimento</h3>
+                <button type="button" class="icon-btn" id="btnCloseModal" aria-label="Fechar modal">
+                    <i data-lucide="x" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Populated via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn ghost" id="btnModalClose">Fechar</button>
+                <button type="button" class="btn primary" id="btnModalPrint"><i data-lucide="printer" aria-hidden="true"></i> Imprimir Ficha</button>
+            </div>
+        </div>
+    </div>
 
     <script src="relatorio-atendimentos.js"></script>
 </body>

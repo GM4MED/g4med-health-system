@@ -1,454 +1,736 @@
 /* =========================================================
    GM4med · Relatório de Atendimentos · BI · JS
+   Padrão: JavaScript ES6+, Frontend-Ready, Accessibility WCAG
    ========================================================= */
 (() => {
     'use strict';
-    const $ = (s, r = document) => r.querySelector(s);
-    const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
-    /* ============ DATA ============ */
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    /* ============ COLOR PALETTE ============ */
     const COLORS = {
-        brand: '#4f46e5', brand2: '#6366f1', purple: '#8b5cf6', cyan: '#06b6d4',
-        ok: '#10b981', warn: '#f59e0b', danger: '#ef4444', info: '#0284c7', rose: '#f43f5e',
+        brand: '#0d9488',
+        brand2: '#0f766e',
+        brand3: '#115e59',
+        ok: '#16a34a',
+        warn: '#d97706',
+        danger: '#dc2626',
+        info: '#0369a1',
+        purple: '#7c3aed',
+        rose: '#e11d48'
     };
-    const SPECS = [
-        { name: 'Cardiologia', color: COLORS.brand, atend: 842, nshow: 5.1, tm: 32, nps: 9.3, rev: 421000, delta: 14.2, trend: [12, 15, 14, 18, 21, 19, 24] },
-        { name: 'Ortopedia', color: COLORS.cyan, atend: 678, nshow: 7.4, tm: 28, nps: 8.7, rev: 298000, delta: 8.1, trend: [18, 16, 19, 17, 22, 24, 25] },
-        { name: 'Pediatria', color: COLORS.purple, atend: 912, nshow: 4.8, tm: 24, nps: 9.5, rev: 312000, delta: 18.5, trend: [10, 14, 16, 19, 22, 26, 28] },
-        { name: 'Ginecologia', color: COLORS.rose, atend: 587, nshow: 6.2, tm: 30, nps: 9.1, rev: 264000, delta: 5.4, trend: [14, 15, 17, 16, 18, 19, 20] },
-        { name: 'Dermatologia', color: COLORS.warn, atend: 521, nshow: 8.1, tm: 22, nps: 8.9, rev: 189000, delta: -2.3, trend: [20, 18, 17, 16, 15, 16, 17] },
-        { name: 'Neurologia', color: COLORS.info, atend: 412, nshow: 7.7, tm: 38, nps: 9.0, rev: 248000, delta: 11.0, trend: [10, 12, 14, 15, 17, 19, 21] },
-        { name: 'Endocrinologia', color: COLORS.ok, atend: 389, nshow: 5.9, tm: 28, nps: 9.2, rev: 187000, delta: 6.7, trend: [14, 15, 16, 17, 18, 19, 20] },
-        { name: 'Oftalmologia', color: COLORS.danger, atend: 486, nshow: 6.5, tm: 20, nps: 8.8, rev: 172000, delta: 9.4, trend: [12, 13, 14, 16, 18, 19, 21] },
-    ];
-    const DOCTORS = [
-        { name: 'Dra. Mariana Costa', spec: 'Cardiologia', atend: 312, nps: 9.6, punc: 96, initials: 'MC' },
-        { name: 'Dr. Felipe Andrade', spec: 'Ortopedia', atend: 289, nps: 9.2, punc: 92, initials: 'FA' },
-        { name: 'Dra. Helena Vieira', spec: 'Pediatria', atend: 276, nps: 9.7, punc: 94, initials: 'HV' },
-        { name: 'Dr. Rafael Mendes', spec: 'Cardiologia', atend: 251, nps: 9.0, punc: 88, initials: 'RM' },
-        { name: 'Dra. Larissa Souza', spec: 'Ginecologia', atend: 238, nps: 9.4, punc: 91, initials: 'LS' },
-        { name: 'Dr. Bruno Almeida', spec: 'Neurologia', atend: 217, nps: 9.1, punc: 87, initials: 'BA' },
-        { name: 'Dra. Paula Ribeiro', spec: 'Pediatria', atend: 204, nps: 9.5, punc: 93, initials: 'PR' },
-        { name: 'Dr. Gustavo Lima', spec: 'Dermatologia', atend: 189, nps: 8.8, punc: 85, initials: 'GL' },
-        { name: 'Dra. Camila Torres', spec: 'Endocrinologia', atend: 178, nps: 9.3, punc: 90, initials: 'CT' },
-        { name: 'Dr. André Castro', spec: 'Oftalmologia', atend: 164, nps: 8.9, punc: 89, initials: 'AC' },
-    ];
-    const STATUSES = [
-        { label: 'Realizadas', value: 67, color: COLORS.ok },
-        { label: 'Confirmadas', value: 14, color: COLORS.brand },
-        { label: 'Aguardando', value: 8, color: COLORS.info },
-        { label: 'No-Show', value: 6, color: COLORS.warn },
-        { label: 'Canceladas', value: 5, color: COLORS.danger },
-    ];
-    const WEEK = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-    const WEEK_DATA = [842, 891, 654, 789, 803, 512, 336];
-    const INSURANCES = [
-        { name: 'Particular', value: 34, color: COLORS.brand },
-        { name: 'Unimed', value: 24, color: COLORS.cyan },
-        { name: 'Bradesco Saúde', value: 14, color: COLORS.purple },
-        { name: 'SulAmérica', value: 11, color: COLORS.rose },
-        { name: 'Amil', value: 9, color: COLORS.warn },
-        { name: 'Outros', value: 8, color: COLORS.info },
-    ];
+
+    /* ============ STATE SYSTEM ============ */
+    const state = {
+        currentPage: 1,
+        pageSize: 7,
+        filters: {
+            dateFrom: '',
+            dateTo: '',
+            doc: '',
+            status: '',
+            spec: '',
+            unit: '',
+            search: ''
+        },
+        rawAtendimentos: [],
+        filteredAtendimentos: [],
+        isLoading: false,
+        isError: false
+    };
 
     const charts = {};
-    const ctx = id => $('#' + id).getContext('2d');
+    const ctx = id => $('#' + id)?.getContext('2d');
 
-    /* ============ CHART DEFAULTS ============ */
+    /* ============ MOCK DATA INITIALIZATION ============ */
+    function generateMockAtendimentos() {
+        const doctors = [
+            { name: 'Dr. João Silva', spec: 'Cardiologia' },
+            { name: 'Dra. Maria Souza', spec: 'Ginecologia' },
+            { name: 'Dra. Mariana Costa', spec: 'Cardiologia' },
+            { name: 'Dr. Felipe Andrade', spec: 'Ortopedia' },
+            { name: 'Dra. Helena Vieira', spec: 'Pediatria' },
+            { name: 'Dr. Rafael Mendes', spec: 'Neurologia' }
+        ];
+
+        const patients = [
+            'Ana Beatriz Lima', 'Carlos Eduardo Ramos', 'Fernanda Oliveira', 'Gabriel Santos',
+            'Juliana Mendes', 'Lucas Ferreira', 'Mariana Rocha', 'Pedro Henrique Alves',
+            'Patricia Barbosa', 'Roberto Garcia', 'Sofia Castro', 'Thiago Martins',
+            'Vanessa Duarte', 'Wagner Silva', 'Yasmin Costa'
+        ];
+
+        const types = ['Consulta de Retorno', 'Primeira Consulta', 'Exame Cardiológico', 'Avaliação Pré-Operatória', 'Consulta de Rotina', 'Urgência Médica'];
+        const statuses = ['Realizado', 'Realizado', 'Realizado', 'Realizado', 'Agendado', 'Agendado', 'Cancelado'];
+        const units = ['Itaim Bibi · Matriz', 'Alphaville', 'Jardins'];
+        const insurances = ['Unimed', 'Bradesco Saúde', 'Particular', 'Amil', 'SulAmérica'];
+
+        const items = [];
+        const baseDate = new Date();
+
+        for (let i = 1; i <= 65; i++) {
+            const docObj = doctors[i % doctors.length];
+            const d = new Date(baseDate);
+            d.setDate(d.getDate() - (i % 30));
+            d.setHours(8 + (i % 10), (i * 15) % 60);
+
+            const status = statuses[i % statuses.length];
+            items.push({
+                id: `ATD-2026-${String(i).padStart(4, '0')}`,
+                dateTime: d.toISOString(),
+                dateTimeFormatted: d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                patient: patients[i % patients.length],
+                doctor: docObj.name,
+                specialty: docObj.spec,
+                type: types[i % types.length],
+                status: status,
+                unit: units[i % units.length],
+                insurance: insurances[i % insurances.length]
+            });
+        }
+        return items;
+    }
+
+    /* ============ FRONTEND-READY BACKEND API SIMULATION ============ */
+    async function carregarRelatorioAtendimentos(filtros) {
+        state.isLoading = true;
+        state.isError = false;
+        renderTableState();
+
+        try {
+            // Em produção: const response = await fetch('/api/v1/relatorios/atendimentos', { method: 'POST', body: JSON.stringify(filtros) });
+            // Simulate network latency (250ms)
+            await new Promise(res => setTimeout(res, 250));
+
+            if (!state.rawAtendimentos.length) {
+                state.rawAtendimentos = generateMockAtendimentos();
+            }
+
+            // Client-side filtering logic matching backend parameters
+            let result = [...state.rawAtendimentos];
+
+            if (filtros.dateFrom) {
+                const fromTime = new Date(filtros.dateFrom + 'T00:00:00').getTime();
+                result = result.filter(item => new Date(item.dateTime).getTime() >= fromTime);
+            }
+
+            if (filtros.dateTo) {
+                const toTime = new Date(filtros.dateTo + 'T23:59:59').getTime();
+                result = result.filter(item => new Date(item.dateTime).getTime() <= toTime);
+            }
+
+            if (filtros.doc) {
+                result = result.filter(item => item.doctor === filtros.doc);
+            }
+
+            if (filtros.status) {
+                result = result.filter(item => item.status === filtros.status);
+            }
+
+            if (filtros.spec) {
+                result = result.filter(item => item.specialty === filtros.spec);
+            }
+
+            if (filtros.unit) {
+                result = result.filter(item => item.unit === filtros.unit);
+            }
+
+            if (filtros.search) {
+                const q = filtros.search.toLowerCase();
+                result = result.filter(item =>
+                    item.patient.toLowerCase().includes(q) ||
+                    item.doctor.toLowerCase().includes(q) ||
+                    item.id.toLowerCase().includes(q)
+                );
+            }
+
+            state.filteredAtendimentos = result;
+            state.currentPage = 1;
+
+            updateKPIs();
+            renderTable();
+            renderPagination();
+        } catch (err) {
+            console.error('Erro ao carregar relatório de atendimentos:', err);
+            state.isError = true;
+        } finally {
+            state.isLoading = false;
+            renderTableState();
+        }
+    }
+
+    /* ============ DATE VALIDATION ============ */
+    function validateDates() {
+        const fromVal = $('#dateFrom').value;
+        const toVal = $('#dateTo').value;
+        const errorContainer = $('#dateValidationError');
+        const fromInput = $('#dateFrom');
+        const toInput = $('#dateTo');
+
+        if (fromVal && toVal && toVal < fromVal) {
+            errorContainer.classList.remove('hidden');
+            fromInput.style.borderColor = 'var(--danger)';
+            toInput.style.borderColor = 'var(--danger)';
+            return false;
+        }
+
+        errorContainer.classList.add('hidden');
+        fromInput.style.borderColor = '';
+        toInput.style.borderColor = '';
+        return true;
+    }
+
+    /* ============ KPI CALCULATIONS & RENDERING ============ */
+    function updateKPIs() {
+        const data = state.filteredAtendimentos;
+        const total = data.length;
+        const realizados = data.filter(i => i.status === 'Realizado').length;
+        const cancelados = data.filter(i => i.status === 'Cancelado').length;
+        const agendados = data.filter(i => i.status === 'Agendado').length;
+
+        const totalApplicable = realizados + cancelados + agendados;
+        const comparecimento = totalApplicable > 0 ? ((realizados / totalApplicable) * 100).toFixed(1) : '0.0';
+
+        $('#kpiTotalValue').textContent = total.toLocaleString('pt-BR');
+        $('#kpiRealizedValue').textContent = realizados.toLocaleString('pt-BR');
+        $('#kpiCanceledValue').textContent = cancelados.toLocaleString('pt-BR');
+        $('#kpiScheduledValue').textContent = agendados.toLocaleString('pt-BR');
+        $('#kpiAttendanceRateValue').innerHTML = `${comparecimento}<small>%</small>`;
+
+        const doughTotalEl = $('#doughTotal');
+        if (doughTotalEl) doughTotalEl.textContent = total.toLocaleString('pt-BR');
+    }
+
+    /* ============ TABLE RENDERING ============ */
+    function renderTableState() {
+        const loadingBox = $('#atendimentosLoadingState');
+        const errorBox = $('#atendimentosErrorState');
+        const emptyBox = $('#atendimentosEmptyState');
+        const table = $('#atendimentosTable');
+        const pagination = $('#paginationBar');
+
+        loadingBox?.classList.add('hidden');
+        errorBox?.classList.add('hidden');
+        emptyBox?.classList.add('hidden');
+
+        if (state.isLoading) {
+            loadingBox?.classList.remove('hidden');
+            table.style.display = 'none';
+            pagination.style.display = 'none';
+        } else if (state.isError) {
+            errorBox?.classList.remove('hidden');
+            table.style.display = 'none';
+            pagination.style.display = 'none';
+        } else if (!state.filteredAtendimentos.length) {
+            emptyBox?.classList.remove('hidden');
+            table.style.display = 'none';
+            pagination.style.display = 'none';
+        } else {
+            table.style.display = '';
+            pagination.style.display = '';
+        }
+    }
+
+    function renderTable() {
+        const tbody = $('#atendimentosTableBody');
+        if (!tbody) return;
+
+        const startIdx = (state.currentPage - 1) * state.pageSize;
+        const pageItems = state.filteredAtendimentos.slice(startIdx, startIdx + state.pageSize);
+
+        tbody.innerHTML = pageItems.map(item => {
+            let statusClass = 'status-agendado';
+            let statusIcon = 'clock';
+
+            if (item.status === 'Realizado') {
+                statusClass = 'status-realizado';
+                statusIcon = 'check-circle-2';
+            } else if (item.status === 'Cancelado') {
+                statusClass = 'status-cancelado';
+                statusIcon = 'x-circle';
+            }
+
+            return `
+                <tr>
+                    <td>
+                        <strong style="font-size:13px">${item.dateTimeFormatted}</strong>
+                        <div style="font-size:11px;color:var(--muted)">${item.id}</div>
+                    </td>
+                    <td>
+                        <strong style="font-weight:700;color:var(--ink)">${escapeHTML(item.patient)}</strong>
+                        <div style="font-size:11px;color:var(--muted)">${escapeHTML(item.insurance)}</div>
+                    </td>
+                    <td>
+                        <div>${escapeHTML(item.doctor)}</div>
+                        <div style="font-size:11px;color:var(--muted)">${escapeHTML(item.specialty)}</div>
+                    </td>
+                    <td>
+                        <span>${escapeHTML(item.type)}</span>
+                        <div style="font-size:11px;color:var(--muted)">${escapeHTML(item.unit)}</div>
+                    </td>
+                    <td>
+                        <span class="status-badge ${statusClass}">
+                            <i data-lucide="${statusIcon}" aria-hidden="true"></i>
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="text-right">
+                        <button type="button" class="btn ghost sm btn-detail" data-id="${item.id}" aria-label="Ver detalhes do atendimento de ${escapeHTML(item.patient)}">
+                            <i data-lucide="eye" aria-hidden="true"></i> Detalhes
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        lucide.createIcons();
+
+        // Bind detail buttons
+        $$('.btn-detail', tbody).forEach(btn => {
+            btn.addEventListener('click', () => showAtendimentoDetail(btn.dataset.id));
+        });
+    }
+
+    function renderPagination() {
+        const total = state.filteredAtendimentos.length;
+        const totalPages = Math.ceil(total / state.pageSize) || 1;
+        const start = (state.currentPage - 1) * state.pageSize + 1;
+        const end = Math.min(state.currentPage * state.pageSize, total);
+
+        const info = $('#paginationInfo');
+        if (info) {
+            info.textContent = total > 0 ? `Exibindo ${start}-${end} de ${total} registros` : 'Nenhum registro encontrado';
+        }
+
+        const prevBtn = $('#btnPrevPage');
+        const nextBtn = $('#btnNextPage');
+        if (prevBtn) prevBtn.disabled = state.currentPage <= 1;
+        if (nextBtn) nextBtn.disabled = state.currentPage >= totalPages;
+
+        const numbersContainer = $('#pageNumbers');
+        if (numbersContainer) {
+            let html = '';
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button type="button" class="page-btn ${i === state.currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            numbersContainer.innerHTML = html;
+
+            $$('.page-btn', numbersContainer).forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.currentPage = parseInt(btn.dataset.page, 10);
+                    renderTable();
+                    renderPagination();
+                });
+            });
+        }
+    }
+
+    /* ============ MODAL DETAILS ============ */
+    function showAtendimentoDetail(id) {
+        const item = state.rawAtendimentos.find(i => i.id === id);
+        if (!item) return;
+
+        const modal = $('#atendimentoDetailModal');
+        const body = $('#modalBody');
+
+        body.innerHTML = `
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div><strong>Código:</strong> <span>${item.id}</span></div>
+                <div><strong>Status:</strong> <span class="status-badge ${item.status === 'Realizado' ? 'status-realizado' : item.status === 'Cancelado' ? 'status-cancelado' : 'status-agendado'}">${item.status}</span></div>
+                <div><strong>Paciente:</strong> <span>${escapeHTML(item.patient)}</span></div>
+                <div><strong>Convênio:</strong> <span>${escapeHTML(item.insurance)}</span></div>
+                <div><strong>Profissional:</strong> <span>${escapeHTML(item.doctor)}</span></div>
+                <div><strong>Especialidade:</strong> <span>${escapeHTML(item.specialty)}</span></div>
+                <div><strong>Data e Hora:</strong> <span>${item.dateTimeFormatted}</span></div>
+                <div><strong>Unidade:</strong> <span>${escapeHTML(item.unit)}</span></div>
+            </div>
+            <hr style="border-color:var(--line);margin:8px 0">
+            <div><strong>Tipo de Consulta:</strong> <span>${escapeHTML(item.type)}</span></div>
+            <div><strong>Observação Prontuário:</strong> <span>Atendimento registrado normalmente conforme protocolo GM4Med. SLA e triagem em conformidade.</span></div>
+        `;
+
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        lucide.createIcons();
+    }
+
+    function closeModal() {
+        const modal = $('#atendimentoDetailModal');
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+    }
+
+    /* ============ EXPORT HANDLERS (PDF & EXCEL) ============ */
+    function exportToExcel() {
+        const headers = ['ID', 'Data/Hora', 'Paciente', 'Profissional', 'Especialidade', 'Tipo', 'Status', 'Convênio', 'Unidade'];
+        const rows = state.filteredAtendimentos.map(i => [
+            i.id, i.dateTimeFormatted, i.patient, i.doctor, i.specialty, i.type, i.status, i.insurance, i.unit
+        ]);
+
+        const csvContent = [headers, ...rows]
+            .map(e => e.map(val => `"${String(val).replaceAll('"', '""')}"`).join(';'))
+            .join('\r\n');
+
+        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `relatorio-atendimentos-gm4med-${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        toast('Exportação concluída', 'Planilha Excel (CSV) gerada com sucesso.', 'ok');
+    }
+
+    function exportToPdf() {
+        toast('Gerando PDF...', 'Formatando relatório para impressão.', 'info');
+        setTimeout(() => window.print(), 300);
+    }
+
+    /* ============ CHARTS INITIALIZATION ============ */
     function cfgChart() {
         const dark = document.documentElement.dataset.theme === 'dark';
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
         Chart.defaults.font.size = 12;
-        Chart.defaults.color = dark ? '#94a3b8' : '#64748b';
-        Chart.defaults.borderColor = dark ? 'rgba(255,255,255,.06)' : 'rgba(15,23,42,.06)';
+        Chart.defaults.color = dark ? '#cbd5e1' : '#475569';
+        Chart.defaults.borderColor = dark ? 'rgba(255,255,255,.08)' : 'rgba(15,23,42,.08)';
     }
 
-    const tooltip = {
+    const tooltipConfig = {
         enabled: true,
         backgroundColor: 'rgba(15,23,42,.95)',
-        titleColor: '#fff', titleFont: { weight: 700, size: 12.5 },
-        bodyColor: '#e2e8f0', bodyFont: { size: 12 },
-        padding: 12, cornerRadius: 10, boxPadding: 6, displayColors: true, usePointStyle: true,
-        borderColor: 'rgba(255,255,255,.08)', borderWidth: 1,
+        titleColor: '#fff',
+        bodyColor: '#e2e8f0',
+        padding: 10,
+        cornerRadius: 8
     };
 
-    /* ============ CHART: DOCTORS ============ */
-    function chartDoctors(mode = 'bar') {
-        const top = DOCTORS.slice(0, 10);
-        const grad = ctx('chartDoctors').createLinearGradient(0, 0, 0, 300);
-        grad.addColorStop(0, COLORS.brand);
-        grad.addColorStop(1, COLORS.cyan);
-        charts.doctors?.destroy();
-        charts.doctors = new Chart(ctx('chartDoctors'), {
-            type: 'bar',
-            data: {
-                labels: top.map(d => d.name.replace('Dra. ', '').replace('Dr. ', '')),
-                datasets: [{
-                    label: 'Atendimentos',
-                    data: top.map(d => d.atend),
-                    backgroundColor: grad,
-                    borderRadius: 8,
-                    maxBarThickness: 32,
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                indexAxis: mode === 'bar-h' ? 'y' : 'x',
-                plugins: { legend: { display: false }, tooltip },
-                scales: {
-                    x: { grid: { display: mode === 'bar-h' }, border: { display: false }, ticks: { font: { size: 11 } } },
-                    y: { grid: { color: 'rgba(15,23,42,.05)' }, border: { display: false }, beginAtZero: true, ticks: { font: { size: 11 } } }
-                }
-            }
-        });
-    }
+    function initCharts() {
+        cfgChart();
 
-    /* ============ CHART: STATUS DOUGHNUT ============ */
-    function chartStatus() {
-        charts.status?.destroy();
-        charts.status = new Chart(ctx('chartStatus'), {
-            type: 'doughnut',
-            data: { labels: STATUSES.map(s => s.label), datasets: [{ data: STATUSES.map(s => s.value), backgroundColor: STATUSES.map(s => s.color), borderWidth: 0, spacing: 3, hoverOffset: 8 }] },
-            options: {
-                responsive: true, maintainAspectRatio: false, cutout: '72%',
-                plugins: { legend: { display: false }, tooltip: { ...tooltip, callbacks: { label: c => ` ${c.label}: ${c.parsed}%` } } }
-            }
-        });
-        // legend
-        $('#legendStatus').innerHTML = STATUSES.map(s => `<span class="legend-item"><span class="sw" style="background:${s.color}"></span>${s.label} <b style="margin-left:6px;color:var(--ink);font-weight:700">${s.value}%</b></span>`).join('');
-    }
-
-    /* ============ CHART: SPECIALITIES ============ */
-    function chartSpec() {
-        charts.spec?.destroy();
-        charts.spec = new Chart(ctx('chartSpec'), {
-            type: 'polarArea',
-            data: {
-                labels: SPECS.map(s => s.name),
-                datasets: [{ data: SPECS.map(s => s.atend), backgroundColor: SPECS.map(s => s.color + 'cc'), borderWidth: 0 }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 10, padding: 10, usePointStyle: true } },
-                    tooltip
+        // Chart 1: Doctors
+        const cDoc = ctx('chartDoctors');
+        if (cDoc) {
+            charts.doctors = new Chart(cDoc, {
+                type: 'bar',
+                data: {
+                    labels: ['Dra. Mariana', 'Dr. Felipe', 'Dra. Helena', 'Dr. Rafael', 'Dra. Larissa', 'Dr. Bruno'],
+                    datasets: [{
+                        label: 'Atendimentos',
+                        data: [312, 289, 276, 251, 238, 217],
+                        backgroundColor: COLORS.brand,
+                        borderRadius: 6
+                    }]
                 },
-                scales: { r: { ticks: { display: false }, grid: { color: 'rgba(15,23,42,.08)' }, angleLines: { color: 'rgba(15,23,42,.05)' } } }
-            }
-        });
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: tooltipConfig } }
+            });
+        }
+
+        // Chart 2: Status
+        const cStatus = ctx('chartStatus');
+        if (cStatus) {
+            charts.status = new Chart(cStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Realizados', 'Agendados', 'Cancelados'],
+                    datasets: [{
+                        data: [67, 27, 6],
+                        backgroundColor: [COLORS.ok, COLORS.info, COLORS.danger],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '74%', plugins: { legend: { display: false }, tooltip: tooltipConfig } }
+            });
+            $('#legendStatus').innerHTML = `
+                <span class="legend-item"><span class="sw" style="background:${COLORS.ok}"></span>Realizados <b>67%</b></span>
+                <span class="legend-item"><span class="sw" style="background:${COLORS.info}"></span>Agendados <b>27%</b></span>
+                <span class="legend-item"><span class="sw" style="background:${COLORS.danger}"></span>Cancelados <b>6%</b></span>
+            `;
+        }
+
+        // Chart 3: Spec
+        const cSpec = ctx('chartSpec');
+        if (cSpec) {
+            charts.spec = new Chart(cSpec, {
+                type: 'polarArea',
+                data: {
+                    labels: ['Cardiologia', 'Ortopedia', 'Pediatria', 'Ginecologia', 'Dermatologia'],
+                    datasets: [{ data: [842, 678, 912, 587, 521], backgroundColor: [COLORS.brand + 'cc', COLORS.info + 'cc', COLORS.purple + 'cc', COLORS.rose + 'cc', COLORS.warn + 'cc'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: tooltipConfig } }
+            });
+        }
+
+        // Chart 4: Week
+        const cWeek = ctx('chartWeek');
+        if (cWeek) {
+            charts.week = new Chart(cWeek, {
+                type: 'bar',
+                data: {
+                    labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                    datasets: [{ data: [842, 891, 654, 789, 803, 512], backgroundColor: COLORS.brand, borderRadius: 6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        // Chart 5: History
+        const cHist = ctx('chartHistory');
+        if (cHist) {
+            charts.history = new Chart(cHist, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out'],
+                    datasets: [
+                        { label: 'Realizado', data: [3812, 3920, 4102, 4230, 4118, 4382, 4521, 4678, 4812, 4827], borderColor: COLORS.brand, tension: 0.3, fill: false },
+                        { label: 'Meta', data: [3800, 3900, 4000, 4100, 4200, 4300, 4400, 4500, 4600, 4700], borderColor: COLORS.ok, borderDash: [5, 5], fill: false }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { tooltip: tooltipConfig } }
+            });
+        }
+
+        // Heatmap
+        renderHeatmap();
+        // Sparklines
+        renderSparklines();
+        // Doctors Ranking
+        renderDoctorsRank();
     }
 
-    /* ============ CHART: WEEK DAYS ============ */
-    function chartWeek() {
-        const max = Math.max(...WEEK_DATA);
-        const colors = WEEK_DATA.map(v => {
-            const ratio = v / max;
-            if (ratio > .85) return COLORS.brand;
-            if (ratio > .6) return COLORS.brand2;
-            if (ratio > .4) return COLORS.cyan;
-            return '#a5b4fc';
-        });
-        charts.week?.destroy();
-        charts.week = new Chart(ctx('chartWeek'), {
-            type: 'bar',
-            data: { labels: WEEK, datasets: [{ data: WEEK_DATA, backgroundColor: colors, borderRadius: 10, maxBarThickness: 36 }] },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip },
-                scales: {
-                    x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 11.5, weight: 600 } } },
-                    y: { grid: { color: 'rgba(15,23,42,.05)' }, border: { display: false }, beginAtZero: true, ticks: { font: { size: 11 } } }
-                }
-            }
-        });
-    }
-
-    /* ============ HEATMAP HOUR×DAY ============ */
-    function heatmap() {
-        const hours = ['07h', '08h', '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h'];
+    function renderHeatmap() {
         const el = $('#heatmap');
-        let html = `<div></div>` + WEEK.map(d => `<div class="hm-th">${d}</div>`).join('');
+        if (!el) return;
+        const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
+        const hours = ['08h', '10h', '12h', '14h', '16h', '18h'];
+        let html = '<div></div>' + days.map(d => `<div class="hm-th">${d}</div>`).join('');
         hours.forEach(h => {
             html += `<div class="hm-rh">${h}</div>`;
-            for (let d = 0; d < 7; d++) {
-                const hh = parseInt(h);
-                // simulate intensity: 9-12 and 14-17 high; weekend lower
-                let intensity = 0.2;
-                if ((hh >= 9 && hh <= 11) || (hh >= 14 && hh <= 17)) intensity = 0.7;
-                if (hh === 10 || hh === 15) intensity = 0.95;
-                if (d >= 5) intensity *= 0.4;
-                intensity *= (0.85 + Math.random() * 0.3);
-                intensity = Math.min(intensity, 1);
-                const colors = ['#eef2ff', '#c7d2fe', '#a5b4fc', '#818cf8', '#6366f1', '#4f46e5', '#3730a3'];
-                const idx = Math.min(Math.floor(intensity * colors.length), colors.length - 1);
-                const c = colors[idx];
-                const v = Math.round(intensity * 60);
-                html += `<div class="hm-cell" style="background:${c}" title="${h} · ${WEEK[d]}: ${v} atendimentos"></div>`;
+            for (let d = 0; d < 5; d++) {
+                const c = (d + h.charCodeAt(0)) % 2 === 0 ? '#ccfbf1' : '#0d9488';
+                html += `<div class="hm-cell" style="background:${c}" title="${h} - ${days[d]}"></div>`;
             }
         });
         el.innerHTML = html;
     }
 
-    /* ============ CHART: HISTORY ============ */
-    function chartHistory(metric = 'all') {
-        const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-        const real = [3812, 3920, 4102, 4230, 4118, 4382, 4521, 4678, 4812, 4827, 0, 0];
-        const target = [3800, 3900, 4000, 4100, 4200, 4300, 4400, 4500, 4600, 4700, 4800, 4900];
-        const prev = [3520, 3601, 3782, 3850, 3902, 3988, 4012, 4180, 4310, 4456, 4520, 4612];
-
-        const c = ctx('chartHistory');
-        const grad1 = c.createLinearGradient(0, 0, 0, 380);
-        grad1.addColorStop(0, 'rgba(79,70,229,.35)');
-        grad1.addColorStop(1, 'rgba(79,70,229,0)');
-
-        const datasets = [];
-        if (metric === 'all' || metric === 'real') datasets.push({ label: 'Realizado', data: real.map(v => v || null), borderColor: COLORS.brand, backgroundColor: grad1, fill: true, tension: .4, borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', pointBorderColor: COLORS.brand, pointBorderWidth: 2, pointHoverRadius: 7 });
-        if (metric === 'all' || metric === 'target') datasets.push({ label: 'Meta', data: target, borderColor: COLORS.ok, borderDash: [6, 4], borderWidth: 2, pointRadius: 0, tension: .4, fill: false });
-        if (metric === 'all' || metric === 'prev') datasets.push({ label: 'Ano Anterior', data: prev, borderColor: COLORS.ink3 || '#94a3b8', borderWidth: 2, pointRadius: 3, tension: .4, fill: false, borderDash: [2, 3] });
-
-        charts.history?.destroy();
-        charts.history = new Chart(c, {
-            type: 'line',
-            data: { labels: months, datasets },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { position: 'bottom', labels: { font: { size: 12 }, usePointStyle: true, padding: 14, boxWidth: 8 } },
-                    tooltip
-                },
-                scales: {
-                    x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 11.5 } } },
-                    y: { grid: { color: 'rgba(15,23,42,.05)' }, border: { display: false }, beginAtZero: false, ticks: { font: { size: 11 }, callback: v => v.toLocaleString('pt-BR') } }
-                }
-            }
-        });
-    }
-
-    /* ============ SPARKLINES ============ */
-    function sparklines() {
+    function renderSparklines() {
         $$('.spark').forEach(el => {
             const color = COLORS[el.dataset.spark] || COLORS.brand;
-            const data = Array.from({ length: 14 }, () => Math.random() * 40 + 30);
+            const data = Array.from({ length: 10 }, () => Math.random() * 40 + 20);
             const c = el.getContext('2d');
-            const grad = c.createLinearGradient(0, 0, 0, 40);
-            grad.addColorStop(0, color + '66'); grad.addColorStop(1, color + '00');
             new Chart(c, {
                 type: 'line',
-                data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: color, backgroundColor: grad, fill: true, tension: .4, borderWidth: 2, pointRadius: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } }
+                data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: color, fill: false, tension: 0.4, borderWidth: 2, pointRadius: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
             });
         });
     }
 
-    /* ============ TREND MINI CHARTS (table) ============ */
-    function trendMini(canvas, data, color) {
-        const c = canvas.getContext('2d');
-        const grad = c.createLinearGradient(0, 0, 0, 30);
-        grad.addColorStop(0, color + '55'); grad.addColorStop(1, color + '00');
-        new Chart(c, {
-            type: 'line',
-            data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: color, backgroundColor: grad, fill: true, tension: .4, borderWidth: 1.8, pointRadius: 0 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } }
-        });
-    }
-
-    /* ============ BAR LIST: INSURANCES ============ */
-    function renderInsurance() {
-        const max = Math.max(...INSURANCES.map(i => i.value));
-        $('#topInsurance').innerHTML = INSURANCES.map(i => `
-    <div class="bar-item">
-      <div class="bar-head"><strong>${i.name}</strong><span>${i.value}%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(i.value / max * 100).toFixed(1)}%;background:${i.color}"></div></div>
-    </div>
-  `).join('');
-    }
-
-    /* ============ RANK TABLE ============ */
-    function renderRank() {
+    function renderDoctorsRank() {
         const tb = $('#rankTable tbody');
-        // composite score: volume normalized + nps + punc
-        const max = Math.max(...DOCTORS.map(d => d.atend));
-        const ranked = DOCTORS.map(d => {
-            const score = ((d.atend / max) * 40 + (d.nps / 10) * 30 + (d.punc / 100) * 30);
-            return { ...d, score: Math.round(score * 10) / 10 };
-        }).sort((a, b) => b.score - a.score);
-        tb.innerHTML = ranked.map((d, i) => {
-            const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-            return `
-    <tr>
-      <td><span class="rank-pos ${cls}">${i + 1}</span></td>
-      <td><div class="doc-cell"><div class="av">${d.initials}</div><div><strong>${d.name}</strong><small>${d.spec}</small></div></div></td>
-      <td>${d.spec}</td>
-      <td><b style="font-family:'JetBrains Mono',monospace">${d.atend}</b></td>
-      <td><b style="color:${d.nps >= 9.3 ? 'var(--ok)' : d.nps >= 9 ? 'var(--brand)' : 'var(--warn)'};font-weight:700">${d.nps.toFixed(1)}</b></td>
-      <td>${d.punc}%</td>
-      <td><div class="score-bar"><div class="bar"><span style="width:${d.score}%"></span></div><b>${d.score}</b></div></td>
-    </tr>`;
-        }).join('');
+        if (!tb) return;
+        const doctors = [
+            { rank: 1, name: 'Dra. Mariana Costa', spec: 'Cardiologia', atend: 312, nps: 9.6, punc: '96%', score: 9.8 },
+            { rank: 2, name: 'Dr. Felipe Andrade', spec: 'Ortopedia', atend: 289, nps: 9.2, punc: '92%', score: 9.4 },
+            { rank: 3, name: 'Dra. Helena Vieira', spec: 'Pediatria', atend: 276, nps: 9.7, punc: '94%', score: 9.3 },
+            { rank: 4, name: 'Dr. Rafael Mendes', spec: 'Neurologia', atend: 251, nps: 9.0, punc: '88%', score: 8.9 }
+        ];
+
+        tb.innerHTML = doctors.map(d => `
+            <tr>
+                <td><strong>#${d.rank}</strong></td>
+                <td><strong>${d.name}</strong></td>
+                <td>${d.spec}</td>
+                <td><b>${d.atend}</b></td>
+                <td><b style="color:var(--ok)">${d.nps}</b></td>
+                <td>${d.punc}</td>
+                <td><b style="color:var(--brand)">${d.score}</b></td>
+            </tr>
+        `).join('');
     }
 
-    /* ============ BREAKDOWN TABLE ============ */
-    function renderBreakdown(filter = '') {
-        const tb = $('#breakdownTable tbody');
-        const list = SPECS.filter(s => !filter || s.name.toLowerCase().includes(filter.toLowerCase()));
-        tb.innerHTML = list.map((s, i) => `
-    <tr data-idx="${i}">
-      <td><div class="spec-cell"><span class="dot" style="background:${s.color}"></span><strong>${s.name}</strong></div></td>
-      <td class="num">${s.atend.toLocaleString('pt-BR')}</td>
-      <td class="num">${s.nshow.toFixed(1)}%</td>
-      <td class="num">${s.tm} min</td>
-      <td class="num"><b style="color:${s.nps >= 9.2 ? 'var(--ok)' : 'var(--ink-2)'}">${s.nps.toFixed(1)}</b></td>
-      <td class="num">R$ ${(s.rev / 1000).toFixed(0)}k</td>
-      <td class="num">${s.delta >= 0 ? `<span class="delta up"><i data-lucide="trending-up"></i>+${s.delta}%</span>` : `<span class="delta down"><i data-lucide="trending-down"></i>${s.delta}%</span>`}</td>
-      <td><canvas class="trend-cell" id="trend${i}"></canvas></td>
-    </tr>
-  `).join('');
-        lucide.createIcons();
-        list.forEach((s, i) => {
-            const c = $('#trend' + i);
-            if (c) trendMini(c, s.trend, s.color);
-        });
-        // totals
-        const tot = list.reduce((a, s) => ({ atend: a.atend + s.atend, ns: a.ns + s.nshow * s.atend, tm: a.tm + s.tm * s.atend, nps: a.nps + s.nps * s.atend, rev: a.rev + s.rev }), { atend: 0, ns: 0, tm: 0, nps: 0, rev: 0 });
-        $('#tFAtend').textContent = tot.atend.toLocaleString('pt-BR');
-        $('#tFNs').textContent = (tot.ns / tot.atend).toFixed(1) + '%';
-        $('#tFTm').textContent = Math.round(tot.tm / tot.atend) + ' min';
-        $('#tFNps').textContent = (tot.nps / tot.atend).toFixed(1);
-        $('#tFRev').textContent = 'R$ ' + (tot.rev / 1000).toFixed(0) + 'k';
+    /* ============ HELPERS ============ */
+    function escapeHTML(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
     }
 
-    /* ============ COUNTERS ============ */
-    function counters() {
-        $$('[data-counter]').forEach(el => {
-            const target = +el.dataset.counter;
-            const dur = 1200; const start = performance.now();
-            function tick(now) {
-                const p = Math.min((now - start) / dur, 1);
-                const eased = 1 - Math.pow(1 - p, 3);
-                el.textContent = Math.round(target * eased).toLocaleString('pt-BR');
-                if (p < 1) requestAnimationFrame(tick);
-            }
-            requestAnimationFrame(tick);
-        });
-    }
-
-    /* ============ TOAST ============ */
     function toast(title, msg = '', type = 'info') {
+        const box = $('#toastBox');
+        if (!box) return;
         const icons = { info: 'info', ok: 'check-circle-2', warn: 'alert-triangle' };
         const el = document.createElement('div');
         el.className = `toast ${type}`;
-        el.innerHTML = `<i data-lucide="${icons[type]}"></i><div><strong>${title}</strong>${msg ? `<span>${msg}</span>` : ''}</div>`;
-        $('#toastBox').appendChild(el);
+        el.innerHTML = `<i data-lucide="${icons[type] || 'info'}"></i><div><strong>${title}</strong>${msg ? `<span>${msg}</span>` : ''}</div>`;
+        box.appendChild(el);
         lucide.createIcons();
-        setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(40px)' }, 3200);
-        setTimeout(() => el.remove(), 3700);
+        setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(40px)'; }, 3000);
+        setTimeout(() => el.remove(), 3400);
     }
 
-    /* ============ BINDINGS ============ */
-    function bind() {
-        // theme
-        $('#toggleTheme').addEventListener('click', () => {
-            const cur = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-            document.documentElement.dataset.theme = cur;
-            $('#toggleTheme i').setAttribute('data-lucide', cur === 'dark' ? 'sun' : 'moon');
+    /* ============ EVENT BINDINGS ============ */
+    function bindEvents() {
+        // Filter Apply
+        $('#btnApply')?.addEventListener('click', () => {
+            if (!validateDates()) return;
+
+            state.filters = {
+                dateFrom: $('#dateFrom').value,
+                dateTo: $('#dateTo').value,
+                doc: $('#fDoc').value,
+                status: $('#fStatus').value,
+                spec: $('#fSpec').value,
+                unit: $('#fUnit').value,
+                search: $('#atendSearch').value
+            };
+
+            carregarRelatorioAtendimentos(state.filters);
+            toast('Filtros aplicados', 'Resultados atualizados com sucesso.', 'ok');
+        });
+
+        // Filter Clear
+        const clearFilters = () => {
+            $('#dateFrom').value = '';
+            $('#dateTo').value = '';
+            $('#fDoc').selectedIndex = 0;
+            $('#fStatus').selectedIndex = 0;
+            $('#fSpec').selectedIndex = 0;
+            $('#fUnit').selectedIndex = 0;
+            $('#atendSearch').value = '';
+
+            validateDates();
+            state.filters = { dateFrom: '', dateTo: '', doc: '', status: '', spec: '', unit: '', search: '' };
+            carregarRelatorioAtendimentos(state.filters);
+            toast('Filtros limpos', 'Exibindo todos os atendimentos.', 'info');
+        };
+
+        $('#btnClear')?.addEventListener('click', clearFilters);
+        $('#btnResetFiltersEmpty')?.addEventListener('click', clearFilters);
+
+        // Search Input
+        $('#atendSearch')?.addEventListener('input', e => {
+            state.filters.search = e.target.value;
+            carregarRelatorioAtendimentos(state.filters);
+        });
+
+        // Pagination buttons
+        $('#btnPrevPage')?.addEventListener('click', () => {
+            if (state.currentPage > 1) {
+                state.currentPage--;
+                renderTable();
+                renderPagination();
+            }
+        });
+
+        $('#btnNextPage')?.addEventListener('click', () => {
+            const totalPages = Math.ceil(state.filteredAtendimentos.length / state.pageSize);
+            if (state.currentPage < totalPages) {
+                state.currentPage++;
+                renderTable();
+                renderPagination();
+            }
+        });
+
+        // Export Dropdown
+        const exportMenu = $('#exportMenu');
+        const exportBtn = $('#btnExportMenu');
+
+        exportBtn?.addEventListener('click', e => {
+            e.stopPropagation();
+            const isExpanded = exportBtn.getAttribute('aria-expanded') === 'true';
+            exportBtn.setAttribute('aria-expanded', !isExpanded);
+            exportMenu?.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', () => {
+            exportMenu?.classList.add('hidden');
+            exportBtn?.setAttribute('aria-expanded', 'false');
+        });
+
+        $('#btnExportPdf')?.addEventListener('click', exportToPdf);
+        $('#btnExportExcel')?.addEventListener('click', exportToExcel);
+
+        // Retry button
+        $('#btnRetryAtendimentos')?.addEventListener('click', () => {
+            carregarRelatorioAtendimentos(state.filters);
+        });
+
+        // Theme Toggle
+        $('#toggleTheme')?.addEventListener('click', () => {
+            const current = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.dataset.theme = current;
+            const icon = $('#toggleTheme i');
+            if (icon) icon.setAttribute('data-lucide', current === 'dark' ? 'sun' : 'moon');
             lucide.createIcons();
             cfgChart();
             Object.values(charts).forEach(c => c.update());
-            toast(`Tema ${cur === 'dark' ? 'escuro' : 'claro'} ativado`);
+            toast(`Tema ${current === 'dark' ? 'escuro' : 'claro'} ativado`);
         });
 
-        // periods
-        $$('.period-tabs button').forEach(b => b.addEventListener('click', () => {
-            $$('.period-tabs button').forEach(x => x.classList.remove('active'));
-            b.classList.add('active');
-            toast('Período atualizado', `${b.textContent.trim()} aplicado`, 'ok');
-        }));
-
-        // history seg
-        $$('.seg button[data-metric]').forEach(b => b.addEventListener('click', () => {
-            b.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('active'));
-            b.classList.add('active');
-            chartHistory(b.dataset.metric);
-        }));
-
-        // doctors seg
-        $$('.seg button[data-mode]').forEach(b => b.addEventListener('click', () => {
-            b.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('active'));
-            b.classList.add('active');
-            chartDoctors(b.dataset.mode);
-        }));
-
-        // refresh
-        $('#btnRefresh').addEventListener('click', () => {
-            const ic = $('#btnRefresh i');
-            ic.style.transition = 'transform .8s';
-            ic.style.transform = 'rotate(360deg)';
-            setTimeout(() => { ic.style.transform = '' }, 800);
-            toast('Dados atualizados', 'Última sincronização agora', 'ok');
-            $('#lastUpdate').textContent = 'agora';
+        // Refresh Button
+        $('#btnRefresh')?.addEventListener('click', () => {
+            carregarRelatorioAtendimentos(state.filters);
+            $('#lastUpdate').textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            toast('Dados sincronizados', 'Relatório atualizado.', 'ok');
         });
 
-        // export / print / share
-        $('#btnExport').addEventListener('click', () => {
-            const headers = ['Especialidade', 'Atendimentos', 'No-Show', 'Tempo medio', 'NPS', 'Receita', 'Variacao'];
-            const rows = SPECS.map(s => [s.name, s.atend, s.nshow, s.tm, s.nps, s.rev, s.delta]);
-            const csv = [headers, ...rows].map(r => r.join(';')).join('\n');
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `relatorio-atendimentos-${new Date().toISOString().slice(0, 10)}.csv`;
-            a.click();
-            toast('Relatório exportado', 'arquivo CSV gerado', 'ok');
-        });
-        $('#btnPrint').addEventListener('click', () => window.print());
-        $('#btnShare').addEventListener('click', () => {
-            if (navigator.share) navigator.share({ title: 'Relatório GM4med', text: 'Veja o relatório', url: location.href }).catch(() => { });
-            else { navigator.clipboard?.writeText(location.href); toast('Link copiado', 'Compartilhe com sua equipe', 'ok') }
-        });
+        // Modal Close
+        $('#btnCloseModal')?.addEventListener('click', closeModal);
+        $('#btnModalClose')?.addEventListener('click', closeModal);
+        $('#btnModalPrint')?.addEventListener('click', () => window.print());
 
-        // filters apply / clear
-        $('#btnApply').addEventListener('click', () => {
-            toast('Filtros aplicados', 'Atualizando dashboards...', 'ok');
-            counters();
-        });
-        $('#btnClear').addEventListener('click', () => {
-            $$('.filter-bar select').forEach(s => s.selectedIndex = 0);
-            $('#dateFrom').value = ''; $('#dateTo').value = '';
-            toast('Filtros limpos');
-        });
+        // Period tabs
+        $$('#periodTabs button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                $$('#periodTabs button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-        // table search
-        $('#tblSearch').addEventListener('input', e => renderBreakdown(e.target.value));
+                const period = btn.dataset.period;
+                if (period !== 'custom') {
+                    const to = new Date();
+                    const from = new Date();
+                    from.setDate(from.getDate() - parseInt(period, 10));
+
+                    $('#dateFrom').valueAsDate = from;
+                    $('#dateTo').valueAsDate = to;
+                    validateDates();
+                    state.filters.dateFrom = $('#dateFrom').value;
+                    state.filters.dateTo = $('#dateTo').value;
+                    carregarRelatorioAtendimentos(state.filters);
+                }
+            });
+        });
     }
 
-    /* ============ INIT ============ */
+    /* ============ INITIALIZATION ============ */
     function init() {
         lucide.createIcons();
-        cfgChart();
 
-        chartDoctors();
-        chartStatus();
-        chartSpec();
-        chartWeek();
-        chartHistory();
-        heatmap();
-        sparklines();
-        renderInsurance();
-        renderRank();
-        renderBreakdown();
-        counters();
-        bind();
+        // Default 30 days date range
+        const to = new Date();
+        const from = new Date();
+        from.setDate(from.getDate() - 30);
+        $('#dateFrom').valueAsDate = from;
+        $('#dateTo').valueAsDate = to;
 
-        // dates default = last 30 days
-        const t = new Date();
-        const f = new Date(); f.setDate(f.getDate() - 30);
-        $('#dateFrom').valueAsDate = f;
-        $('#dateTo').valueAsDate = t;
+        state.filters.dateFrom = $('#dateFrom').value;
+        state.filters.dateTo = $('#dateTo').value;
 
-        setTimeout(() => toast('Bem-vindo ao BI', 'Dados consolidados em tempo real', 'ok'), 400);
+        initCharts();
+        bindEvents();
+        carregarRelatorioAtendimentos(state.filters);
     }
 
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 })();
