@@ -674,16 +674,16 @@
     }
 
     function updateMetrics() {
-        el.totalTypesMetric.textContent = state.types.length;
+        if (el.totalTypesMetric) el.totalTypesMetric.textContent = state.types.length;
 
-        el.activeTypesMetric.textContent =
+        if (el.activeTypesMetric) el.activeTypesMetric.textContent =
             state.types.filter((type) => type.status === "ACTIVE").length;
 
-        el.specialtiesMetric.textContent =
-            new Set(state.types.flatMap((type) => type.specialtyIds)).size;
+        if (el.specialtiesMetric) el.specialtiesMetric.textContent =
+            new Set(state.types.flatMap((type) => type.specialtyIds || [])).size;
 
-        el.proceduresMetric.textContent =
-            new Set(state.types.flatMap((type) => type.procedureIds)).size;
+        if (el.proceduresMetric) el.proceduresMetric.textContent =
+            new Set(state.types.flatMap((type) => type.procedureIds || [])).size;
     }
 
     function populateGroups() {

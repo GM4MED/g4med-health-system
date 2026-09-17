@@ -813,10 +813,10 @@
             state.groups.flatMap((group) => group.procedureIds)
         ).size;
 
-        el.totalGroupsMetric.textContent = total;
-        el.activeGroupsMetric.textContent = active;
-        el.subgroupsMetric.textContent = subgroups;
-        el.linkedProceduresMetric.textContent = procedures;
+        if (el.totalGroupsMetric) el.totalGroupsMetric.textContent = total;
+        if (el.activeGroupsMetric) el.activeGroupsMetric.textContent = active;
+        if (el.subgroupsMetric) el.subgroupsMetric.textContent = subgroups;
+        if (el.linkedProceduresMetric) el.linkedProceduresMetric.textContent = procedures;
     }
 
     function clearFilters() {

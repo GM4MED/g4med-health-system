@@ -627,16 +627,16 @@
   }
 
   function updateMetrics() {
-    el.totalGroupsMetric.textContent = state.groups.length;
+    if (el.totalGroupsMetric) el.totalGroupsMetric.textContent = state.groups.length;
 
-    el.activeGroupsMetric.textContent =
+    if (el.activeGroupsMetric) el.activeGroupsMetric.textContent =
       state.groups.filter((group) => group.status === "ACTIVE").length;
 
-    el.linkedTypesMetric.textContent =
-      new Set(state.groups.flatMap((group) => group.typeIds)).size;
+    if (el.linkedTypesMetric) el.linkedTypesMetric.textContent =
+      new Set(state.groups.flatMap((group) => group.typeIds || [])).size;
 
-    el.linkedUnitsMetric.textContent =
-      new Set(state.groups.flatMap((group) => group.units)).size;
+    if (el.linkedUnitsMetric) el.linkedUnitsMetric.textContent =
+      new Set(state.groups.flatMap((group) => group.units || [])).size;
   }
 
   function clearFilters() {

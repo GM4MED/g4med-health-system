@@ -270,10 +270,15 @@ function updateStats() {
     const bloqueados = filteredUsers.filter(u => u.status === 'Bloqueado').length;
     const administradores = filteredUsers.filter(u => u.perfil === 'Administrador').length;
 
-    document.getElementById('totalUsuarios').textContent = total;
-    document.getElementById('usuariosAtivos').textContent = ativos;
-    document.getElementById('usuariosBloqueados').textContent = bloqueados;
-    document.getElementById('administradores').textContent = administradores;
+    const elTotal = document.getElementById('totalUsuarios');
+    const elAtivos = document.getElementById('usuariosAtivos');
+    const elBloqueados = document.getElementById('usuariosBloqueados');
+    const elAdmins = document.getElementById('administradores');
+
+    if (elTotal) elTotal.textContent = total;
+    if (elAtivos) elAtivos.textContent = ativos;
+    if (elBloqueados) elBloqueados.textContent = bloqueados;
+    if (elAdmins) elAdmins.textContent = administradores;
 }
 
 function updateFooter() {
