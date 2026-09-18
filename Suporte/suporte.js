@@ -1,10 +1,10 @@
 (() => {
-  const $ = (s, r = document) => r.querySelector(s),
-    $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const querySelector = (s, r = document) => r.querySelector(s);
+  const querySelectorAll = (s, r = document) => [...r.querySelectorAll(s)];
 
-  const panels = $$('.tab-panel'),
-    navItems = $$('.nav-link'),
-    breadcrumb = $('#breadcrumbCurrent');
+  const panels = querySelectorAll('.tab-panel');
+  const navItems = querySelectorAll('.nav-link');
+  const breadcrumb = querySelector('#breadcrumbCurrent');
 
   const names = {
     overview: 'Visão geral',
@@ -14,41 +14,51 @@
     about: 'Sobre o sistema'
   };
 
+  // Gerenciamento de Abas
   function openTab(tabId) {
-    const id = tabId || 'overview';
+    const id = tabId && names[tabId] ? tabId : 'overview';
+
     panels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === id));
     navItems.forEach(item => {
       const active = item.dataset.tab === id;
       item.classList.toggle('is-active', active);
       item.setAttribute('aria-current', active ? 'page' : 'false');
     });
+
     if (breadcrumb) breadcrumb.textContent = names[id] || names.overview;
     history.replaceState(null, '', `#${id}`);
-    $('#sidebar')?.classList.remove('is-open');
-    $('#menuToggle')?.setAttribute('aria-expanded', 'false');
+
+    querySelector('#sidebar')?.classList.remove('is-open');
+    querySelector('#menuToggle')?.setAttribute('aria-expanded', 'false');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   window.openTab = openTab;
 
   navItems.forEach(item => item.addEventListener('click', () => openTab(item.dataset.tab)));
-  $$('[data-open-tab]').forEach(button => button.addEventListener('click', () => openTab(button.dataset.openTab)));
+  querySelectorAll('[data-open-tab]').forEach(button => button.addEventListener('click', () => openTab(button.dataset.openTab)));
 
-  const initial = location.hash.slice(1);
-  openTab(names[initial] ? initial : 'overview');
+  const initialHash = location.hash.slice(1);
+  openTab(names[initialHash] ? initialHash : 'overview');
 
-  $('#menuToggle')?.addEventListener('click', () => {
-    const sidebar = $('#sidebar'),
-      open = sidebar.classList.toggle('is-open');
-    $('#menuToggle').setAttribute('aria-expanded', String(open));
+  // Menu Mobile Toggle
+  const menuToggle = querySelector('#menuToggle');
+  menuToggle?.addEventListener('click', () => {
+    const sidebar = querySelector('#sidebar');
+    if (!sidebar) return;
+    const open = sidebar.classList.toggle('is-open');
+    menuToggle.setAttribute('aria-expanded', String(open));
   });
 
-  const theme = $('html'),
-    themeButton = $('#themeToggle');
-  const saved = localStorage.getItem('GM4med-theme');
+  // Alternância de Tema (Dark/Light)
+  const theme = document.documentElement;
+  const themeButton = querySelector('#themeToggle');
+  const savedTheme = localStorage.getItem('GM4med-theme') || 'light';
 
-  if (saved) theme.dataset.theme = saved;
+  theme.dataset.theme = savedTheme;
 
   function syncTheme() {
+    if (!themeButton) return;
     const dark = theme.dataset.theme === 'dark';
     themeButton.innerHTML = `<i class="fa-solid fa-${dark ? 'sun' : 'moon'}" aria-hidden="true"></i>`;
     themeButton.setAttribute('aria-label', dark ? 'Ativar modo claro' : 'Ativar modo escuro');
@@ -57,14 +67,54 @@
   syncTheme();
 
   themeButton?.addEventListener('click', () => {
-    theme.dataset.theme = theme.dataset.theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('GM4med-theme', theme.dataset.theme);
+    const newTheme = theme.dataset.theme === 'dark' ? 'light' : 'dark';
+    theme.dataset.theme = newTheme;
+    localStorage.setItem('GM4med-theme', newTheme);
     syncTheme();
   });
 
-  $$('.updates-table tbody tr').forEach(row => {
+  // Sistema de Acordeão / FAQ Corrigido para .GM4med-accordion-trigger
+  const accordionTriggers = querySelectorAll(`
+    .GM4med-accordion-trigger, 
+    .GM4med-accordion-header, 
+    [data-accordion-toggle], 
+    .faq-question, 
+    .faq-item > header, 
+    .faq-item > button
+  `);
+
+  accordionTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      // Tenta achar o container pai pelo padrão GM4med ou .faq-item
+      const item = trigger.closest('.GM4med-accordion-item, .faq-item');
+      if (!item) return;
+
+      // Pega o painel associado via aria-controls ou busca dentro do item
+      const controlsId = trigger.getAttribute('aria-controls');
+      const content = controlsId
+        ? querySelector(`#${controlsId}`)
+        : item.querySelector('.GM4med-accordion-content, .faq-content, .faq-answer');
+
+      const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+      // Alterna atributos e classes de estado
+      trigger.setAttribute('aria-expanded', String(!isExpanded));
+      item.classList.toggle('is-open', !isExpanded);
+
+      if (content) {
+        if (isExpanded) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      }
+    });
+  });
+
+  // Interação com a Tabela de Atualizações / Versões
+  querySelectorAll('.updates-table tbody tr').forEach(row => {
     const select = () => {
-      $$('.updates-table tbody tr').forEach(item => item.classList.remove('active'));
+      querySelectorAll('.updates-table tbody tr').forEach(item => item.classList.remove('active'));
       row.classList.add('active');
     };
     row.addEventListener('click', select);
@@ -76,62 +126,146 @@
     });
   });
 
-  function filter(input, items) {
+  // Filtragem Genérica (Busca)
+  function filterItems(input, items) {
     const term = input.value.toLowerCase().trim();
-    items.forEach(item => item.hidden = !item.textContent.toLowerCase().includes(term));
+    items.forEach(item => {
+      const match = item.textContent.toLowerCase().includes(term);
+      item.hidden = !match;
+    });
   }
 
-  const globalSearch = $('#globalSearch'),
-    clear = $('#clearSearch');
+  const globalSearch = querySelector('#globalSearch');
+  const clearSearchBtn = querySelector('#clearSearch');
 
   globalSearch?.addEventListener('input', () => {
-    clear.hidden = !globalSearch.value;
+    if (clearSearchBtn) clearSearchBtn.hidden = !globalSearch.value;
     const term = globalSearch.value.toLowerCase().trim();
     if (term) {
       openTab('faq');
-      const faq = $$('.faq-item');
-      const faqInput = $('.faq-search');
+      const faqItems = querySelectorAll('.faq-item, .GM4med-accordion-item');
+      const faqInput = querySelector('.faq-search');
       if (faqInput) faqInput.value = globalSearch.value;
-      filter(faqInput || globalSearch, faq);
+      filterItems(faqInput || globalSearch, faqItems);
     }
   });
 
-  clear?.addEventListener('click', () => {
-    globalSearch.value = '';
-    clear.hidden = true;
-    globalSearch.focus();
+  clearSearchBtn?.addEventListener('click', () => {
+    if (globalSearch) globalSearch.value = '';
+    clearSearchBtn.hidden = true;
+    globalSearch?.focus();
   });
 
-  const faqSearch = $('.faq-search');
-  faqSearch?.addEventListener('input', () => filter(faqSearch, $$('.faq-item')));
+  const faqSearch = querySelector('.faq-search');
+  faqSearch?.addEventListener('input', () => filterItems(faqSearch, querySelectorAll('.faq-item, .GM4med-accordion-item')));
 
-  $('#supportForm')?.addEventListener('submit', e => {
+  // Contador de Caracteres para Textarea
+  const supportMessage = querySelector('#supportMessage') || querySelector('textarea[name="message"]');
+  const charCounter = querySelector('.GM4med-char-counter');
+
+  if (supportMessage && charCounter) {
+    const maxLength = supportMessage.getAttribute('maxlength') || 500;
+    supportMessage.addEventListener('input', () => {
+      const currentLength = supportMessage.value.length;
+      charCounter.textContent = `${currentLength}/${maxLength}`;
+    });
+  }
+
+  // Upload customizado de arquivos
+  const fileInput = querySelector('#supportFile') || querySelector('input[type="file"]');
+  const fileUploadArea = querySelector('.file-upload-area');
+
+  if (fileInput && fileUploadArea) {
+    fileUploadArea.addEventListener('click', () => fileInput.click());
+
+    fileUploadArea.addEventListener('dragover', e => {
+      e.preventDefault();
+      fileUploadArea.classList.add('is-dragover');
+    });
+
+    fileUploadArea.addEventListener('dragleave', () => {
+      fileUploadArea.classList.remove('is-dragover');
+    });
+
+    fileUploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      fileUploadArea.classList.remove('is-dragover');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        updateFileLabel(e.dataTransfer.files[0].name);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        updateFileLabel(fileInput.files[0].name);
+      }
+    });
+  }
+
+  function updateFileLabel(filename) {
+    const label = querySelector('.file-upload-name') || fileUploadArea;
+    if (label) label.textContent = `Arquivo selecionado: ${filename}`;
+  }
+
+  // Validação e Envio do Formulário de Suporte
+  const supportForm = querySelector('#supportForm');
+  supportForm?.addEventListener('submit', e => {
     e.preventDefault();
     let valid = true;
-    $$('.form-field', e.currentTarget).forEach(field => {
-      const input = $('input,textarea', field),
-        ok = input.checkValidity();
+
+    querySelectorAll('.form-field', e.currentTarget).forEach(field => {
+      const input = querySelector('input, textarea, select', field);
+      if (!input) return;
+
+      const ok = input.checkValidity();
       field.classList.toggle('has-error', !ok);
       input.classList.toggle('is-error', !ok);
       valid &&= ok;
     });
+
     if (valid) {
       e.currentTarget.reset();
-      showToast('Solicitação enviada com sucesso.');
+      querySelectorAll('.form-field').forEach(field => field.classList.remove('has-error'));
+      if (charCounter) charCounter.textContent = `0/500`;
+      showToast('Solicitação enviada com sucesso!');
+    } else {
+      showToast('Por favor, preencha os campos obrigatórios corretamente.', 'error');
     }
   });
-  // Exemplo de validação restritiva antiga
-  if (horaInput < "08:00" || horaInput > "17:30") {
-    mostrarToast("Horário fora do funcionamento da agenda.");
-    return;
-  }
-  $('#supportForm')?.addEventListener('reset', () => $$('.form-field').forEach(field => field.classList.remove('has-error')));
 
-  function showToast(message) {
+  supportForm?.addEventListener('reset', () => {
+    querySelectorAll('.form-field').forEach(field => {
+      field.classList.remove('has-error');
+      const input = querySelector('input, textarea, select', field);
+      if (input) input.classList.remove('is-error');
+    });
+    if (charCounter) charCounter.textContent = `0/500`;
+  });
+
+  // Sistema de Notificações Toast
+  function showToast(message, type = 'success') {
+    let container = querySelector('#toastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toastContainer';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
+
     const toast = document.createElement('div');
-    toast.className = 'toast';
+    toast.className = `toast toast--${type}`;
     toast.textContent = message;
-    $('#toastContainer').append(toast);
-    setTimeout(() => toast.remove(), 4000);
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.classList.add('is-visible');
+    }, 10);
+
+    setTimeout(() => {
+      toast.classList.remove('is-visible');
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
   }
 })();

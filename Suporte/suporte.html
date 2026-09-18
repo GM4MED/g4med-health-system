@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Central de Suporte do sistema GM4med — FAQ, formulário de contato, atualizações e informações do sistema.">
+    <meta name="description"
+        content="Central de Suporte do sistema GM4med — FAQ, formulário de contato, atualizações e informações do sistema.">
     <title>GM4med — Central de Suporte</title>
 
     <!-- Tailwind CSS -->
@@ -36,7 +37,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -72,8 +74,8 @@
                 <!-- Ações do header -->
                 <div class="flex items-center gap-2">
                     <!-- Toggle tema -->
-                    <button class="icon-button" id="themeToggle" type="button"
-                            aria-label="Ativar modo escuro" title="Alternar tema claro/escuro">
+                    <button class="icon-button" id="themeToggle" type="button" aria-label="Ativar modo escuro"
+                        title="Alternar tema claro/escuro">
                         <i class="fa-solid fa-moon" aria-hidden="true"></i>
                     </button>
 
@@ -90,8 +92,8 @@
                     </div>
 
                     <!-- Menu mobile -->
-                    <button class="icon-button md:hidden" id="menuToggle" type="button"
-                            aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+                    <button class="icon-button md:hidden" id="menuToggle" type="button" aria-label="Abrir menu"
+                        aria-expanded="false" aria-controls="sidebar">
                         <i class="fa-solid fa-bars" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -108,33 +110,28 @@
                  ======================================================== -->
             <aside class="sidebar" id="sidebar">
                 <nav class="space-y-1" aria-label="Navegação do suporte" role="tablist">
-                    <button class="nav-link is-active" data-tab="overview" type="button"
-                            role="tab" aria-selected="true" tabindex="0"
-                            id="tab-overview" aria-controls="panel-overview">
+                    <button class="nav-link is-active" data-tab="overview" type="button" role="tab" aria-selected="true"
+                        tabindex="0" id="tab-overview" aria-controls="panel-overview">
                         <i class="fa-solid fa-house" aria-hidden="true"></i>
                         <span>Visão geral</span>
                     </button>
-                    <button class="nav-link" data-tab="faq" type="button"
-                            role="tab" aria-selected="false" tabindex="-1"
-                            id="tab-faq" aria-controls="panel-faq">
+                    <button class="nav-link" data-tab="faq" type="button" role="tab" aria-selected="false" tabindex="-1"
+                        id="tab-faq" aria-controls="panel-faq">
                         <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
                         <span>Perguntas frequentes</span>
                     </button>
-                    <button class="nav-link" data-tab="contact" type="button"
-                            role="tab" aria-selected="false" tabindex="-1"
-                            id="tab-contact" aria-controls="panel-contact">
+                    <button class="nav-link" data-tab="contact" type="button" role="tab" aria-selected="false"
+                        tabindex="-1" id="tab-contact" aria-controls="panel-contact">
                         <i class="fa-solid fa-envelope" aria-hidden="true"></i>
                         <span>Fale conosco</span>
                     </button>
-                    <button class="nav-link" data-tab="updates" type="button"
-                            role="tab" aria-selected="false" tabindex="-1"
-                            id="tab-updates" aria-controls="panel-updates">
+                    <button class="nav-link" data-tab="updates" type="button" role="tab" aria-selected="false"
+                        tabindex="-1" id="tab-updates" aria-controls="panel-updates">
                         <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
                         <span>Atualizações</span>
                     </button>
-                    <button class="nav-link" data-tab="about" type="button"
-                            role="tab" aria-selected="false" tabindex="-1"
-                            id="tab-about" aria-controls="panel-about">
+                    <button class="nav-link" data-tab="about" type="button" role="tab" aria-selected="false"
+                        tabindex="-1" id="tab-about" aria-controls="panel-about">
                         <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
                         <span>Sobre o sistema</span>
                     </button>
@@ -156,7 +153,8 @@
                     <nav aria-label="Breadcrumb">
                         <ol class="flex items-center gap-2">
                             <li>
-                                <a href="../Menu-Principal.html" class="text-teal-700 hover:underline dark:text-teal-300">Início</a>
+                                <a href="../Menu-Principal.html"
+                                    class="text-teal-700 hover:underline dark:text-teal-300">Início</a>
                             </li>
                             <li aria-hidden="true">
                                 <i class="fa-solid fa-chevron-right text-[10px]"></i>
@@ -164,28 +162,36 @@
                             <li aria-current="page" id="breadcrumbCurrent">Visão geral</li>
                         </ol>
                     </nav>
-                    <button class="btn btn-secondary !py-1 !px-2.5 !text-xs" type="button" onclick="history.back()">
+                    <!-- <button class="btn btn-secondary !py-1 !px-2.5 !text-xs" type="button" onclick="history.back()">
                         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Voltar
+                    </button> -->
+
+                    <button
+                        class="inline-flex items-center gap-2 bg-white text-slate-800 border-[1.5px] border-teal-200 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:bg-teal-50 hover:border-teal-400 hover:text-teal-900 active:scale-98"
+                        type="button" onclick="history.back()">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                        <span>Voltar</span>
                     </button>
                 </div>
 
                 <!-- ====================================================
                      PAINEL — VISÃO GERAL
                      ==================================================== -->
-                <section class="tab-panel is-active" data-panel="overview" role="tabpanel"
-                         id="panel-overview" aria-labelledby="tab-overview">
+                <section class="tab-panel is-active" data-panel="overview" role="tabpanel" id="panel-overview"
+                    aria-labelledby="tab-overview">
 
                     <!-- Hero -->
                     <div class="GM4med-hero-section">
                         <h1>Como podemos ajudar?</h1>
-                        <p>Pesquise informações, consulte dúvidas frequentes ou entre em contato com nossa equipe de suporte.</p>
+                        <p>Pesquise informações, consulte dúvidas frequentes ou entre em contato com nossa equipe de
+                            suporte.</p>
 
                         <!-- Barra de pesquisa global -->
                         <div class="search-box GM4med-hero-search">
                             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                             <input id="globalSearch" type="search"
-                                   placeholder="Pesquise por artigos, funcionalidades ou dúvidas..."
-                                   aria-label="Pesquisar no suporte" autocomplete="off">
+                                placeholder="Pesquise por artigos, funcionalidades ou dúvidas..."
+                                aria-label="Pesquisar no suporte" autocomplete="off">
                             <button id="clearSearch" type="button" aria-label="Limpar busca" hidden>
                                 <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                             </button>
@@ -235,8 +241,7 @@
                 <!-- ====================================================
                      PAINEL — PERGUNTAS FREQUENTES
                      ==================================================== -->
-                <section class="tab-panel" data-panel="faq" role="tabpanel"
-                         id="panel-faq" aria-labelledby="tab-faq">
+                <section class="tab-panel" data-panel="faq" role="tabpanel" id="panel-faq" aria-labelledby="tab-faq">
 
                     <div class="page-heading">
                         <div>
@@ -249,7 +254,7 @@
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                         <input id="faqSearch" type="search" placeholder="Filtrar perguntas..."
-                               aria-label="Filtrar perguntas" autocomplete="off">
+                            aria-label="Filtrar perguntas" autocomplete="off">
                         <button id="clearFaqSearch" type="button" aria-label="Limpar filtro" hidden>
                             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                         </button>
@@ -260,7 +265,8 @@
                     <p id="faqEmpty" class="GM4med-faq-empty" hidden>
                         <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                         Nenhuma pergunta encontrada para sua busca. Tente outros termos ou
-                        <button type="button" class="GM4med-faq-empty-link" data-open-tab="contact">entre em contato</button>.
+                        <button type="button" class="GM4med-faq-empty-link" data-open-tab="contact">entre em
+                            contato</button>.
                     </p>
 
                     <!-- Lista de FAQ -->
@@ -274,58 +280,59 @@
                             </h2>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-1" aria-expanded="false" aria-controls="faq-panel-1">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-1"
+                                    aria-expanded="false" aria-controls="faq-panel-1">
                                     <span>Como acesso o cadastro de pacientes?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-1" role="region"
-                                     aria-labelledby="faq-trigger-1" hidden>
+                                    aria-labelledby="faq-trigger-1" hidden>
                                     <p>Acesse o menu lateral e clique em <strong>Cadastro › Paciente</strong>.
-                                       Preencha os campos obrigatórios (nome, data de nascimento, CPF)
-                                       e clique em "Salvar" para concluir o registro.</p>
+                                        Preencha os campos obrigatórios (nome, data de nascimento, CPF)
+                                        e clique em "Salvar" para concluir o registro.</p>
                                 </div>
                             </div>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-2" aria-expanded="false" aria-controls="faq-panel-2">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-2"
+                                    aria-expanded="false" aria-controls="faq-panel-2">
                                     <span>Como cadastrar um novo médico no sistema?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-2" role="region"
-                                     aria-labelledby="faq-trigger-2" hidden>
+                                    aria-labelledby="faq-trigger-2" hidden>
                                     <p>No menu lateral, acesse <strong>Cadastro › Médico</strong>.
-                                       Informe os dados profissionais (CRM, especialidade) e pessoais do médico.
-                                       Todos os campos marcados com asterisco (<span aria-hidden="true">*</span>) são obrigatórios.</p>
+                                        Informe os dados profissionais (CRM, especialidade) e pessoais do médico.
+                                        Todos os campos marcados com asterisco (<span aria-hidden="true">*</span>) são
+                                        obrigatórios.</p>
                                 </div>
                             </div>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-3" aria-expanded="false" aria-controls="faq-panel-3">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-3"
+                                    aria-expanded="false" aria-controls="faq-panel-3">
                                     <span>Como gerenciar categorias de exames?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-3" role="region"
-                                     aria-labelledby="faq-trigger-3" hidden>
+                                    aria-labelledby="faq-trigger-3" hidden>
                                     <p>Acesse <strong>Cadastro › Categorias de Exames</strong> no menu lateral.
-                                       Nessa tela você pode criar, editar ou desativar categorias que organizam
-                                       os exames disponíveis no sistema.</p>
+                                        Nessa tela você pode criar, editar ou desativar categorias que organizam
+                                        os exames disponíveis no sistema.</p>
                                 </div>
                             </div>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-4" aria-expanded="false" aria-controls="faq-panel-4">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-4"
+                                    aria-expanded="false" aria-controls="faq-panel-4">
                                     <span>Como cadastrar um novo exame?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-4" role="region"
-                                     aria-labelledby="faq-trigger-4" hidden>
+                                    aria-labelledby="faq-trigger-4" hidden>
                                     <p>No menu, acesse <strong>Cadastro › Exames</strong>. Informe o nome do exame,
-                                       selecione a categoria correspondente e preencha os demais campos.
-                                       O exame ficará disponível para solicitação após o cadastro.</p>
+                                        selecione a categoria correspondente e preencha os demais campos.
+                                        O exame ficará disponível para solicitação após o cadastro.</p>
                                 </div>
                             </div>
                         </div>
@@ -338,44 +345,44 @@
                             </h2>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-5" aria-expanded="false" aria-controls="faq-panel-5">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-5"
+                                    aria-expanded="false" aria-controls="faq-panel-5">
                                     <span>Como funciona a agenda médica?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-5" role="region"
-                                     aria-labelledby="faq-trigger-5" hidden>
+                                    aria-labelledby="faq-trigger-5" hidden>
                                     <p>A <strong>Agenda</strong> é acessada pelo menu lateral e exibe os horários
-                                       de atendimento dos médicos. Você pode visualizar por dia, semana ou mês,
-                                       e criar novos agendamentos diretamente na interface.</p>
+                                        de atendimento dos médicos. Você pode visualizar por dia, semana ou mês,
+                                        e criar novos agendamentos diretamente na interface.</p>
                                 </div>
                             </div>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-6" aria-expanded="false" aria-controls="faq-panel-6">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-6"
+                                    aria-expanded="false" aria-controls="faq-panel-6">
                                     <span>Como registrar um atendimento na recepção?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-6" role="region"
-                                     aria-labelledby="faq-trigger-6" hidden>
+                                    aria-labelledby="faq-trigger-6" hidden>
                                     <p>Acesse <strong>Atendimento Recepção</strong> no menu lateral. Localize o paciente
-                                       pelo nome ou CPF, confirme os dados e registre a chegada.
-                                       O atendimento ficará visível para o médico na agenda.</p>
+                                        pelo nome ou CPF, confirme os dados e registre a chegada.
+                                        O atendimento ficará visível para o médico na agenda.</p>
                                 </div>
                             </div>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-7" aria-expanded="false" aria-controls="faq-panel-7">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-7"
+                                    aria-expanded="false" aria-controls="faq-panel-7">
                                     <span>Como acompanho meus atendimentos?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-7" role="region"
-                                     aria-labelledby="faq-trigger-7" hidden>
+                                    aria-labelledby="faq-trigger-7" hidden>
                                     <p>Na <strong>Agenda</strong>, você pode consultar horários, status e informações
-                                       detalhadas dos atendimentos. Utilize os filtros de data e médico para
-                                       localizar registros específicos.</p>
+                                        detalhadas dos atendimentos. Utilize os filtros de data e médico para
+                                        localizar registros específicos.</p>
                                 </div>
                             </div>
                         </div>
@@ -388,45 +395,45 @@
                             </h2>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-8" aria-expanded="false" aria-controls="faq-panel-8">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-8"
+                                    aria-expanded="false" aria-controls="faq-panel-8">
                                     <span>Como solicito suporte técnico?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-8" role="region"
-                                     aria-labelledby="faq-trigger-8" hidden>
+                                    aria-labelledby="faq-trigger-8" hidden>
                                     <p>Utilize a aba <strong>Fale conosco</strong> nesta Central de Suporte.
-                                       Preencha o formulário descrevendo sua necessidade, selecione a categoria
-                                       e prioridade adequadas, e envie a solicitação.
-                                       Nossa equipe retornará o mais breve possível.</p>
+                                        Preencha o formulário descrevendo sua necessidade, selecione a categoria
+                                        e prioridade adequadas, e envie a solicitação.
+                                        Nossa equipe retornará o mais breve possível.</p>
                                 </div>
                             </div>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-9" aria-expanded="false" aria-controls="faq-panel-9">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-9"
+                                    aria-expanded="false" aria-controls="faq-panel-9">
                                     <span>Como consultar relatórios do sistema?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-9" role="region"
-                                     aria-labelledby="faq-trigger-9" hidden>
+                                    aria-labelledby="faq-trigger-9" hidden>
                                     <p>No menu lateral, acesse <strong>Relatórios</strong> e selecione o tipo desejado
-                                       (Atendimentos ou Pacientes). Utilize os filtros disponíveis para personalizar
-                                       os dados exibidos.</p>
+                                        (Atendimentos ou Pacientes). Utilize os filtros disponíveis para personalizar
+                                        os dados exibidos.</p>
                                 </div>
                             </div>
 
                             <div class="GM4med-accordion-item">
-                                <button class="GM4med-accordion-trigger" type="button"
-                                        id="faq-trigger-10" aria-expanded="false" aria-controls="faq-panel-10">
+                                <button class="GM4med-accordion-trigger" type="button" id="faq-trigger-10"
+                                    aria-expanded="false" aria-controls="faq-panel-10">
                                     <span>O GM4med funciona em dispositivos móveis?</span>
                                     <i class="fa-solid fa-chevron-down GM4med-accordion-icon" aria-hidden="true"></i>
                                 </button>
                                 <div class="GM4med-accordion-panel" id="faq-panel-10" role="region"
-                                     aria-labelledby="faq-trigger-10" hidden>
+                                    aria-labelledby="faq-trigger-10" hidden>
                                     <p>Sim. O GM4med possui interface responsiva, adaptando-se a diferentes
-                                       tamanhos de tela. Você pode acessar o sistema pelo navegador do seu
-                                       celular ou tablet com a mesma funcionalidade disponível no desktop.</p>
+                                        tamanhos de tela. Você pode acessar o sistema pelo navegador do seu
+                                        celular ou tablet com a mesma funcionalidade disponível no desktop.</p>
                                 </div>
                             </div>
                         </div>
@@ -436,8 +443,8 @@
                 <!-- ====================================================
                      PAINEL — FALE CONOSCO
                      ==================================================== -->
-                <section class="tab-panel" data-panel="contact" role="tabpanel"
-                         id="panel-contact" aria-labelledby="tab-contact">
+                <section class="tab-panel" data-panel="contact" role="tabpanel" id="panel-contact"
+                    aria-labelledby="tab-contact">
 
                     <div class="page-heading">
                         <div>
@@ -450,9 +457,11 @@
                     <div class="GM4med-contact-intro">
                         <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
                         <p>Antes de enviar uma solicitação, verifique a seção de
-                            <button type="button" class="GM4med-inline-link" data-open-tab="faq">Perguntas Frequentes</button>.
+                            <button type="button" class="GM4med-inline-link" data-open-tab="faq">Perguntas
+                                Frequentes</button>.
                             Sua dúvida pode já ter sido respondida. Campos marcados com
-                            <span class="GM4med-required-mark" aria-hidden="true">*</span> são obrigatórios.</p>
+                            <span class="GM4med-required-mark" aria-hidden="true">*</span> são obrigatórios.
+                        </p>
                     </div>
 
                     <!-- Formulário -->
@@ -464,18 +473,17 @@
                                 <label for="contactName" class="GM4med-label">
                                     Nome <span class="GM4med-required-mark" aria-hidden="true">*</span>
                                 </label>
-                                <input class="form-input" id="contactName" name="name" type="text"
-                                       required autocomplete="name" placeholder="Seu nome completo"
-                                       aria-required="true">
+                                <input class="form-input" id="contactName" name="name" type="text" required
+                                    autocomplete="name" placeholder="Seu nome completo" aria-required="true">
                                 <small class="form-error" id="contactNameError">Informe seu nome.</small>
                             </div>
                             <div class="form-field">
                                 <label for="contactEmail" class="GM4med-label">
                                     E-mail <span class="GM4med-required-mark" aria-hidden="true">*</span>
                                 </label>
-                                <input class="form-input" id="contactEmail" name="email" type="email"
-                                       required autocomplete="email" placeholder="seu@email.com"
-                                       aria-required="true" aria-describedby="contactEmailError">
+                                <input class="form-input" id="contactEmail" name="email" type="email" required
+                                    autocomplete="email" placeholder="seu@email.com" aria-required="true"
+                                    aria-describedby="contactEmailError">
                                 <small class="form-error" id="contactEmailError">Informe um e-mail válido.</small>
                             </div>
                         </div>
@@ -485,9 +493,8 @@
                             <label for="contactSubject" class="GM4med-label">
                                 Assunto <span class="GM4med-required-mark" aria-hidden="true">*</span>
                             </label>
-                            <input class="form-input" id="contactSubject" name="subject" type="text"
-                                   required placeholder="Resumo da sua solicitação"
-                                   aria-required="true" maxlength="150">
+                            <input class="form-input" id="contactSubject" name="subject" type="text" required
+                                placeholder="Resumo da sua solicitação" aria-required="true" maxlength="150">
                             <small class="form-error" id="contactSubjectError">Informe o assunto.</small>
                         </div>
 
@@ -497,8 +504,8 @@
                                 <label for="contactCategory" class="GM4med-label">
                                     Categoria <span class="GM4med-required-mark" aria-hidden="true">*</span>
                                 </label>
-                                <select class="form-input" id="contactCategory" name="category"
-                                        required aria-required="true">
+                                <select class="form-input" id="contactCategory" name="category" required
+                                    aria-required="true">
                                     <option value="">Selecione uma categoria</option>
                                     <option value="duvida">Dúvida técnica</option>
                                     <option value="problema">Problema no sistema</option>
@@ -512,8 +519,8 @@
                                 <label for="contactPriority" class="GM4med-label">
                                     Prioridade <span class="GM4med-required-mark" aria-hidden="true">*</span>
                                 </label>
-                                <select class="form-input" id="contactPriority" name="priority"
-                                        required aria-required="true">
+                                <select class="form-input" id="contactPriority" name="priority" required
+                                    aria-required="true">
                                     <option value="">Selecione a prioridade</option>
                                     <option value="baixa">Baixa</option>
                                     <option value="media" selected>Média</option>
@@ -530,10 +537,9 @@
                                 Mensagem <span class="GM4med-required-mark" aria-hidden="true">*</span>
                             </label>
                             <div class="GM4med-textarea-wrap">
-                                <textarea class="form-input GM4med-textarea" id="contactMessage" name="message"
-                                          required rows="5" maxlength="1000"
-                                          placeholder="Descreva detalhadamente sua necessidade..."
-                                          aria-required="true" aria-describedby="charCounter contactMessageError"></textarea>
+                                <textarea class="form-input GM4med-textarea" id="contactMessage" name="message" required
+                                    rows="5" maxlength="1000" placeholder="Descreva detalhadamente sua necessidade..."
+                                    aria-required="true" aria-describedby="charCounter contactMessageError"></textarea>
                                 <span class="GM4med-char-counter" id="charCounter" aria-live="polite">0 / 1000</span>
                             </div>
                             <small class="form-error" id="contactMessageError">Escreva uma mensagem.</small>
@@ -541,15 +547,17 @@
 
                         <!-- Anexo -->
                         <div class="form-field">
-                            <label for="contactFile" class="GM4med-label">Anexo <span class="GM4med-optional-mark">(opcional)</span></label>
+                            <label for="contactFile" class="GM4med-label">Anexo <span
+                                    class="GM4med-optional-mark">(opcional)</span></label>
                             <div class="GM4med-file-upload">
                                 <label for="contactFile" class="GM4med-file-label">
                                     <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
                                     <span id="fileLabel">Clique para selecionar um arquivo</span>
                                 </label>
                                 <input type="file" id="contactFile" name="attachment" class="sr-only"
-                                       accept=".pdf,.png,.jpg,.jpeg,.doc,.docx">
-                                <small class="GM4med-file-hint">Formatos aceitos: PDF, PNG, JPG, DOC, DOCX (máx. 5 MB)</small>
+                                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx">
+                                <small class="GM4med-file-hint">Formatos aceitos: PDF, PNG, JPG, DOC, DOCX (máx. 5
+                                    MB)</small>
                             </div>
                         </div>
 
@@ -567,8 +575,8 @@
                 <!-- ====================================================
                      PAINEL — ATUALIZAÇÕES
                      ==================================================== -->
-                <section class="tab-panel" data-panel="updates" role="tabpanel"
-                         id="panel-updates" aria-labelledby="tab-updates">
+                <section class="tab-panel" data-panel="updates" role="tabpanel" id="panel-updates"
+                    aria-labelledby="tab-updates">
 
                     <div class="page-heading">
                         <div>
@@ -592,9 +600,12 @@
                                 <h3>Nova Central de Suporte</h3>
                                 <p>Lançamento da Central de Suporte completa com interface profissional.</p>
                                 <ul class="GM4med-changelog-list">
-                                    <li><span class="badge badge-success">Novo</span> Central de suporte com FAQ, formulário de contato e atualizações</li>
-                                    <li><span class="badge badge-success">Novo</span> Alternância entre tema claro e escuro</li>
-                                    <li><span class="badge badge-info">Melhoria</span> Interface totalmente redesenhada e responsiva</li>
+                                    <li><span class="badge badge-success">Novo</span> Central de suporte com FAQ,
+                                        formulário de contato e atualizações</li>
+                                    <li><span class="badge badge-success">Novo</span> Alternância entre tema claro e
+                                        escuro</li>
+                                    <li><span class="badge badge-info">Melhoria</span> Interface totalmente redesenhada
+                                        e responsiva</li>
                                 </ul>
                             </div>
                         </article>
@@ -610,9 +621,12 @@
                                 <h3>Melhorias na Agenda Médica</h3>
                                 <p>Aprimoramentos na experiência de agendamento e visualização de consultas.</p>
                                 <ul class="GM4med-changelog-list">
-                                    <li><span class="badge badge-info">Melhoria</span> Visualização aprimorada da agenda por dia, semana e mês</li>
-                                    <li><span class="badge badge-info">Melhoria</span> Filtros avançados para busca de atendimentos</li>
-                                    <li><span class="badge badge-warning">Correção</span> Exibição de horários em dispositivos móveis</li>
+                                    <li><span class="badge badge-info">Melhoria</span> Visualização aprimorada da agenda
+                                        por dia, semana e mês</li>
+                                    <li><span class="badge badge-info">Melhoria</span> Filtros avançados para busca de
+                                        atendimentos</li>
+                                    <li><span class="badge badge-warning">Correção</span> Exibição de horários em
+                                        dispositivos móveis</li>
                                 </ul>
                             </div>
                         </article>
@@ -628,9 +642,12 @@
                                 <h3>Correções de Estabilidade</h3>
                                 <p>Correções importantes de estabilidade e segurança do sistema.</p>
                                 <ul class="GM4med-changelog-list">
-                                    <li><span class="badge badge-warning">Correção</span> Erro ao salvar cadastro de pacientes em campos opcionais</li>
-                                    <li><span class="badge badge-warning">Correção</span> Validação de campos obrigatórios nos formulários</li>
-                                    <li><span class="badge badge-danger">Segurança</span> Atualização de dependências de segurança</li>
+                                    <li><span class="badge badge-warning">Correção</span> Erro ao salvar cadastro de
+                                        pacientes em campos opcionais</li>
+                                    <li><span class="badge badge-warning">Correção</span> Validação de campos
+                                        obrigatórios nos formulários</li>
+                                    <li><span class="badge badge-danger">Segurança</span> Atualização de dependências de
+                                        segurança</li>
                                 </ul>
                             </div>
                         </article>
@@ -646,9 +663,12 @@
                                 <h3>Cadastro de Exames</h3>
                                 <p>Novo módulo de gerenciamento de exames e categorias.</p>
                                 <ul class="GM4med-changelog-list">
-                                    <li><span class="badge badge-success">Novo</span> Módulo de cadastro de exames e categorias</li>
-                                    <li><span class="badge badge-success">Novo</span> Catálogo de exames com busca avançada</li>
-                                    <li><span class="badge badge-info">Melhoria</span> Organização do menu lateral com submenus</li>
+                                    <li><span class="badge badge-success">Novo</span> Módulo de cadastro de exames e
+                                        categorias</li>
+                                    <li><span class="badge badge-success">Novo</span> Catálogo de exames com busca
+                                        avançada</li>
+                                    <li><span class="badge badge-info">Melhoria</span> Organização do menu lateral com
+                                        submenus</li>
                                 </ul>
                             </div>
                         </article>
@@ -658,8 +678,8 @@
                 <!-- ====================================================
                      PAINEL — SOBRE O SISTEMA
                      ==================================================== -->
-                <section class="tab-panel" data-panel="about" role="tabpanel"
-                         id="panel-about" aria-labelledby="tab-about">
+                <section class="tab-panel" data-panel="about" role="tabpanel" id="panel-about"
+                    aria-labelledby="tab-about">
 
                     <div class="page-heading">
                         <div>
@@ -730,32 +750,32 @@
                     </p>
                     <div class="GM4med-status-grid">
                         <div class="GM4med-status-item">
-                            <div class="GM4med-status-indicator GM4med-status--unmonitored"
-                                 aria-label="Não monitorado"></div>
+                            <div class="GM4med-status-indicator GM4med-status--unmonitored" aria-label="Não monitorado">
+                            </div>
                             <div>
                                 <strong>Aplicação</strong>
                                 <small>Não monitorado</small>
                             </div>
                         </div>
                         <div class="GM4med-status-item">
-                            <div class="GM4med-status-indicator GM4med-status--unmonitored"
-                                 aria-label="Não monitorado"></div>
+                            <div class="GM4med-status-indicator GM4med-status--unmonitored" aria-label="Não monitorado">
+                            </div>
                             <div>
                                 <strong>API</strong>
                                 <small>Não monitorado</small>
                             </div>
                         </div>
                         <div class="GM4med-status-item">
-                            <div class="GM4med-status-indicator GM4med-status--unmonitored"
-                                 aria-label="Não monitorado"></div>
+                            <div class="GM4med-status-indicator GM4med-status--unmonitored" aria-label="Não monitorado">
+                            </div>
                             <div>
                                 <strong>Banco de dados</strong>
                                 <small>Não monitorado</small>
                             </div>
                         </div>
                         <div class="GM4med-status-item">
-                            <div class="GM4med-status-indicator GM4med-status--unmonitored"
-                                 aria-label="Não monitorado"></div>
+                            <div class="GM4med-status-indicator GM4med-status--unmonitored" aria-label="Não monitorado">
+                            </div>
                             <div>
                                 <strong>Autenticação</strong>
                                 <small>Não monitorado</small>
