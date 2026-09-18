@@ -490,20 +490,26 @@
         <!-- Cabeçalho fixo -->
         <div class="sidebar-header">
 
-            <div class="flex items-center justify-center gap-3">
+            <div class="sidebar-header-row">
+                <div class="brand-wrap">
+                    <i data-lucide="stethoscope" class="medical-icon h-11 w-11 text-primary-200" aria-hidden="true">
+                    </i>
 
-                <i data-lucide="stethoscope" class="medical-icon h-11 w-11 text-primary-200" aria-hidden="true">
-                </i>
+                    <div class="brand-copy">
+                        <h1 class="brand-name mt-2.5 text-3xl font-extrabold text-white">
+                            GM4med
+                        </h1>
 
-                <div>
-                    <h1 class="brand-name mt-2.5 text-3xl font-extrabold text-white">
-                        GM4med
-                    </h1>
-
-                    <p class="brand-slogan mt-1 text-xs text-primary-100">
-                        Intelligent Health System
-                    </p>
+                        <p class="brand-slogan mt-1 text-xs text-primary-100">
+                            Intelligent Health System
+                        </p>
+                    </div>
                 </div>
+
+                <button type="button" id="sidebarToggle" class="sidebar-toggle" aria-label="Recolher sidebar"
+                    aria-controls="mainSidebar" aria-expanded="true">
+                    <i class="fa-solid fa-angle-left" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
 

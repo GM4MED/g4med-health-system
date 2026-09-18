@@ -1618,6 +1618,56 @@ body {
     border-bottom: 1px solid rgb(255 255 255 / 15%);
 }
 
+.sidebar-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.brand-copy {
+    min-width: 0;
+    overflow: hidden;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgb(255 255 255 / 15%);
+    border-radius: 12px;
+    background: rgb(255 255 255 / 10%);
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus-visible {
+    background: rgb(255 255 255 / 15%);
+    border-color: rgb(153 246 228 / 30%);
+    outline: none;
+}
+
+.sidebar-toggle:focus-visible,
+.menu-item:focus-visible,
+.submenu-link:focus-visible,
+.mobile-menu-button:focus-visible {
+    outline: 3px solid rgb(153 246 228 / 45%);
+    outline-offset: 2px;
+}
+
 .sidebar-menu-scroll {
     min-height: 0;
     flex: 1 1 auto;
@@ -1655,8 +1705,83 @@ body {
 
 
 /* ==========================================================
+   Sidebar retrátil desktop
+   ========================================================== */
+
+body.sidebar-collapsed .sidebar {
+    width: 86px;
+    padding-inline: 12px;
+}
+
+body.sidebar-collapsed .brand-copy,
+body.sidebar-collapsed .brand-slogan,
+body.sidebar-collapsed .menu-item>span>span,
+body.sidebar-collapsed .submenu-link>span {
+    display: none;
+}
+
+body.sidebar-collapsed .brand-wrap {
+    justify-content: center;
+}
+
+body.sidebar-collapsed .menu-item,
+body.sidebar-collapsed .submenu-link {
+    justify-content: center;
+    padding-inline: 0;
+}
+
+body.sidebar-collapsed .menu-item>span {
+    width: 100%;
+    justify-content: center;
+}
+
+body.sidebar-collapsed .menu-item .arrow {
+    display: none;
+}
+
+body.sidebar-collapsed .menu-group {
+    position: relative;
+}
+
+body.sidebar-collapsed .submenu {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 0;
+    z-index: 120;
+    width: 220px;
+    padding: 10px;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: 16px;
+    background: rgba(19, 78, 74, 0.96);
+    box-shadow: 0 18px 42px rgb(15 23 42 / 25%);
+}
+
+body.sidebar-collapsed .submenu.is-open {
+    display: flex;
+}
+
+body.sidebar-collapsed .submenu-link {
+    justify-content: flex-start;
+    padding: 10px 12px;
+}
+
+body.sidebar-collapsed .submenu-link>span {
+    display: inline-block;
+}
+
+/* ==========================================================
    Responsividade da sidebar
    ========================================================== */
+
+@media (min-width: 1025px) {
+    body:not(.sidebar-collapsed) .main-content {
+        margin-left: 290px;
+    }
+
+    body.sidebar-collapsed .main-content {
+        margin-left: 86px;
+    }
+}
 
 @media (max-width: 1024px) {
     .sidebar {
