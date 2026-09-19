@@ -148,9 +148,12 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
+    max-width: 100vw;
+    overflow-x: hidden;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     background: var(--bg);
     color: var(--ink);
@@ -378,6 +381,7 @@ select:focus-visible {
     max-width: 100%;
     margin: 0;
     padding: 24px 28px;
+    overflow-x: hidden;
 }
 
 .page-header {
@@ -818,11 +822,19 @@ select:focus-visible {
 }
 
 .card {
+    min-width: 0;
     padding: 18px 20px;
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 14px;
     box-shadow: var(--shadow-sm);
+}
+
+.chart-wrap,
+.chart-wrap canvas,
+.chart-wrap svg {
+    max-width: 100%;
+    min-width: 0;
 }
 
 .span-2 {
@@ -1495,6 +1507,20 @@ select:focus-visible {
 }
 
 @media (max-width: 760px) {
+    .page {
+        width: 100%;
+        max-width: 100vw;
+        padding-inline: 14px;
+        overflow-x: hidden;
+    }
+
+    .topbar {
+        width: 100%;
+        max-width: 100vw;
+        padding: 12px 14px;
+        overflow-x: hidden;
+    }
+
     .kpi-row {
         grid-template-columns: 1fr 1fr;
     }
@@ -1507,6 +1533,10 @@ select:focus-visible {
         grid-template-columns: 1fr;
     }
 
+    .card {
+        overflow: hidden;
+    }
+
     .span-2,
     .span-3 {
         grid-column: span 1;
@@ -1517,6 +1547,8 @@ select:focus-visible {
     }
 
     .period-tabs {
+        width: 100%;
+        max-width: 100%;
         flex: 1;
         overflow-x: auto;
     }
@@ -1524,10 +1556,6 @@ select:focus-visible {
     .period-tabs button {
         flex: 0 0 auto;
         padding-inline: 11px;
-    }
-
-    .topbar {
-        padding: 12px 14px;
     }
 
     .page {
@@ -1552,6 +1580,16 @@ select:focus-visible {
 
     .search-mini input {
         width: 140px;
+    }
+
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .data-table,
+    .rank-table {
+        min-width: 620px;
     }
 }
 

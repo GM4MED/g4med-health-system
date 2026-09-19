@@ -210,30 +210,32 @@
          CONTEÚDO PRINCIPAL - CALENDÁRIO
          ===================================================== -->
     <main role="main" aria-label="Agenda médica">
-        <section class="agenda__calendar" aria-label="Grade de agendamentos médicos">
-            <!-- Cabeçalho do Calendário (Médicos) -->
-            <div id="agenda-header" class="agenda__calendar-header" role="rowgroup"
-                aria-label="Profissionais da agenda">
-                <div class="agenda__col-time" role="columnheader">Horário</div>
-                <div class="agenda__col-prof" data-medico="1" role="columnheader">
-                    <span class="agenda__prof-nome">Dr. Carlos Silva</span>
-                    <span class="agenda__prof-esp">Cardiologia</span>
+        <div class="agenda__calendar-wrap">
+            <section class="agenda__calendar" aria-label="Grade de agendamentos médicos">
+                <!-- Cabeçalho do Calendário (Médicos) -->
+                <div id="agenda-header" class="agenda__calendar-header" role="rowgroup"
+                    aria-label="Profissionais da agenda">
+                    <div class="agenda__col-time" role="columnheader">Horário</div>
+                    <div class="agenda__col-prof" data-medico="1" role="columnheader">
+                        <span class="agenda__prof-nome">Dr. Carlos Silva</span>
+                        <span class="agenda__prof-esp">Cardiologia</span>
+                    </div>
+                    <div class="agenda__col-prof" data-medico="2" role="columnheader">
+                        <span class="agenda__prof-nome">Dra. Ana Paula</span>
+                        <span class="agenda__prof-esp">Dermatologia</span>
+                    </div>
+                    <div class="agenda__col-prof" data-medico="3" role="columnheader">
+                        <span class="agenda__prof-nome">Dr. Roberto Lima</span>
+                        <span class="agenda__prof-esp">Ortopedia e Traumatologia</span>
+                    </div>
                 </div>
-                <div class="agenda__col-prof" data-medico="2" role="columnheader">
-                    <span class="agenda__prof-nome">Dra. Ana Paula</span>
-                    <span class="agenda__prof-esp">Dermatologia</span>
-                </div>
-                <div class="agenda__col-prof" data-medico="3" role="columnheader">
-                    <span class="agenda__prof-nome">Dr. Roberto Lima</span>
-                    <span class="agenda__prof-esp">Ortopedia e Traumatologia</span>
-                </div>
-            </div>
 
-            <!-- Corpo do Calendário (Slots de Horário) -->
-            <div id="agenda-body" class="agenda__calendar-body" role="rowgroup" aria-live="polite" aria-atomic="false">
-                <div class="agenda__empty">Carregando agenda...</div>
-            </div>
-        </section>
+                <!-- Corpo do Calendário (Slots de Horário) -->
+                <div id="agenda-body" class="agenda__calendar-body" role="rowgroup" aria-live="polite" aria-atomic="false">
+                    <div class="agenda__empty">Carregando agenda...</div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <!-- =====================================================
