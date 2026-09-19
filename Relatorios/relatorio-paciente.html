@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GM4med BI · Relatório de Pacientes</title>
-    <meta name="description" content="Consulte os pacientes cadastrados e acompanhe novos cadastros e informações de atendimento.">
+
+    <title>GM4med BI · Inteligência de Pacientes</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -13,10 +13,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <link rel="stylesheet" href="relatorio-paciente.css">
 
     <script>
@@ -29,20 +30,13 @@
                         mono: ['JetBrains Mono', 'monospace']
                     },
                     colors: {
-                        brand: {
-                            DEFAULT: '#0d9488',
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                            700: '#0f766e',
-                            800: '#115e59'
-                        }
+                        brand: '#4f46e5'
                     }
                 }
             }
         };
     </script>
+
 </head>
 
 <body>
@@ -53,13 +47,13 @@
         <div class="w-full flex items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
 
             <div class="flex items-center gap-3">
-                <a href="../Menu-Principal.html" class="icon-button" title="Voltar ao Menu Principal" aria-label="Voltar ao Menu Principal">
-                    <i data-lucide="arrow-left" aria-hidden="true"></i>
+                <a href="../Menu-Principal.html" class="icon-button" title="Voltar" aria-label="Voltar">
+                    <i data-lucide="arrow-left"></i>
                 </a>
 
                 <div class="grid h-10 w-10 place-items-center rounded-xl text-white shadow-lg"
                     style="background:var(--gradient)">
-                    <i data-lucide="users" aria-hidden="true"></i>
+                    <i data-lucide="users"></i>
                 </div>
 
                 <div>
@@ -77,156 +71,153 @@
             </div>
 
             <div class="flex items-center gap-1 sm:gap-2">
-                <button id="toggleTheme" class="icon-button" type="button" title="Alternar tema" aria-label="Alternar tema">
-                    <i data-lucide="moon" aria-hidden="true"></i>
+                <button id="toggleTheme" class="icon-button" type="button" title="Alternar tema"
+                    aria-label="Alternar tema">
+                    <i data-lucide="moon"></i>
                 </button>
 
-                <button id="btnRefresh" class="icon-button" type="button" title="Atualizar dados" aria-label="Atualizar dados">
-                    <i data-lucide="refresh-cw" aria-hidden="true"></i>
+                <button id="btnRefresh" class="icon-button" type="button" title="Atualizar dados"
+                    aria-label="Atualizar dados">
+                    <i data-lucide="refresh-cw"></i>
                 </button>
 
-                <button id="btnNotifications" class="icon-button relative" type="button" title="Notificações" aria-label="Notificações">
-                    <i data-lucide="bell" aria-hidden="true"></i>
-                    <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500" aria-hidden="true"></span>
+                <button id="btnNotifications" class="icon-button relative" type="button" title="Notificações"
+                    aria-label="Notificações">
+                    <i data-lucide="bell"></i>
+                    <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500"></span>
                 </button>
 
-                <div class="ml-1 flex items-center gap-2 rounded-full border p-1.5 pr-3" style="border-color:var(--line)">
-                    <div class="grid h-8 w-8 place-items-center rounded-full text-xs font-bold text-white" style="background:var(--gradient)" aria-hidden="true">
+                <div class="ml-1 flex items-center gap-2 rounded-full border p-1.5 pr-3"
+                    style="border-color:var(--line)">
+                    <div class="grid h-8 w-8 place-items-center rounded-full text-xs font-bold text-white"
+                        style="background:var(--gradient)">
                         DR
                     </div>
+
                     <div class="hidden leading-tight sm:block">
                         <div class="text-xs font-bold">Dr. Rodrigo</div>
-                        <div class="text-[10px]" style="color:var(--muted)">Gestor BI</div>
+                        <div class="text-[10px]" style="color:var(--muted)">
+                            Gestor BI
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- REPORT MODULE SUB-NAVIGATION TABS -->
-    <nav class="report-nav-sub border-b bg-white dark:bg-slate-900" style="border-color:var(--line)" aria-label="Navegação entre relatórios">
-        <div class="mx-auto flex max-w-7xl gap-2 px-4 sm:px-6 lg:px-8">
-            <a href="relatorio-atendimento.html" class="flex items-center gap-2 border-b-2 border-transparent px-4 py-3 text-xs font-bold text-slate-600 hover:text-teal-600 dark:text-slate-400 dark:hover:text-teal-400">
-                <i data-lucide="stethoscope" class="h-4 w-4" aria-hidden="true"></i>
-                <span>Relatório de Atendimentos</span>
-            </a>
-            <a href="relatorio-paciente.html" class="flex items-center gap-2 border-b-2 border-teal-600 px-4 py-3 text-xs font-extrabold text-teal-600 dark:border-teal-400 dark:text-teal-400" aria-current="page">
-                <i data-lucide="users" class="h-4 w-4" aria-hidden="true"></i>
-                <span>Relatório de Pacientes</span>
-            </a>
-        </div>
-    </nav>
 
-    <main class="w-full min-w-0 px-4 py-6 sm:px-6 lg:px-8" id="mainContent">
+    <main class="w-full min-w-0 px-4 py-6 sm:px-6 lg:px-8">
 
-        <!-- CABEÇALHO DA PÁGINA -->
-        <section class="mb-5 flex flex-col justify-between gap-5 xl:flex-row xl:items-end" aria-labelledby="pageTitle">
+        <!-- CABEÇALHO -->
+        <section class="mb-5 flex flex-col justify-between gap-5 xl:flex-row xl:items-end">
             <div>
-                <nav class="mb-2 text-xs" style="color:var(--muted)" aria-label="Breadcrumb">
-                    <a href="../Menu-Principal.html" class="font-bold text-teal-600 hover:underline dark:text-teal-400">
+                <div class="mb-2 text-xs" style="color:var(--muted)">
+                    <a href="../index.html" class="font-bold text-indigo-500">
                         Início
                     </a>
                     <span> · Relatórios · </span>
                     <strong style="color:var(--text-soft)">
                         Pacientes
                     </strong>
-                </nav>
+                </div>
 
-                <h1 id="pageTitle" class="text-2xl font-extrabold tracking-tight sm:text-3xl">
-                    Relatório de Pacientes
+                <h1 class="text-2xl font-extrabold tracking-tight sm:text-3xl">
+                    Inteligência de Pacientes
                 </h1>
 
                 <p class="mt-1 max-w-3xl text-sm" style="color:var(--muted)">
-                    Consulte os pacientes cadastrados e acompanhe novos cadastros e informações de atendimento.
+                    Perfil demográfico, captação, fidelização e jornada do paciente —
+                    análise 360° da base ativa.
                 </p>
             </div>
 
             <div class="page-actions flex flex-wrap items-center gap-2">
 
                 <div id="periodTabs" class="flex max-w-full gap-1 overflow-x-auto rounded-xl border p-1"
-                    style="border-color:var(--line);background:var(--panel)" role="toolbar" aria-label="Atalhos de período de cadastro">
-                    <button type="button" data-period="7" class="period-button whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold" style="color:var(--muted)">
+                    style="border-color:var(--line);background:var(--panel)">
+                    <button type="button" data-period="7"
+                        class="period-button whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold"
+                        style="color:var(--muted)">
                         7 dias
                     </button>
-                    <button type="button" data-period="30" class="period-button active whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold text-white" style="background:var(--gradient)">
+
+                    <button type="button" data-period="30"
+                        class="period-button active whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold text-white"
+                        style="background:var(--gradient)">
                         30 dias
                     </button>
-                    <button type="button" data-period="90" class="period-button whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold" style="color:var(--muted)">
+
+                    <button type="button" data-period="90"
+                        class="period-button whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold"
+                        style="color:var(--muted)">
                         90 dias
                     </button>
-                    <button type="button" data-period="365" class="period-button whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold" style="color:var(--muted)">
+
+                    <button type="button" data-period="365"
+                        class="period-button whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold"
+                        style="color:var(--muted)">
                         12 meses
                     </button>
-                    <button type="button" data-period="custom" class="period-button flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold" style="color:var(--muted)">
-                        <i data-lucide="calendar" class="h-3.5 w-3.5" aria-hidden="true"></i>
+
+                    <button type="button" data-period="custom"
+                        class="period-button flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold"
+                        style="color:var(--muted)">
+                        <i data-lucide="calendar" class="h-3.5 w-3.5"></i>
                         Personalizado
                     </button>
                 </div>
 
-                <!-- EXPORT DROPDOWN -->
-                <div class="relative inline-block">
-                    <button id="btnExportMenu" class="btn btn-ghost flex items-center gap-1" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="exportMenu">
-                        <i data-lucide="download" aria-hidden="true"></i>
-                        <span>Exportar lista</span>
-                        <i data-lucide="chevron-down" class="h-3.5 w-3.5" aria-hidden="true"></i>
-                    </button>
-
-                    <div id="exportMenu" class="hidden absolute right-0 top-full z-50 mt-1.5 w-56 rounded-xl border p-1.5 shadow-xl bg-white dark:bg-slate-900 dark:border-slate-800" role="menu" aria-label="Opções de exportação">
-                        <button type="button" id="btnExportPdf" class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-slate-800" role="menuitem">
-                            <i data-lucide="file-text" class="h-4 w-4 text-teal-600" aria-hidden="true"></i>
-                            <span>Exportar para PDF</span>
-                        </button>
-                        <button type="button" id="btnExportExcel" class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-slate-800" role="menuitem">
-                            <i data-lucide="file-spreadsheet" class="h-4 w-4 text-teal-600" aria-hidden="true"></i>
-                            <span>Exportar para Excel</span>
-                        </button>
-                    </div>
-                </div>
-
-                <button id="btnPrint" class="btn btn-ghost" type="button" title="Imprimir relatório">
-                    <i data-lucide="printer" aria-hidden="true"></i>
+                <button id="btnPrint" class="btn btn-ghost" type="button">
+                    <i data-lucide="printer"></i>
                     Imprimir
                 </button>
 
-                <button id="btnShare" class="btn btn-primary" type="button" title="Compartilhar link">
-                    <i data-lucide="share-2" aria-hidden="true"></i>
+                <button id="btnExport" class="btn btn-ghost" type="button">
+                    <i data-lucide="download"></i>
+                    Exportar
+                </button>
+
+                <button id="btnShare" class="btn btn-primary" type="button">
+                    <i data-lucide="share-2"></i>
                     Compartilhar
                 </button>
             </div>
         </section>
 
+
         <!-- FILTROS -->
-        <section class="panel mb-5 grid gap-4 rounded-2xl p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6" aria-label="Filtros do Relatório de Pacientes">
+        <section class="panel mb-5 grid gap-4 rounded-2xl p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
 
-            <div>
-                <label for="dateFrom" class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
-                    Data inicial cadastro
-                </label>
+            <label class="block">
+                <span class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
+                    Data inicial
+                </span>
                 <input id="dateFrom" type="date" class="input-control">
-            </div>
+            </label>
 
-            <div>
-                <label for="dateTo" class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
-                    Data final cadastro
-                </label>
+            <label class="block">
+                <span class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
+                    Data final
+                </span>
                 <input id="dateTo" type="date" class="input-control">
-            </div>
+            </label>
 
-            <div>
-                <label for="fStatus" class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
-                    Status do cadastro
-                </label>
-                <select id="fStatus" class="input-control">
-                    <option value="">Todos</option>
-                    <option value="Ativo">Ativo</option>
-                    <option value="Inativo">Inativo</option>
+            <label class="block">
+                <span class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
+                    Unidade
+                </span>
+                <select id="fUnit" class="input-control">
+                    <option value="">Todas as unidades</option>
+                    <option value="Matriz Itaim Bibi">Matriz Itaim Bibi</option>
+                    <option value="Alphaville">Alphaville</option>
+                    <option value="Jardins">Jardins</option>
                 </select>
-            </div>
+            </label>
 
-            <div>
-                <label for="fIns" class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
+            <label class="block">
+                <span class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
                     Convênio
-                </label>
+                </span>
                 <select id="fIns" class="input-control">
                     <option value="">Todos</option>
                     <option value="Particular">Particular</option>
@@ -235,12 +226,12 @@
                     <option value="SulAmérica">SulAmérica</option>
                     <option value="Amil">Amil</option>
                 </select>
-            </div>
+            </label>
 
-            <div>
-                <label for="fAge" class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
+            <label class="block">
+                <span class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
                     Faixa etária
-                </label>
+                </span>
                 <select id="fAge" class="input-control">
                     <option value="">Todas</option>
                     <option value="0-17">0–17 anos</option>
@@ -249,12 +240,12 @@
                     <option value="45-59">45–59 anos</option>
                     <option value="60+">60+ anos</option>
                 </select>
-            </div>
+            </label>
 
-            <div>
-                <label for="fOrig" class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
-                    Origem de cadastro
-                </label>
+            <label class="block">
+                <span class="mb-1 block text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">
+                    Origem
+                </span>
                 <select id="fOrig" class="input-control">
                     <option value="">Todas</option>
                     <option value="Indicação">Indicação</option>
@@ -264,297 +255,254 @@
                     <option value="Site">Site</option>
                     <option value="Retorno">Retorno</option>
                 </select>
-            </div>
+            </label>
 
-            <div class="flex flex-wrap items-center justify-between gap-2 sm:col-span-2 lg:col-span-3 xl:col-span-6">
-                <div id="dateValidationError" class="hidden flex items-center gap-2 text-xs font-bold text-rose-500" aria-live="polite" role="alert">
-                    <i data-lucide="alert-circle" class="h-4 w-4" aria-hidden="true"></i>
-                    <span>A data final de cadastro não pode ser anterior à data inicial.</span>
-                </div>
+            <div class="flex items-end gap-2 sm:col-span-2 lg:col-span-3 xl:col-span-6 xl:justify-end">
+                <button id="btnClear" class="btn btn-ghost" type="button">
+                    <i data-lucide="rotate-ccw"></i>
+                    Limpar
+                </button>
 
-                <div class="ml-auto flex items-center gap-2">
-                    <button id="btnClear" class="btn btn-ghost" type="button">
-                        <i data-lucide="rotate-ccw" aria-hidden="true"></i>
-                        Limpar filtros
-                    </button>
-
-                    <button id="btnApply" class="btn btn-primary" type="button">
-                        <i data-lucide="filter" aria-hidden="true"></i>
-                        Aplicar filtros
-                    </button>
-                </div>
+                <button id="btnApply" class="btn btn-primary" type="button">
+                    <i data-lucide="filter"></i>
+                    Aplicar filtros
+                </button>
             </div>
         </section>
 
-        <!-- KPIS (MANDATORY REQS: Total de pacientes cadastrados, Novos cadastros no período) -->
-        <section class="mb-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6" aria-label="Indicadores de Pacientes">
 
-            <!-- 1. Total de pacientes cadastrados -->
-            <article class="panel rounded-2xl p-4" aria-labelledby="kpiTotalLabel">
+        <!-- KPIs -->
+        <section class="mb-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+
+            <article class="panel rounded-2xl p-4">
                 <div class="mb-4 flex items-center justify-between">
-                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-400" aria-hidden="true">
+                    <div
+                        class="grid h-10 w-10 place-items-center rounded-xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950">
                         <i data-lucide="users"></i>
                     </div>
-                    <span class="text-xs font-bold text-emerald-500" aria-label="Crescimento de 8,4%">↗ +8,4%</span>
+                    <span class="text-xs font-bold text-emerald-500">↗ +8,4%</span>
                 </div>
 
-                <div id="kpiTotalLabel" class="text-xs font-bold" style="color:var(--muted)">
-                    Total de pacientes cadastrados
+                <div class="text-xs font-bold" style="color:var(--muted)">
+                    Pacientes ativos
                 </div>
 
                 <div class="mt-1 font-mono text-2xl font-bold">
-                    <span id="kpiTotalValue" data-counter="12847">0</span>
+                    <span data-counter="12847">0</span>
                 </div>
-                <p class="mt-1 text-[11px]" style="color:var(--muted)">Base consolidada de pacientes</p>
 
                 <div class="spark-box mt-3">
-                    <canvas class="spark" data-color="#0d9488" aria-label="Gráfico do total de pacientes"></canvas>
+                    <canvas class="spark" data-color="#4f46e5"></canvas>
                 </div>
             </article>
 
-            <!-- 2. Novos cadastros no período -->
-            <article class="panel rounded-2xl p-4" aria-labelledby="kpiNewCountLabel">
+            <article class="panel rounded-2xl p-4">
                 <div class="mb-4 flex items-center justify-between">
-                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400" aria-hidden="true">
+                    <div
+                        class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950">
                         <i data-lucide="user-plus"></i>
                     </div>
-                    <span class="text-xs font-bold text-emerald-500" aria-label="Crescimento de 14,2%">↗ +14,2%</span>
+                    <span class="text-xs font-bold text-emerald-500">↗ +14,2%</span>
                 </div>
 
-                <div id="kpiNewCountLabel" class="text-xs font-bold" style="color:var(--muted)">
-                    Novos cadastros no período
-                </div>
-
-                <div class="mt-1 font-mono text-2xl font-bold">
-                    <span id="kpiNewCountValue" data-counter="487">0</span>
-                </div>
-                <p class="mt-1 text-[11px]" style="color:var(--muted)">Cadastrados no intervalo selecionado</p>
-
-                <div class="spark-box mt-3">
-                    <canvas class="spark" data-color="#10b981" aria-label="Gráfico de novos cadastros"></canvas>
-                </div>
-            </article>
-
-            <!-- 3. Pacientes Ativos -->
-            <article class="panel rounded-2xl p-4" aria-labelledby="kpiActiveCountLabel">
-                <div class="mb-4 flex items-center justify-between">
-                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-400" aria-hidden="true">
-                        <i data-lucide="user-check"></i>
-                    </div>
-                    <span class="text-xs font-bold text-emerald-500">Ativos</span>
-                </div>
-
-                <div id="kpiActiveCountLabel" class="text-xs font-bold" style="color:var(--muted)">
-                    Pacientes Ativos
+                <div class="text-xs font-bold" style="color:var(--muted)">
+                    Novos no período
                 </div>
 
                 <div class="mt-1 font-mono text-2xl font-bold">
-                    <span id="kpiActiveValue" data-counter="11920">0</span>
+                    <span data-counter="487">0</span>
                 </div>
-                <p class="mt-1 text-[11px]" style="color:var(--muted)">Com prontuário ativo no sistema</p>
 
                 <div class="spark-box mt-3">
-                    <canvas class="spark" data-color="#0284c7" aria-label="Gráfico de pacientes ativos"></canvas>
+                    <canvas class="spark" data-color="#10b981"></canvas>
                 </div>
             </article>
 
-            <!-- 4. Taxa de retorno -->
-            <article class="panel rounded-2xl p-4" aria-labelledby="kpiReturnRateLabel">
+            <article class="panel rounded-2xl p-4">
                 <div class="mb-4 flex items-center justify-between">
-                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-400" aria-hidden="true">
+                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-100 text-sky-600 dark:bg-sky-950">
                         <i data-lucide="repeat"></i>
                     </div>
                     <span class="text-xs font-bold text-emerald-500">↗ +2,1%</span>
                 </div>
 
-                <div id="kpiReturnRateLabel" class="text-xs font-bold" style="color:var(--muted)">
+                <div class="text-xs font-bold" style="color:var(--muted)">
                     Taxa de retorno
                 </div>
 
                 <div class="mt-1 font-mono text-2xl font-bold">
                     68,4<small class="ml-1 text-sm" style="color:var(--muted)">%</small>
                 </div>
-                <p class="mt-1 text-[11px]" style="color:var(--muted)">Fidelização de consultas</p>
 
                 <div class="spark-box mt-3">
-                    <canvas class="spark" data-color="#f59e0b" aria-label="Gráfico da taxa de retorno"></canvas>
+                    <canvas class="spark" data-color="#0284c7"></canvas>
                 </div>
             </article>
 
-            <!-- 5. Idade média -->
-            <article class="panel rounded-2xl p-4" aria-labelledby="kpiAvgAgeLabel">
+            <article class="panel rounded-2xl p-4">
                 <div class="mb-4 flex items-center justify-between">
-                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950 dark:text-violet-400" aria-hidden="true">
+                    <div
+                        class="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-950">
+                        <i data-lucide="user-x"></i>
+                    </div>
+                    <span class="text-xs font-bold text-amber-500">↘ -0,6%</span>
+                </div>
+
+                <div class="text-xs font-bold" style="color:var(--muted)">
+                    Taxa de churn
+                </div>
+
+                <div class="mt-1 font-mono text-2xl font-bold">
+                    4,8<small class="ml-1 text-sm" style="color:var(--muted)">%</small>
+                </div>
+
+                <div class="spark-box mt-3">
+                    <canvas class="spark" data-color="#f59e0b"></canvas>
+                </div>
+            </article>
+
+            <article class="panel rounded-2xl p-4">
+                <div class="mb-4 flex items-center justify-between">
+                    <div
+                        class="grid h-10 w-10 place-items-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950">
                         <i data-lucide="cake"></i>
                     </div>
                     <span class="text-xs font-bold" style="color:var(--muted)">Estável</span>
                 </div>
 
-                <div id="kpiAvgAgeLabel" class="text-xs font-bold" style="color:var(--muted)">
+                <div class="text-xs font-bold" style="color:var(--muted)">
                     Idade média
                 </div>
 
                 <div class="mt-1 font-mono text-2xl font-bold">
                     38<small class="ml-1 text-sm" style="color:var(--muted)">anos</small>
                 </div>
-                <p class="mt-1 text-[11px]" style="color:var(--muted)">Perfil etário consolidado</p>
 
                 <div class="spark-box mt-3">
-                    <canvas class="spark" data-color="#8b5cf6" aria-label="Gráfico de idade média"></canvas>
+                    <canvas class="spark" data-color="#8b5cf6"></canvas>
                 </div>
             </article>
 
-            <!-- 6. LTV Médio -->
-            <article class="panel rounded-2xl p-4" aria-labelledby="kpiLtvLabel">
+            <article class="panel rounded-2xl p-4">
                 <div class="mb-4 flex items-center justify-between">
-                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400" aria-hidden="true">
+                    <div
+                        class="grid h-10 w-10 place-items-center rounded-xl bg-rose-100 text-rose-600 dark:bg-rose-950">
                         <i data-lucide="heart"></i>
                     </div>
                     <span class="text-xs font-bold text-emerald-500">↗ +0,3%</span>
                 </div>
 
-                <div id="kpiLtvLabel" class="text-xs font-bold" style="color:var(--muted)">
+                <div class="text-xs font-bold" style="color:var(--muted)">
                     LTV médio
                 </div>
 
                 <div class="mt-1 font-mono text-2xl font-bold">
                     R$ 2,4<small class="ml-1 text-sm" style="color:var(--muted)">k</small>
                 </div>
-                <p class="mt-1 text-[11px]" style="color:var(--muted)">Valor de vida do paciente</p>
 
                 <div class="spark-box mt-3">
-                    <canvas class="spark" data-color="#f43f5e" aria-label="Gráfico de LTV médio"></canvas>
+                    <canvas class="spark" data-color="#f43f5e"></canvas>
                 </div>
             </article>
         </section>
 
-        <!-- TABELA — RELATÓRIO DE PACIENTES (PRINCIPAL) -->
-        <section class="panel mt-4 rounded-2xl p-5" aria-labelledby="patientsTableTitle">
-            <div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b pb-4" style="border-color:var(--line-soft)">
+
+        <!-- INSIGHTS -->
+        <section class="mb-5 grid gap-4 lg:grid-cols-3">
+            <article class="panel flex gap-3 rounded-2xl border-l-4 border-emerald-500 p-4">
+                <div
+                    class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950">
+                    <i data-lucide="lightbulb"></i>
+                </div>
                 <div>
-                    <h2 id="patientsTableTitle" class="card-title text-base font-extrabold flex items-center gap-2">
-                        <i data-lucide="users" class="h-5 w-5 text-teal-600" aria-hidden="true"></i>
-                        Relação de Pacientes Cadastrados
-                    </h2>
-                    <p class="card-subtitle text-xs" style="color:var(--muted)">
-                        Consulta completa de cadastro, contatos, datas de atendimento e histórico
+                    <strong class="text-sm">Destaque do período</strong>
+                    <p class="mt-1 text-xs leading-relaxed" style="color:var(--muted)">
+                        Captação por <b>Instagram</b> cresceu 32%.
+                        O custo por paciente caiu para <b>R$ 84</b>.
                     </p>
                 </div>
+            </article>
 
-                <div class="flex flex-wrap items-center gap-2">
-                    <div class="flex items-center gap-2 rounded-lg border px-3" style="border-color:var(--line);background:var(--panel-soft)">
-                        <i data-lucide="search" class="h-4 w-4" style="color:var(--muted)" aria-hidden="true"></i>
-                        <input id="pacienteSearch" type="search" placeholder="Buscar por nome ou CPF..." aria-label="Buscar paciente por nome ou CPF" class="h-9 w-52 bg-transparent text-xs outline-none" style="color:var(--text)">
-                    </div>
+            <article class="panel flex gap-3 rounded-2xl border-l-4 border-amber-500 p-4">
+                <div
+                    class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-950">
+                    <i data-lucide="alert-triangle"></i>
                 </div>
-            </div>
-
-            <div class="overflow-x-auto" id="tableContainer">
-                <!-- SKELETON / LOADING STATE -->
-                <div id="pacientesLoadingState" class="hidden flex flex-col items-center justify-center py-12 text-center" aria-live="polite" role="status">
-                    <div class="h-9 w-9 animate-spin rounded-full border-4 border-slate-200 border-t-teal-600" aria-hidden="true"></div>
-                    <p class="mt-3 text-xs font-semibold" style="color:var(--muted)">Carregando relatório de pacientes...</p>
+                <div>
+                    <strong class="text-sm">Atenção</strong>
+                    <p class="mt-1 text-xs leading-relaxed" style="color:var(--muted)">
+                        <b>284 pacientes</b> estão sem retorno há mais de 12 meses.
+                    </p>
                 </div>
+            </article>
 
-                <!-- ERROR STATE -->
-                <div id="pacientesErrorState" class="hidden flex flex-col items-center justify-center py-12 text-center" aria-live="assertive" role="alert">
-                    <div class="grid h-12 w-12 place-items-center rounded-full bg-rose-100 text-rose-600 dark:bg-rose-950" aria-hidden="true">
-                        <i data-lucide="alert-triangle" class="h-6 w-6"></i>
-                    </div>
-                    <h3 class="mt-3 text-sm font-bold">Não foi possível carregar o relatório de pacientes</h3>
-                    <p class="mt-1 text-xs" style="color:var(--muted)">Ocorreu uma falha na conexão ou no servidor.</p>
-                    <button type="button" id="btnRetryPacientes" class="btn btn-primary mt-4">
-                        <i data-lucide="refresh-cw" aria-hidden="true"></i> Tentar novamente
-                    </button>
+            <article class="panel flex gap-3 rounded-2xl border-l-4 border-sky-500 p-4">
+                <div
+                    class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-sky-100 text-sky-600 dark:bg-sky-950">
+                    <i data-lucide="rocket"></i>
                 </div>
-
-                <!-- EMPTY STATE -->
-                <div id="pacientesEmptyState" class="hidden flex flex-col items-center justify-center py-12 text-center" aria-live="polite">
-                    <div class="grid h-12 w-12 place-items-center rounded-full bg-teal-100 text-teal-600 dark:bg-teal-950" aria-hidden="true">
-                        <i data-lucide="folder-open" class="h-6 w-6"></i>
-                    </div>
-                    <h3 class="mt-3 text-sm font-bold">Não encontramos registros para os filtros selecionados</h3>
-                    <p class="mt-1 text-xs" style="color:var(--muted)">Tente alterar o período de cadastro ou o status do paciente.</p>
-                    <button type="button" id="btnResetFiltersEmpty" class="btn btn-ghost mt-4">
-                        <i data-lucide="rotate-ccw" aria-hidden="true"></i> Limpar filtros
-                    </button>
+                <div>
+                    <strong class="text-sm">Oportunidade</strong>
+                    <p class="mt-1 text-xs leading-relaxed" style="color:var(--muted)">
+                        A faixa <b>30–44 anos</b> concentra 38% da base.
+                    </p>
                 </div>
-
-                <!-- MAIN PATIENTS TABLE -->
-                <table id="pacientesTable" class="w-full min-w-[900px] text-left text-xs">
-                    <caption>Lista detalhada de pacientes cadastrados</caption>
-                    <thead style="color:var(--muted)">
-                        <tr class="border-b" style="border-color:var(--line-soft)">
-                            <th scope="col" class="p-3">Nome</th>
-                            <th scope="col" class="p-3">Telefone/WhatsApp</th>
-                            <th scope="col" class="p-3">Data de nascimento</th>
-                            <th scope="col" class="p-3">Data do último atendimento</th>
-                            <th scope="col" class="p-3">Status</th>
-                            <th scope="col" class="p-3 text-right">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pacientesTableBody">
-                        <!-- Content rendered dynamically via JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- PAGINATION -->
-            <div id="paginationBar" class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t pt-4 text-xs" style="border-color:var(--line-soft)">
-                <span id="paginationInfo" style="color:var(--muted)">Exibindo 0 de 0 pacientes</span>
-                <div class="flex items-center gap-1.5">
-                    <button id="btnPrevPage" type="button" class="btn btn-ghost py-1 px-2.5" disabled aria-label="Página anterior">
-                        <i data-lucide="chevron-left" aria-hidden="true"></i> Anterior
-                    </button>
-                    <div id="pageNumbers" class="flex gap-1"></div>
-                    <button id="btnNextPage" type="button" class="btn btn-ghost py-1 px-2.5" disabled aria-label="Próxima página">
-                        Próxima <i data-lucide="chevron-right" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
+            </article>
         </section>
 
-        <!-- GRÁFICOS COMPLEMENTARES -->
-        <section class="mt-6 grid gap-4 lg:grid-cols-2">
 
-            <!-- Novos pacientes mensal -->
+        <!-- GRÁFICOS -->
+        <section class="grid gap-4 lg:grid-cols-2">
+
+            <!-- Novos pacientes -->
             <article class="panel rounded-2xl p-5 lg:col-span-2">
-                <div class="mb-4 flex flex-wrap items-start justify-between gap-3 border-b pb-4" style="border-color:var(--line-soft)">
+                <div class="mb-4 flex flex-wrap items-start justify-between gap-3 border-b pb-4"
+                    style="border-color:var(--line-soft)">
                     <div>
-                        <h2 class="card-title text-sm font-bold flex items-center gap-2">
-                            <i data-lucide="user-plus" class="h-4 w-4 text-teal-600" aria-hidden="true"></i>
+                        <h2 class="card-title">
+                            <i data-lucide="user-plus"></i>
                             Novos pacientes por mês
                         </h2>
-                        <p class="card-subtitle text-xs" style="color:var(--muted)">Captação mensal versus meta clínica</p>
+                        <p class="card-subtitle">Captação mensal versus meta</p>
                     </div>
 
                     <div class="segmented" data-target="newPatients">
-                        <button type="button" class="active" data-mode="bar">Barras</button>
-                        <button type="button" data-mode="line">Linha</button>
+                        <button type="button" class="active" data-mode="bar">
+                            Barras
+                        </button>
+                        <button type="button" data-mode="line">
+                            Linha
+                        </button>
                     </div>
                 </div>
 
-                <div class="chart-box h-64">
-                    <canvas id="chartNovosPacientes" aria-label="Gráfico de novos pacientes por mês" role="img"></canvas>
+                <div class="chart-box">
+                    <canvas id="chartNovosPacientes"></canvas>
                 </div>
             </article>
+
 
             <!-- Sexo -->
             <article class="panel rounded-2xl p-5">
                 <div class="mb-4 border-b pb-4" style="border-color:var(--line-soft)">
-                    <h2 class="card-title text-sm font-bold flex items-center gap-2">
-                        <i data-lucide="venus-and-mars" class="h-4 w-4 text-teal-600" aria-hidden="true"></i>
+                    <h2 class="card-title">
+                        <i data-lucide="venus-and-mars"></i>
                         Pacientes por sexo
                     </h2>
-                    <p class="card-subtitle text-xs" style="color:var(--muted)">Distribuição da base ativa</p>
+                    <p class="card-subtitle">Distribuição da base ativa</p>
                 </div>
 
-                <div class="relative mx-auto h-60 max-w-xs">
-                    <canvas id="chartSexoPacientes" aria-label="Gráfico por sexo" role="img"></canvas>
+                <div class="relative mx-auto h-64 max-w-xs">
+                    <canvas id="chartSexoPacientes"></canvas>
+
                     <div class="pointer-events-none absolute inset-0 grid place-items-center text-center">
                         <div>
-                            <div id="doughnutTotal" class="font-mono text-2xl font-bold">12.847</div>
-                            <div class="text-[10px] font-bold uppercase" style="color:var(--muted)">Pacientes</div>
+                            <div id="doughnutTotal" class="font-mono text-2xl font-bold">
+                                12.847
+                            </div>
+                            <div class="text-[10px] font-bold uppercase" style="color:var(--muted)">
+                                Pacientes
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -562,65 +510,252 @@
                 <div id="legendSexo" class="mt-4 flex flex-wrap justify-center gap-2"></div>
             </article>
 
+
             <!-- Convênios -->
             <article class="panel rounded-2xl p-5">
                 <div class="mb-4 border-b pb-4" style="border-color:var(--line-soft)">
-                    <h2 class="card-title text-sm font-bold flex items-center gap-2">
-                        <i data-lucide="id-card" class="h-4 w-4 text-teal-600" aria-hidden="true"></i>
+                    <h2 class="card-title">
+                        <i data-lucide="id-card"></i>
                         Distribuição por convênio
                     </h2>
-                    <p class="card-subtitle text-xs" style="color:var(--muted)">Participação na base</p>
+                    <p class="card-subtitle">Participação na base</p>
                 </div>
 
-                <div class="chart-box h-60">
-                    <canvas id="chartConveniosPacientes" aria-label="Gráfico por convênio" role="img"></canvas>
+                <div class="chart-box">
+                    <canvas id="chartConveniosPacientes"></canvas>
                 </div>
             </article>
 
+
+            <!-- Faixa etária -->
+            <article class="panel rounded-2xl p-5">
+                <div class="mb-4 border-b pb-4" style="border-color:var(--line-soft)">
+                    <h2 class="card-title">
+                        <i data-lucide="bar-chart-2"></i>
+                        Faixa etária
+                    </h2>
+                    <p class="card-subtitle">Distribuição demográfica</p>
+                </div>
+
+                <div class="chart-box">
+                    <canvas id="chartFaixaEtaria"></canvas>
+                </div>
+            </article>
+
+
+            <!-- Cidades -->
+            <article class="panel rounded-2xl p-5">
+                <div class="mb-4 border-b pb-4" style="border-color:var(--line-soft)">
+                    <h2 class="card-title">
+                        <i data-lucide="map-pin"></i>
+                        Top cidades
+                    </h2>
+                    <p class="card-subtitle">Origem geográfica</p>
+                </div>
+
+                <div id="topCities" class="space-y-4"></div>
+            </article>
+
+
+            <!-- Heatmap -->
+            <article class="panel rounded-2xl p-5 lg:col-span-2">
+                <div class="mb-4 border-b pb-4" style="border-color:var(--line-soft)">
+                    <h2 class="card-title">
+                        <i data-lucide="grid-3x3"></i>
+                        Mapa de calor — Origem × Mês
+                    </h2>
+                    <p class="card-subtitle">
+                        Captação por canal nos últimos 12 meses
+                    </p>
+                </div>
+
+                <div id="heatmap" class="heatmap"></div>
+
+                <div class="mt-4 flex items-center justify-end gap-2 text-[10px] font-bold" style="color:var(--muted)">
+                    <span>Baixo</span>
+                    <div class="flex gap-1">
+                        <span class="h-2.5 w-5 rounded bg-indigo-100"></span>
+                        <span class="h-2.5 w-5 rounded bg-indigo-300"></span>
+                        <span class="h-2.5 w-5 rounded bg-indigo-400"></span>
+                        <span class="h-2.5 w-5 rounded bg-indigo-600"></span>
+                        <span class="h-2.5 w-5 rounded bg-indigo-900"></span>
+                    </div>
+                    <span>Alto</span>
+                </div>
+            </article>
+
+
+            <!-- Evolução -->
+            <article class="panel rounded-2xl p-5 lg:col-span-2">
+                <div class="mb-4 flex flex-wrap items-start justify-between gap-3 border-b pb-4"
+                    style="border-color:var(--line-soft)">
+                    <div>
+                        <h2 class="card-title">
+                            <i data-lucide="line-chart"></i>
+                            Evolução de cadastros
+                        </h2>
+                        <p class="card-subtitle">
+                            Realizado, meta e ano anterior
+                        </p>
+                    </div>
+
+                    <div class="segmented" data-target="evolution">
+                        <button type="button" class="active" data-metric="all">
+                            Tudo
+                        </button>
+                        <button type="button" data-metric="real">
+                            Realizado
+                        </button>
+                        <button type="button" data-metric="target">
+                            Meta
+                        </button>
+                        <button type="button" data-metric="prev">
+                            Ano anterior
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chart-box tall">
+                    <canvas id="chartEvolucaoPacientes"></canvas>
+                </div>
+            </article>
         </section>
+
+
+        <!-- RANKING -->
+        <section class="panel mt-4 rounded-2xl p-5">
+            <div class="mb-4 flex flex-wrap items-start justify-between gap-3 border-b pb-4"
+                style="border-color:var(--line-soft)">
+                <div>
+                    <h2 class="card-title">
+                        <i data-lucide="trophy"></i>
+                        Top 12 pacientes — Maior LTV
+                    </h2>
+                    <p class="card-subtitle">
+                        Pacientes mais valiosos por receita acumulada
+                    </p>
+                </div>
+
+                <div id="rankTabs" class="segmented">
+                    <button type="button" class="active" data-rank="geral">
+                        Geral
+                    </button>
+                    <button type="button" data-rank="ltv">
+                        LTV
+                    </button>
+                    <button type="button" data-rank="frequency">
+                        Frequência
+                    </button>
+                    <button type="button" data-rank="recency">
+                        Recência
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table id="rankTable" class="w-full min-w-[760px] text-left text-xs">
+                    <thead style="color:var(--muted)">
+                        <tr class="border-b" style="border-color:var(--line-soft)">
+                            <th class="p-3">#</th>
+                            <th class="p-3">Paciente</th>
+                            <th class="p-3">Convênio</th>
+                            <th class="p-3">Consultas</th>
+                            <th class="p-3">Última visita</th>
+                            <th class="p-3">LTV</th>
+                            <th class="p-3">NPS</th>
+                            <th class="p-3">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <!-- DETALHAMENTO -->
+        <section class="panel mt-4 rounded-2xl p-5">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b pb-4"
+                style="border-color:var(--line-soft)">
+                <div>
+                    <h2 class="card-title">
+                        <i data-lucide="table-2"></i>
+                        Detalhamento por convênio
+                    </h2>
+                    <p class="card-subtitle">
+                        Métricas consolidadas por convênio
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex items-center gap-2 rounded-lg border px-3"
+                        style="border-color:var(--line);background:var(--panel-soft)">
+                        <i data-lucide="search" class="h-4 w-4" style="color:var(--muted)"></i>
+                        <input id="tblSearch" type="search" placeholder="Buscar convênio..."
+                            class="h-9 w-44 bg-transparent text-xs outline-none" style="color:var(--text)">
+                    </div>
+
+                    <button id="btnExportCat" class="btn btn-ghost" type="button">
+                        <i data-lucide="download"></i>
+                        CSV
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table id="breakdownTable" class="w-full min-w-[850px] text-left text-xs">
+                    <thead style="color:var(--muted)">
+                        <tr class="border-b" style="border-color:var(--line-soft)">
+                            <th class="p-3">Convênio</th>
+                            <th class="p-3 text-right">Pacientes</th>
+                            <th class="p-3 text-right">Novos</th>
+                            <th class="p-3 text-right">Retorno</th>
+                            <th class="p-3 text-right">Idade média</th>
+                            <th class="p-3 text-right">LTV médio</th>
+                            <th class="p-3 text-right">Variação</th>
+                            <th class="p-3">Tendência</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+
+                    <tfoot>
+                        <tr class="border-t font-bold" style="border-color:var(--line)">
+                            <th class="p-3">TOTAL</th>
+                            <th id="tFTot" class="p-3 text-right">0</th>
+                            <th id="tFNew" class="p-3 text-right">0</th>
+                            <th id="tFRet" class="p-3 text-right">0</th>
+                            <th id="tFAge" class="p-3 text-right">0</th>
+                            <th id="tFLtv" class="p-3 text-right">R$ 0</th>
+                            <th class="p-3 text-right">—</th>
+                            <th class="p-3"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+
 
         <!-- RODAPÉ -->
         <footer class="flex flex-col justify-between gap-2 py-6 text-[11px] sm:flex-row" style="color:var(--muted)">
             <span>
                 © 2026 GM4med · Inteligência Hospitalar ·
-                Última atualização: <b id="lastUpdate">agora</b>
+                Última atualização:
+                <b id="lastUpdate">agora</b>
             </span>
 
             <span>
-                Frontend-Ready · Data Warehouse v3.2 · SLA 99,98%
+                Data Warehouse v3.2 · SLA 99,98%
             </span>
         </footer>
     </main>
 
-    <!-- LOADING & TOAST CONTAINERS -->
+
     <div id="loadingBar" class="loading-bar" aria-hidden="true"></div>
+
     <div id="toastBox" class="toast-area" aria-live="polite"></div>
 
-    <!-- MODAL HISTÓRICO / CADASTRO DE PACIENTE -->
-    <div id="pacienteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" aria-hidden="true" role="dialog" aria-labelledby="pacienteModalTitle">
-        <div class="w-full max-w-xl rounded-2xl border p-6 shadow-2xl bg-white dark:bg-slate-900 dark:border-slate-800">
-            <div class="flex items-center justify-between border-b pb-4 dark:border-slate-800">
-                <h3 id="pacienteModalTitle" class="text-base font-extrabold flex items-center gap-2 text-slate-800 dark:text-slate-100">
-                    <i data-lucide="user" class="h-5 w-5 text-teal-600" aria-hidden="true"></i>
-                    Ficha do Paciente
-                </h3>
-                <button type="button" id="btnClosePatientModal" class="icon-button" aria-label="Fechar ficha do paciente">
-                    <i data-lucide="x" aria-hidden="true"></i>
-                </button>
-            </div>
-            <div id="pacienteModalBody" class="py-4 text-xs space-y-3 text-slate-700 dark:text-slate-300">
-                <!-- Dynamic Content -->
-            </div>
-            <div class="flex justify-end gap-2 border-t pt-4 dark:border-slate-800">
-                <button type="button" id="btnPatientModalClose" class="btn btn-ghost">Fechar</button>
-                <button type="button" id="btnPatientModalPrint" class="btn btn-primary flex items-center gap-1.5">
-                    <i data-lucide="printer" class="h-4 w-4" aria-hidden="true"></i> Imprimir Ficha
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script src="relatorio-pacientes.js" defer></script>
+
 </body>
 
 </html>
