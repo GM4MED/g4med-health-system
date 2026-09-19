@@ -58,7 +58,7 @@
 
             // Substitua este atraso pela chamada real de invalidação de sessão da sua API.
             window.setTimeout(() => {
-                window.location.href = '../index.html';
+                window.location.href = '../Menu-Principal.html';
             }, 1100);
         };
 

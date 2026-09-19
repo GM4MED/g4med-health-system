@@ -118,7 +118,7 @@
             if (!backButton) return;
             backButton.addEventListener('click', () => {
                 if (window.history.length > 1) window.history.back();
-                else window.location.href = '../index.html';
+                else window.location.href = '../Menu-Principal.html';
             });
         }
 
