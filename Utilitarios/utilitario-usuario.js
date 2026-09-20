@@ -13,6 +13,7 @@ let usuarioAtual = null;
 let modoEdicao = false;
 let usuarioParaExcluir = null;
 let currentTheme = 'light';
+let lastFocusedElement = null;
 
 // Dados simulados (em produção, viriam do backend)
 const mockUsuarios = [
@@ -295,6 +296,7 @@ function updateFooter() {
 function openNewUserModal() {
     modoEdicao = false;
     usuarioAtual = null;
+    lastFocusedElement = document.activeElement;
 
     // Limpar formulário
     document.getElementById('fCadastro').reset();
@@ -303,11 +305,11 @@ function openNewUserModal() {
     document.getElementById('tTag').textContent = 'NOVO';
     document.getElementById('tTitle').textContent = 'Novo Usuário';
     document.getElementById('reqSenha').textContent = '*';
-    document.getElementById('hintSenha').innerHTML = 'Força: <b>—</b>';
+    const hintSenha = document.getElementById('hintSenha');
+    hintSenha.textContent = 'Força: —';
 
     // Abrir modal
-    document.getElementById('mCadastro').hidden = false;
-    document.getElementById('cNome').focus();
+    openModal('mCadastro', '#cNome');
 }
 
 function editUser(userId) {
@@ -316,6 +318,7 @@ function editUser(userId) {
 
     modoEdicao = true;
     usuarioAtual = user;
+    lastFocusedElement = document.activeElement;
 
     // Preencher formulário
     document.getElementById('cNome').value = user.nome;
@@ -329,15 +332,54 @@ function editUser(userId) {
     document.getElementById('tTag').textContent = 'EDITAR';
     document.getElementById('tTitle').textContent = 'Editar Usuário';
     document.getElementById('reqSenha').textContent = '(opcional)';
-    document.getElementById('hintSenha').innerHTML = 'Força: <b>—</b>';
+    document.getElementById('hintSenha').textContent = 'Força: —';
 
     // Abrir modal
-    document.getElementById('mCadastro').hidden = false;
-    document.getElementById('cNome').focus();
+    openModal('mCadastro', '#cNome');
+}
+
+function openModal(modalId, focusSelector) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    modal.hidden = false;
+    modal.setAttribute('aria-hidden', 'false');
+
+    const focusTarget = modal.querySelector(focusSelector) || modal.querySelector('input, select, button:not([disabled])');
+    requestAnimationFrame(() => focusTarget && focusTarget.focus());
+    document.addEventListener('keydown', handleModalKeydown);
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    modal.hidden = true;
+    modal.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('keydown', handleModalKeydown);
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+    }
+}
+
+function handleModalKeydown(event) {
+    if (event.key === 'Escape') {
+        event.preventDefault();
+
+        if (!document.getElementById('mExcluir').hidden) {
+            closeExcluirModal();
+            return;
+        }
+
+        if (!document.getElementById('mCadastro').hidden) {
+            closeCadastroModal();
+        }
+    }
 }
 
 function closeCadastroModal() {
-    document.getElementById('mCadastro').hidden = true;
+    closeModal('mCadastro');
 }
 
 function salvarUsuario() {
@@ -428,7 +470,7 @@ function confirmDelete() {
 }
 
 function closeExcluirModal() {
-    document.getElementById('mExcluir').hidden = true;
+    closeModal('mExcluir');
     usuarioParaExcluir = null;
 }
 
@@ -514,7 +556,7 @@ function checkPasswordStrength() {
     const hint = document.getElementById('hintSenha');
 
     if (!senha) {
-        hint.innerHTML = 'Força: <b>—</b>';
+        hint.textContent = 'Força: —';
         return;
     }
 
@@ -529,21 +571,33 @@ function checkPasswordStrength() {
     const colors = ['#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e'];
 
     const index = Math.min(strength, 4);
-    hint.innerHTML = `Força: <b style="color: ${colors[index]}">${labels[index]}</b>`;
+    const strengthText = document.createElement('strong');
+    strengthText.textContent = labels[index];
+    strengthText.style.color = colors[index];
+
+    hint.textContent = 'Força: ';
+    hint.appendChild(strengthText);
 }
 
 function showToast(message, type = 'info') {
     const toastBox = document.getElementById('toastBox');
     const toast = document.createElement('div');
     toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
 
     const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info';
     const color = type === 'success' ? 'ok' : type === 'error' ? 'danger' : 'info';
 
-    toast.innerHTML = `
-        <i data-lucide="${icon}" style="color: var(--${color})"></i>
-        <span>${message}</span>
-    `;
+    const iconEl = document.createElement('i');
+    iconEl.setAttribute('data-lucide', icon);
+    iconEl.style.color = `var(--${color})`;
+
+    const textEl = document.createElement('span');
+    textEl.textContent = message;
+
+    toast.appendChild(iconEl);
+    toast.appendChild(textEl);
 
     toastBox.appendChild(toast);
     lucide.createIcons();

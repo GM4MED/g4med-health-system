@@ -202,46 +202,50 @@
     </main>
     <!-- ====================================================================================================================== -->
     <!-- Modal Cadastro -->
-    <div class="modal-overlay" id="mCadastro" hidden>
+    <div class="modal-overlay" id="mCadastro" hidden aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="tTitle" aria-describedby="mCadastroDesc">
         <div class="modal-card">
             <div class="m-hd">
                 <div>
                     <div class="m-tag" id="tTag">NOVO</div>
                     <h2 id="tTitle">Novo Usuário</h2>
                 </div>
-                <button class="icon-btn" id="bCloseCad">
+                <button class="icon-btn" id="bCloseCad" type="button" aria-label="Fechar modal de cadastro de usuário">
                     <i data-lucide="x"></i>
                 </button>
             </div>
             <div class="m-body">
+                <p id="mCadastroDesc" class="sr-only">Formulário para criar ou atualizar usuários do sistema GM4med.</p>
                 <form id="fCadastro" class="m-fm" novalidate>
                     <div class="m-gr full">
-                        <label>Nome completo <span class="req">*</span></label>
+                        <label for="cNome">Nome completo <span class="req">*</span></label>
                         <div class="m-inp">
                             <i data-lucide="user"></i>
-                            <input id="cNome" placeholder="Ex: Dr. Ricardo Silva" required>
+                            <input id="cNome" name="nome" placeholder="Ex: Dr. Ricardo Silva" required
+                                aria-required="true">
                         </div>
                     </div>
                     <div class="m-gr">
-                        <label>Login <span class="req">*</span></label>
+                        <label for="cLogin">Login <span class="req">*</span></label>
                         <div class="m-inp">
                             <i data-lucide="at-sign"></i>
-                            <input id="cLogin" placeholder="dr.ricardo" required>
+                            <input id="cLogin" name="login" placeholder="dr.ricardo" required aria-required="true">
                         </div>
                         <div class="m-hint">Apenas letras minúsculas, números e pontos</div>
                     </div>
                     <div class="m-gr">
-                        <label>E-mail <span class="req">*</span></label>
+                        <label for="cEmail">E-mail <span class="req">*</span></label>
                         <div class="m-inp">
                             <i data-lucide="mail"></i>
-                            <input id="cEmail" type="email" placeholder="ricardo@GM4med.com" required>
+                            <input id="cEmail" name="email" type="email" placeholder="ricardo@GM4med.com" required
+                                aria-required="true">
                         </div>
                     </div>
                     <div class="m-gr">
-                        <label>Perfil <span class="req">*</span></label>
+                        <label for="cPerfil">Perfil <span class="req">*</span></label>
                         <div class="m-inp">
                             <i data-lucide="shield"></i>
-                            <select id="cPerfil" required>
+                            <select id="cPerfil" name="perfil" required aria-required="true">
                                 <option>Administrador</option>
                                 <option>Médico</option>
                                 <option>Recepção</option>
@@ -250,18 +254,19 @@
                         </div>
                     </div>
                     <div class="m-gr">
-                        <label>Senha <span id="reqSenha" class="req">*</span></label>
+                        <label for="cSenha">Senha <span id="reqSenha" class="req">*</span></label>
                         <div class="m-inp">
                             <i data-lucide="lock"></i>
-                            <input id="cSenha" type="password" placeholder="Mínimo 6 caracteres">
+                            <input id="cSenha" name="senha" type="password" placeholder="Mínimo 6 caracteres"
+                                aria-describedby="hintSenha">
                         </div>
-                        <div class="m-hint" id="hintSenha">Força: <b>—</b></div>
+                        <div class="m-hint" id="hintSenha" aria-live="polite">Força: <b>—</b></div>
                     </div>
                     <div class="m-gr">
-                        <label>Status</label>
+                        <label for="cStatus">Status</label>
                         <div class="m-inp">
                             <i data-lucide="toggle-left"></i>
-                            <select id="cStatus">
+                            <select id="cStatus" name="status">
                                 <option>Ativo</option>
                                 <option>Bloqueado</option>
                             </select>
@@ -271,7 +276,7 @@
             </div>
             <div class="m-foot">
                 <button class="btn ghost" type="button" id="bCancelCad">Cancelar</button>
-                <button class="btn primary" id="bSalvar" form="fCadastro">
+                <button class="btn primary" id="bSalvar" type="submit" form="fCadastro">
                     <i data-lucide="save"></i> Salvar
                 </button>
             </div>
@@ -279,16 +284,19 @@
     </div>
 
     <!-- Modal Excluir -->
-    <div class="modal-overlay" id="mExcluir" hidden>
+    <div class="modal-overlay" id="mExcluir" hidden aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="mExcluirTitle" aria-describedby="mExcluirDesc">
         <div class="modal-card modal-confirm">
             <div class="c-icon">
                 <i data-lucide="alert-triangle"></i>
             </div>
-            <h3>Confirmar exclusão</h3>
-            <p>Tem certeza que deseja excluir o usuário <b id="dNome">—</b>?<br>Esta ação não pode ser desfeita.</p>
+            <h3 id="mExcluirTitle">Confirmar exclusão</h3>
+            <p id="mExcluirDesc">Tem certeza que deseja excluir o usuário <b id="dNome">—</b>?<br>Esta ação não pode ser
+                desfeita.</p>
             <div class="c-btns">
-                <button class="btn ghost" id="bCancelDel">Cancelar</button>
-                <button class="btn danger" id="bConfirmDel">
+                <button class="btn ghost" id="bCancelDel" type="button"
+                    aria-label="Cancelar exclusão do usuário">Cancelar</button>
+                <button class="btn danger" id="bConfirmDel" type="button" aria-label="Confirmar exclusão do usuário">
                     <i data-lucide="trash-2"></i> Excluir
                 </button>
             </div>
@@ -296,7 +304,7 @@
     </div>
 
     <!-- Toast Box -->
-    <div class="toast-box" id="toastBox"></div>
+    <div class="toast-box" id="toastBox" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <!-- JavaScript Externo -->
     <script src="./utilitario-usuario.js"></script>
